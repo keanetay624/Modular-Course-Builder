@@ -1,0 +1,32 @@
+#btn_search {
+    -fx-text-fill: white;
+    -fx-background-color: black;
+    -fx-border-radius: 20;
+    -fx-padding: 5;
+}
+
+.pane_bg {
+    -fx-background-color: rgb(235, 235, 235);
+}
+
+#course_anchor {
+    -fx-background-color: white;
+}
+
+#login_bg {
+    -fx-background-color: white;
+}
+
+#nav_bg {
+    -fx-background-color: #ffdd00;
+}
+
+.nav_btn {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+.btn:hover {
+    -fx-background-color: #e2e7f6;
+    -fx-scale-y: 1.1;
+}
