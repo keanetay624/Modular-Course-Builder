@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import javafx.scene.image.Image;
 
 /**
@@ -17,7 +18,16 @@ public class App extends Application {
     private static Scene scene;
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, SQLException {
+        /**
+        * On first app run, setup a database file. If the database has already
+        * been setup, do not setup again.
+        */    
+        Database myDatabase = new Database();
+        if (myDatabase.CheckIfAlreadySetUp() == false) {
+            myDatabase.setupDatabase();
+        }
+        
         scene = new Scene(loadFXML("courseViewer"), 1280, 720);
         stage.setScene(scene);
 //        stage.setFullScreen(true);
