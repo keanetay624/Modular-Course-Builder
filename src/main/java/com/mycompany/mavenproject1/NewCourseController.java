@@ -12,6 +12,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -49,7 +50,7 @@ public class NewCourseController {
     
     public static void display(String title) throws IOException {
         Stage window = new Stage();
-        
+        window.getIcons().add(new Image("file:src/main/resources/com/mycompany/mavenproject1/unsw_1.jpg"));
         Scene scene = new Scene(App.loadFXML("NewCourse"), 450, 400);
         window.setScene(scene);
         

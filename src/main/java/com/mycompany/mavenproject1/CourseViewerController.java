@@ -85,7 +85,7 @@ public class CourseViewerController {
 
     @FXML
     private void switchToNewCourse() throws IOException {
-        NewCourseController.display("Add a New Course");
+        NewCourseController.display("New Course");
     }
     
     private void buildUI() throws IOException {

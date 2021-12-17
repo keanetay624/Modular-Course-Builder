@@ -30,3 +30,7 @@
     -fx-background-color: #e2e7f6;
     -fx-scale-y: 1.1;
 }
+
+.bg_yellow {
+    -fx-background-color: #ffdd00;
+}
