@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="login_bg" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="login_bg" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.mavenproject1.LoginController">
    <children>
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="540.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true" scaleX="2.0" scaleY="2.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="540.0">
          <image>
@@ -22,22 +22,22 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
                <children>
-                  <Label text="Username" />
-                  <TextField />
+                  <Label text="Username:" />
+                  <TextField fx:id="txtUsername" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
                <children>
-                  <Label text="Password" />
-                  <PasswordField />
+                  <Label text="Password:" />
+                  <PasswordField fx:id="txtPassword" />
                </children>
             </HBox>
-            <Label text="Error Message" textFill="RED" visible="false" />
+            <Label fx:id="outputLabel" text="Error Message" textFill="RED" visible="false" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <Button mnemonicParsing="false" text="Login" />
-                  <Button mnemonicParsing="false" text="Create Account" />
-                  <Button mnemonicParsing="false" text="Forgot Password?" />
+                  <Button fx:id="btnCreateAcct" mnemonicParsing="false" text="Create Account" />
+                  <Button fx:id="btnForgotPw" mnemonicParsing="false" text="Forgot Password?" />
+                  <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#userDidClickLogin" text="Login" />
                </children>
             </HBox>
          </children>

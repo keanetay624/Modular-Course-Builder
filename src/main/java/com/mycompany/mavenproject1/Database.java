@@ -201,4 +201,24 @@ public class Database {
             return connectionStatus;
         }
     }
+    
+    public static boolean validateUser(String username, String password) throws SQLException {
+        boolean validate = false;
+        
+        Database.openConnection();
+        
+        Statement st = Database.getSharedConnection().createStatement();
+        String query = "SELECT * FROM Users WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "'";
+        ResultSet rs = st.executeQuery(query);
+        System.out.println("Validating...");
+        
+        if (rs.next()) {
+            validate = true;
+        } 
+        
+        st.close();
+        Database.closeConnection();
+        
+        return validate;
+    }
 }

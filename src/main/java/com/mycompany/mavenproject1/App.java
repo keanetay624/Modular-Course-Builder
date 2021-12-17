@@ -28,7 +28,10 @@ public class App extends Application {
             myDatabase.setupDatabase();
         }
         
-        scene = new Scene(loadFXML("courseViewer"), 1280, 720);
+        // launch the login screen
+        
+//        scene = new Scene(loadFXML("courseViewer"), 1280, 720);
+        scene = new Scene(loadFXML("login"), 1280, 720);
         stage.setScene(scene);
 //        stage.setFullScreen(true);
         stage.getIcons().add(new Image("file:src/main/resources/com/mycompany/mavenproject1/unsw_1.jpg"));
@@ -40,7 +43,7 @@ public class App extends Application {
         scene.setRoot(loadFXML(fxml));
     }
 
-    private static Parent loadFXML(String fxml) throws IOException {
+    public static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }

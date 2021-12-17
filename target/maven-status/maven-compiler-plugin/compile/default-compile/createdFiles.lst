@@ -1,9 +1,8 @@
-com\mycompany\mavenproject1\Section.class
 com\mycompany\mavenproject1\App.class
-com\mycompany\mavenproject1\SecondaryController.class
-com\mycompany\mavenproject1\Module.class
 com\mycompany\mavenproject1\Resource.class
-com\mycompany\mavenproject1\Course.class
 module-info.class
-com\mycompany\mavenproject1\CourseViewerController.class
 com\mycompany\mavenproject1\Database.class
+com\mycompany\mavenproject1\Section.class
+com\mycompany\mavenproject1\Module.class
+com\mycompany\mavenproject1\Course.class
+com\mycompany\mavenproject1\CourseViewerController.class
