@@ -123,15 +123,16 @@ public class SectionViewerController {
     */
     
 
-//    @FXML
-//    private void switchToNewSection() throws IOException {
-//        NewModuleController.display("New Module");
-//    }
+    @FXML
+    private void switchToNewSection() throws IOException, SQLException {
+        NewSectionController newController = new NewSectionController();
+        newController.display("New Module");
+    }
     
-//    @FXML
-//    public void refreshTable() throws SQLException {
-//        ObservableList<Module> newList = DatabaseHelper.getModules();
-//        tblModule.setItems(newList);
-//    }
+    @FXML
+    public void refreshTable() throws SQLException {
+        ObservableList<Section> newList = DatabaseHelper.getSections();
+        tblSection.setItems(newList);
+    }
     
 }

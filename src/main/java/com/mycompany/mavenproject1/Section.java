@@ -12,15 +12,13 @@ import java.util.List;
  * @author Keane Local
  */
 public class Section {
-    private String id;
     private Module sModule;
     private int sequence;
     private String name;
     private String desc;
     private int isArchived;
 
-    public Section(String id, Module sModule, String name, String desc, int sequence, int isArchived) {
-        this.id = id;
+    public Section(Module sModule, String name, String desc, int sequence, int isArchived) {
         this.sModule = sModule;
         this.name = name;
         this.desc = desc;
@@ -35,15 +33,7 @@ public class Section {
     public void setIsArchived(int isArchived) {
         this.isArchived = isArchived;
     }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
+    
     public Module getsModule() {
         return sModule;
     }
@@ -75,6 +65,4 @@ public class Section {
     public void setDesc(String desc) {
         this.desc = desc;
     }
-    
-    
 }

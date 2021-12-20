@@ -142,8 +142,9 @@ public class DatabaseHelper {
         Database.openConnection();
         
         PreparedStatement pst = Database.getSharedConnection().prepareStatement("UPDATE section "
-                + "set is_archived = 1 where section_id = ?");
-        pst.setString(1, selectedSection.getId());
+                + "set is_archived = 1 where section_name = ? and module_name = ?");
+        pst.setString(1, selectedSection.getName());
+        pst.setString(2, selectedSection.getsModule().getName());
         
         pst.executeUpdate();
         pst.close();
@@ -155,18 +156,40 @@ public class DatabaseHelper {
 
         //insert statement for new course
         PreparedStatement pst = Database.getSharedConnection().prepareStatement("INSERT INTO "
-                + "section (section_id, module_name, sequence, name, desc, is_archived) "
-                + "VALUES (?,?,?)");
-        pst.setString(1, selectedSection.getId());
-        pst.setString(2, selectedSection.getsModule().getName());
-        pst.setInt(3, selectedSection.getSequence());
-        pst.setString(4, selectedSection.getName());
-        pst.setString(5, selectedSection.getDesc());
-        pst.setInt(6, selectedSection.getIsArchived());
+                + "section (module_name, section_name, section_description, "
+                + "sequence_no, is_archived) "
+                + "VALUES (?,?,?,?,?)");
+        pst.setString(1, selectedSection.getsModule().getName());
+        pst.setString(2, selectedSection.getName());
+        pst.setString(3, selectedSection.getDesc());
+        pst.setInt(4, nextSectionNumber(selectedSection.getsModule().getName()));
+        pst.setInt(5, selectedSection.getIsArchived());
 
         pst.executeUpdate();
         pst.close();
         Database.closeConnection();
+    }
+    
+    public static int nextSectionNumber(String moduleName) throws SQLException {
+        int highest = 0;
+        Database.openConnection();
+        
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("SELECT * FROM "
+                + "section WHERE module_name = ? ");
+        pst.setString(1, moduleName);
+        
+        ResultSet rs = pst.executeQuery();
+        
+        while (rs.next()) {
+            if (rs.getInt(5) > highest) {
+                highest = rs.getInt(5);
+            }
+        }
+        highest++;
+        
+        pst.close();
+        Database.closeConnection();
+        return highest;
     }
     
     public static ObservableList<Section> getSections() throws SQLException {
@@ -182,8 +205,7 @@ public class DatabaseHelper {
         ObservableList<Section> newList = FXCollections.observableArrayList();
 
         while (rs.next()) {
-            newList.add(new Section(
-                    rs.getString(1), new Module(rs.getString(2),"",0),  rs.getString(3), rs.getString(4), rs.getInt(5), rs.getInt(6)));
+            newList.add(new Section(new Module(rs.getString(2),"",0),  rs.getString(3), rs.getString(4), rs.getInt(5), rs.getInt(6)));
         }
         
         st.close();

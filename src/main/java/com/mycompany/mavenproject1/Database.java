@@ -48,7 +48,7 @@ public class Database {
 
         // create Section table
         String createStatement2 = "CREATE TABLE Section"
-                + "(section_id TEXT PRIMARY KEY NOT NULL,"
+                + "(section_id INTEGER PRIMARY KEY NOT NULL,"
                 + "module_name TEXT NOT NULL,"
                 + "section_name TEXT NOT NULL,"
                 + "section_description TEXT NOT NULL,"
@@ -174,15 +174,14 @@ public class Database {
         
         //insert statement for section
         PreparedStatement pst4 = Database.getSharedConnection().prepareStatement("INSERT INTO "
-                + "section (section_id, module_name, section_name, "
+                + "section (module_name, section_name, "
                 + "section_description, sequence_no, is_archived) "
-                + "VALUES (?,?,?,?,?,?)");
-        pst4.setString(1, "sectionId1");
-        pst4.setString(2, "Importance of Managing Information Systems");
-        pst4.setString(3, "What are Information Systems?");
-        pst4.setString(4, "This section defines what Information Systems are");
-        pst4.setInt(5, 1);
-        pst4.setInt(6, 0);
+                + "VALUES (?,?,?,?,?)");
+        pst4.setString(1, "Importance of Managing Information Systems");
+        pst4.setString(2, "What are Information Systems?");
+        pst4.setString(3, "This section defines what Information Systems are");
+        pst4.setInt(4, 1);
+        pst4.setInt(5, 0);
         
         pst.executeUpdate();
         pst2.executeUpdate();

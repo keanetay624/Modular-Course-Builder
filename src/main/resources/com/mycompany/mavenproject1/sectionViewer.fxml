@@ -116,7 +116,7 @@
                   <Button id="btn_search" alignment="TOP_LEFT" mnemonicParsing="false" text="Search" />
                   <ButtonBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="70.0" prefWidth="626.0">
                      <buttons>
-                        <Button fx:id="btnSectionNew" mnemonicParsing="false" text="New">
+                        <Button fx:id="btnSectionNew" mnemonicParsing="false" onAction="#switchToNewSection" text="New">
                            <graphic>
                               <ImageView fitHeight="18.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -161,7 +161,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="btnSectionRefresh" mnemonicParsing="false" text="Refresh">
+                        <Button fx:id="btnSectionRefresh" mnemonicParsing="false" onAction="#refreshTable" text="Refresh">
                            <graphic>
                               <ImageView fitHeight="18.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

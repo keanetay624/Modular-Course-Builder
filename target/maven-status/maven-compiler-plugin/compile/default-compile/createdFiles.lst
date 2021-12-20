@@ -8,8 +8,10 @@ com\mycompany\mavenproject1\SectionViewerController.class
 com\mycompany\mavenproject1\Database.class
 com\mycompany\mavenproject1\NewCourseController.class
 com\mycompany\mavenproject1\Section.class
+com\mycompany\mavenproject1\NewSectionController.class
 com\mycompany\mavenproject1\Module.class
 com\mycompany\mavenproject1\DatabaseHelper.class
 com\mycompany\mavenproject1\HomeController.class
 com\mycompany\mavenproject1\Course.class
 com\mycompany\mavenproject1\CourseViewerController.class
+com\mycompany\mavenproject1\ResourceViewerController.class
