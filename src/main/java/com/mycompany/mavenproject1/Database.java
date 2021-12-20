@@ -41,16 +41,15 @@ public class Database {
 
         //create Module table
         String createStatement1 = "CREATE TABLE Module"
-                + "(module_id INTEGER PRIMARY KEY autoincrement,"
-                + "module_name TEXT NOT NULL,"
+                + "(module_name TEXT PRIMARY KEY NOT NULL,"
                 + "module_description TEXT NOT NULL,"
                 + "is_archived INTEGER NOT NULL check "
                 + "(is_archived between 0 and 1));";
 
         // create Section table
         String createStatement2 = "CREATE TABLE Section"
-                + "(section_id INTEGER PRIMARY KEY autoincrement,"
-                + "module_id INTEGER NOT NULL,"
+                + "(section_id TEXT PRIMARY KEY NOT NULL,"
+                + "module_name TEXT NOT NULL,"
                 + "section_name TEXT NOT NULL,"
                 + "section_description TEXT NOT NULL,"
                 + "sequence_no INTEGER NOT NULL,"
@@ -157,8 +156,38 @@ public class Database {
         pst.setInt(5, 0);
         pst.setString(6, "Sydney");
         pst.setInt(7,0);
-
+        
+        //insert statement for new module
+        PreparedStatement pst2 = Database.getSharedConnection().prepareStatement("INSERT INTO "
+                + "module (module_name, module_description, is_archived) "
+                + "VALUES (?,?,?)");
+        pst2.setString(1, "Importance of Managing Information Systems");
+        pst2.setString(2, "Goals of Information Security");
+        pst2.setInt(3, 0);
+        
+        //insert statement for users
+        PreparedStatement pst3 = Database.getSharedConnection().prepareStatement("INSERT INTO "
+                + "users (username, password) "
+                + "VALUES (?,?)");
+        pst3.setString(1, "keane");
+        pst3.setString(2, "iyashi");
+        
+        //insert statement for section
+        PreparedStatement pst4 = Database.getSharedConnection().prepareStatement("INSERT INTO "
+                + "section (section_id, module_name, section_name, "
+                + "section_description, sequence_no, is_archived) "
+                + "VALUES (?,?,?,?,?,?)");
+        pst4.setString(1, "sectionId1");
+        pst4.setString(2, "Importance of Managing Information Systems");
+        pst4.setString(3, "What are Information Systems?");
+        pst4.setString(4, "This section defines what Information Systems are");
+        pst4.setInt(5, 1);
+        pst4.setInt(6, 0);
+        
         pst.executeUpdate();
+        pst2.executeUpdate();
+        pst3.executeUpdate();
+        pst4.executeUpdate();
         Database.closeConnection();
     }
     

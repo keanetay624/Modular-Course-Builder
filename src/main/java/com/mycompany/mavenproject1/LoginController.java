@@ -28,15 +28,12 @@ public class LoginController {
         String username = txtUsername.getText();
         String password = txtPassword.getText();
         
-        // Case: if valid
         if (Database.validateUser(username, password)) {
-            App.setRoot("courseViewer");
+            App.setRoot("home");
         } else {
             outputLabel.setVisible(true);
             outputLabel.setText("Login failed: Incorrect Username or Password");
         }
         
-        
-        // Case: if not valid
     }
 }

@@ -23,7 +23,7 @@
    <children>
       <VBox id="nav_bg" alignment="CENTER" prefHeight="720.0" prefWidth="177.0" spacing="20.0">
          <children>
-            <Button fx:id="navBtnHome" mnemonicParsing="false" prefHeight="70.0" prefWidth="130.0" text="Home">
+            <Button fx:id="navBtnHome" mnemonicParsing="false" onAction="#switchToHome" prefHeight="70.0" prefWidth="130.0" text="Home">
                <styleClass>
                   <String fx:value="nav_btn" />
                   <String fx:value="btn" />
@@ -39,7 +39,7 @@
                   <Insets />
                </VBox.margin>
             </Button>
-            <Button fx:id="navBtnCourses" mnemonicParsing="false" prefHeight="70.0" prefWidth="130.0" text="Courses">
+            <Button fx:id="navBtnCourses" mnemonicParsing="false" onAction="#switchToCourseViewer" prefHeight="70.0" prefWidth="130.0" text="Courses">
                <graphic>
                   <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
                      <image>
@@ -52,7 +52,7 @@
                   <String fx:value="btn" />
                </styleClass>
             </Button>
-            <Button fx:id="navBtnModules" mnemonicParsing="false" prefHeight="70.0" prefWidth="130.0" text="Modules">
+            <Button fx:id="navBtnModules" mnemonicParsing="false" onAction="#switchToModuleViewer" prefHeight="70.0" prefWidth="130.0" text="Modules">
                <graphic>
                   <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
                      <image>
@@ -65,7 +65,7 @@
                   <String fx:value="btn" />
                </styleClass>
             </Button>
-            <Button fx:id="navBtnSections" mnemonicParsing="false" prefHeight="70.0" prefWidth="130.0" text="Sections">
+            <Button fx:id="navBtnSections" mnemonicParsing="false" onAction="#switchToSectionViewer" prefHeight="70.0" prefWidth="130.0" text="Sections">
                <graphic>
                   <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
                      <image>
@@ -78,7 +78,7 @@
                   <String fx:value="btn" />
                </styleClass>
             </Button>
-            <Button fx:id="navBtnResources" mnemonicParsing="false" prefHeight="70.0" prefWidth="130.0" text="Resources">
+            <Button fx:id="navBtnResources" mnemonicParsing="false" onAction="#switchToResourceViewer" prefHeight="70.0" prefWidth="130.0" text="Resources">
                <graphic>
                   <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
                      <image>

@@ -13,21 +13,16 @@ import java.util.List;
  */
 public class Module {
 //    TODO: Implement this class
-    
     private String name;
-    private String descShort;
-    private String descLong;
+    private String desc;
     private int isArchived;
-    private List<Section> sections;
 
-    public Module(String name, String descShort, String descLong, int isArchived, List<Section> sections) {
+    public Module(String name, String desc, int isArchived) {
         this.name = name;
-        this.descShort = descShort;
-        this.descLong = descLong;
+        this.desc = desc;
         this.isArchived = isArchived;
-        this.sections = sections;
     }
-
+    
     public String getName() {
         return name;
     }
@@ -36,20 +31,12 @@ public class Module {
         this.name = name;
     }
 
-    public String getDescShort() {
-        return descShort;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setDescShort(String descShort) {
-        this.descShort = descShort;
-    }
-
-    public String getDescLong() {
-        return descLong;
-    }
-
-    public void setDescLong(String descLong) {
-        this.descLong = descLong;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public int getIsArchived() {
@@ -59,15 +46,4 @@ public class Module {
     public void setIsArchived(int isArchived) {
         this.isArchived = isArchived;
     }
-
-    public List<Section> getSections() {
-        return sections;
-    }
-
-    public void setSections(List<Section> sections) {
-        this.sections = sections;
-    }
-    
-    
-    
 }

@@ -38,13 +38,18 @@ public class CourseViewerController {
     Button btnCourseNew, btnCourseEdit, btnCourseArchive, btnCourseUpload, 
             btnCourseDownload, btnRefreshCourse;
     
+    @FXML 
+    Button navBtnHome,navBtnCourses, navBtnModules, navBtnSections, 
+            navBtnResources, navBtnSignOut;
+    
     @FXML
     private void initialize() throws SQLException {
-        CourseHelper.getCourses();
+        ObservableList<Course> newList = DatabaseHelper.getCourses();
+        tblCourse.getItems().clear();
         
-        ObservableList<Course> coursesList = CourseHelper.getCourseObservableList();
-        
-        tblCourse.setItems(coursesList);
+        for (Course thisCourse : newList) {
+            tblCourse.getItems().addAll(thisCourse);
+        }
         
         trCourseCode.setCellValueFactory(new PropertyValueFactory<>("courseCode"));
         trCourseName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -82,26 +87,54 @@ public class CourseViewerController {
         btnCourseDownload.setVisible(false);
         btnCourseArchive.setVisible(false);
     }
-
-    @FXML
-    private void switchToNewCourse() throws IOException {
-        NewCourseController.display("New Course");
+    
+    /*
+    * Nav Functions
+    */
+    
+    @FXML 
+    private void switchToHome() throws IOException {
+        App.setRoot("home");
     }
     
-    private void buildUI() throws IOException {
-        TilePane tilePane = new TilePane();
+    @FXML
+    private void switchToCourseViewer() throws IOException {
+        App.setRoot("courseViewer");
     }
     
     @FXML
-    public void refreshTable() throws SQLException {
-        CourseHelper.getCourses();
-        ObservableList<Course> newList = CourseHelper.getCourseObservableList();
-        tblCourse.setItems(newList);
+    private void switchToModuleViewer() throws IOException {
+        App.setRoot("moduleViewer");
+    }
+    
+    @FXML 
+    private void switchToSectionViewer() throws IOException {
+        App.setRoot("sectionViewer");
+    }
+    
+    @FXML 
+    private void switchToResourceViewer() throws IOException {
+        App.setRoot("resourceViewer");
     }
     
     @FXML
     private void userDidClickSignOut() throws IOException {
         App.setRoot("login");
+    }
+    
+    /*
+    * Auxilary Functions
+    */
+    
+    @FXML
+    private void switchToNewCourse() throws IOException {
+        NewCourseController.display("New Course");
+    }
+    
+    @FXML
+    public void refreshTable() throws SQLException {
+        ObservableList<Course> newList = DatabaseHelper.getCourses();
+        tblCourse.setItems(newList);
     }
     
 }
