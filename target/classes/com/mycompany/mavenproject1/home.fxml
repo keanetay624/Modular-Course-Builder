@@ -78,6 +78,19 @@
                   <String fx:value="btn" />
                </styleClass>
             </Button>
+            <Button fx:id="navBtnOutcomes" mnemonicParsing="false" onAction="#switchToOutcomeViewer" onMouseEntered="#userDidHoverResources" onMouseExited="#cancelHover" prefHeight="200.0" prefWidth="200.0" text="Outcomes">
+               <graphic>
+                  <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
+                     <image>
+                        <Image url="@icons/mortarboard.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <styleClass>
+                  <String fx:value="pane_bg" />
+                  <String fx:value="btn" />
+               </styleClass>
+            </Button>
          </children>
       </HBox>
       <Button fx:id="navBtnSignOut" layoutX="1130.0" layoutY="642.0" mnemonicParsing="false" onAction="#userDidClickSignOut" prefHeight="50.0" prefWidth="120.0" styleClass="btn" text="Sign Out">

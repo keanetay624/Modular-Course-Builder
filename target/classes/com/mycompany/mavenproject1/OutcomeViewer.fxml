@@ -4,8 +4,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -14,9 +12,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.media.MediaView?>
 
-<AnchorPane id="course_anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.mavenproject1.ResourceViewerController">
+<AnchorPane id="course_anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.mavenproject1.OutcomeViewerController">
    <children>
       <VBox id="nav_bg" alignment="CENTER" prefHeight="720.0" prefWidth="177.0" spacing="15.0">
          <children>
@@ -124,7 +121,7 @@
             </ImageView>
          </children>
       </VBox>
-      <AnchorPane layoutX="178.0" prefHeight="720.0" prefWidth="1103.0">
+      <AnchorPane layoutX="177.0" prefHeight="720.0" prefWidth="1103.0">
          <children>
             <HBox alignment="CENTER" layoutX="36.0" layoutY="34.0" prefHeight="70.0" prefWidth="1038.0" spacing="20.0" styleClass="header_bg">
                <children>
@@ -132,7 +129,7 @@
                   <Button id="btn_search" alignment="TOP_LEFT" mnemonicParsing="false" text="Search" />
                   <ButtonBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="70.0" prefWidth="626.0">
                      <buttons>
-                        <Button fx:id="btnResourceNew" mnemonicParsing="false" text="New">
+                        <Button fx:id="btnOutcomeNew" mnemonicParsing="false" onAction="#switchToNewOutcome" text="New">
                            <graphic>
                               <ImageView fitHeight="18.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -141,7 +138,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="btnResourceEdit" mnemonicParsing="false" text="Edit">
+                        <Button fx:id="btnOutcomeEdit" mnemonicParsing="false" text="Edit">
                            <graphic>
                               <ImageView fitHeight="18.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -150,7 +147,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="btnResourceArchive" mnemonicParsing="false" text="Archive">
+                        <Button fx:id="btnOutcomeArchive" mnemonicParsing="false" onAction="#userDidArchiveOutcome" text="Archive">
                            <graphic>
                               <ImageView fitHeight="18.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -159,7 +156,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="btnResourceUpload" mnemonicParsing="false" text="Upload">
+                        <Button fx:id="btnOutcomeUpload" mnemonicParsing="false" text="Upload">
                            <graphic>
                               <ImageView fitHeight="18.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -168,7 +165,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="btnResourceDownload" mnemonicParsing="false" prefWidth="107.0" text="Download">
+                        <Button fx:id="btnOutcomeDownload" mnemonicParsing="false" prefWidth="107.0" text="Download">
                            <graphic>
                               <ImageView fitHeight="18.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -177,7 +174,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="btnRefreshResource" mnemonicParsing="false" text="Refresh">
+                        <Button fx:id="btnRefreshOutcome" mnemonicParsing="false" onAction="#refreshTable" text="Refresh">
                            <graphic>
                               <ImageView fitHeight="18.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -190,18 +187,12 @@
                   </ButtonBar>
                </children>
             </HBox>
-            <VBox layoutX="676.0" layoutY="222.0" prefHeight="421.0" prefWidth="347.0">
-               <children>
-                  <Label text="Resource used in:" />
-                  <ListView prefHeight="67.0" prefWidth="347.0" />
-                  <Label text="Resource Preview" />
-                  <MediaView fx:id="mvResource" fitHeight="320.0" fitWidth="347.0" />
-               </children>
-            </VBox>
-            <TableView fx:id="tblResource" layoutX="36.0" layoutY="211.0" prefHeight="435.0" prefWidth="625.0">
+            <TableView fx:id="tblOutcome" layoutX="36.0" layoutY="211.0" onMouseClicked="#userDidSelectOutcome" prefHeight="435.0" prefWidth="1038.0">
               <columns>
-                <TableColumn fx:id="trResourceName" prefWidth="306.0" text="Resource Name" />
-                  <TableColumn fx:id="trResourceType" prefWidth="99.2000732421875" text="Resource Type" />
+                <TableColumn fx:id="trOutcomeName" prefWidth="292.0" text="Learning Outcome Name" />
+                  <TableColumn fx:id="trOutcomeDesc" prefWidth="349.0" text="Learning Outcome Description" />
+                <TableColumn fx:id="trModule" prefWidth="286.0" text="Module" />
+                  <TableColumn fx:id="trSequence" prefWidth="110.0" text="Sequence" />
               </columns>
             </TableView>
          </children>

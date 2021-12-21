@@ -17,9 +17,9 @@
 
 <AnchorPane id="course_anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.mavenproject1.ModuleViewerController">
    <children>
-      <VBox id="nav_bg" alignment="CENTER" prefHeight="720.0" prefWidth="177.0" spacing="20.0">
+      <VBox id="nav_bg" alignment="CENTER" prefHeight="720.0" prefWidth="177.0" spacing="15.0">
          <children>
-            <Button fx:id="navBtnHome" mnemonicParsing="false" onAction="#switchToHome" prefHeight="70.0" prefWidth="130.0" text="Home">
+            <Button fx:id="navBtnHome1" mnemonicParsing="false" onAction="#switchToHome" prefHeight="70.0" prefWidth="130.0" text="Home">
                <styleClass>
                   <String fx:value="nav_btn" />
                   <String fx:value="btn" />
@@ -35,7 +35,7 @@
                   <Insets />
                </VBox.margin>
             </Button>
-            <Button fx:id="navBtnCourses" mnemonicParsing="false" onAction="#switchToCourseViewer" prefHeight="70.0" prefWidth="130.0" text="Courses">
+            <Button fx:id="navBtnCourses1" mnemonicParsing="false" onAction="#switchToCourseViewer" prefHeight="70.0" prefWidth="130.0" text="Courses">
                <graphic>
                   <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
                      <image>
@@ -48,7 +48,7 @@
                   <String fx:value="btn" />
                </styleClass>
             </Button>
-            <Button fx:id="navBtnModules" mnemonicParsing="false" onAction="#switchToModuleViewer" prefHeight="70.0" prefWidth="130.0" text="Modules">
+            <Button fx:id="navBtnModules1" mnemonicParsing="false" onAction="#switchToModuleViewer" prefHeight="70.0" prefWidth="130.0" text="Modules">
                <graphic>
                   <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
                      <image>
@@ -61,7 +61,7 @@
                   <String fx:value="btn" />
                </styleClass>
             </Button>
-            <Button fx:id="navBtnSections" mnemonicParsing="false" onAction="#switchToSectionViewer" prefHeight="70.0" prefWidth="130.0" text="Sections">
+            <Button fx:id="navBtnSections1" mnemonicParsing="false" onAction="#switchToSectionViewer" prefHeight="70.0" prefWidth="130.0" text="Sections">
                <graphic>
                   <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
                      <image>
@@ -74,7 +74,7 @@
                   <String fx:value="btn" />
                </styleClass>
             </Button>
-            <Button fx:id="navBtnResources" mnemonicParsing="false" onAction="#switchToResourceViewer" prefHeight="70.0" prefWidth="130.0" text="Resources">
+            <Button fx:id="navBtnResources1" mnemonicParsing="false" onAction="#switchToResourceViewer" prefHeight="70.0" prefWidth="130.0" text="Resources">
                <graphic>
                   <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
                      <image>
@@ -87,7 +87,20 @@
                   <String fx:value="btn" />
                </styleClass>
             </Button>
-            <Button fx:id="navBtnSignOut" mnemonicParsing="false" onAction="#userDidClickSignOut" prefHeight="70.0" prefWidth="130.0" text="Sign Out">
+            <Button fx:id="navBtnOutcomes" mnemonicParsing="false" onAction="#switchToOutcomeViewer" prefHeight="70.0" prefWidth="130.0" text="Outcomes">
+               <graphic>
+                  <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
+                     <image>
+                        <Image url="@icons/mortarboard.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <styleClass>
+                  <String fx:value="nav_btn" />
+                  <String fx:value="btn" />
+               </styleClass>
+            </Button>
+            <Button fx:id="navBtnSignOut1" mnemonicParsing="false" onAction="#userDidClickSignOut" prefHeight="70.0" prefWidth="130.0" text="Sign Out">
                <graphic>
                   <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
                      <image>
@@ -176,12 +189,27 @@
                   </ButtonBar>
                </children>
             </HBox>
-            <VBox layoutX="676.0" layoutY="222.0" prefHeight="421.0" prefWidth="347.0">
+            <VBox layoutX="676.0" layoutY="208.0" prefHeight="435.0" prefWidth="347.0">
                <children>
+                  <HBox alignment="TOP_RIGHT" prefHeight="27.0" prefWidth="141.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="btnShiftSectionUp" mnemonicParsing="false" onAction="#userDidShiftSectionUp" text="Shift Up" />
+                        <Button fx:id="btnShiftSectionDown" mnemonicParsing="false" onAction="#userDidShiftSectionDown" text="Shift Down" />
+                     </children>
+                  </HBox>
                   <Label text="Sections:" />
                   <ListView fx:id="listSections" prefHeight="200.0" prefWidth="371.0" />
+                  <HBox alignment="TOP_RIGHT" prefHeight="27.0" prefWidth="141.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="btnShiftOutcomeUP" mnemonicParsing="false" onAction="#userDidShiftOutcomeUp" text="Shift Up" />
+                        <Button fx:id="btnShiftOutcomeDown" mnemonicParsing="false" onAction="#userDidShiftOutcomeDown" text="Shift Down" />
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </HBox>
                   <Label text="Learning Outcomes:" />
-                  <ListView prefHeight="200.0" prefWidth="200.0" />
+                  <ListView fx:id="listOutcomes" prefHeight="200.0" prefWidth="200.0" />
                </children>
             </VBox>
             <TableView fx:id="tblModule" layoutX="36.0" layoutY="211.0" onMouseClicked="#userDidSelectModule" prefHeight="435.0" prefWidth="625.0">
@@ -190,12 +218,6 @@
                   <TableColumn fx:id="trModuleDesc" prefWidth="250.0" text="Module Description" />
               </columns>
             </TableView>
-            <HBox layoutX="882.0" layoutY="184.0" prefHeight="27.0" prefWidth="141.0">
-               <children>
-                  <Button fx:id="btnShiftSectionUp" mnemonicParsing="false" onAction="#userDidShiftSectionUp" text="Shift Up" />
-                  <Button fx:id="btnShiftSectionDown" mnemonicParsing="false" onAction="#userDidShiftSectionDown" text="Shift Down" />
-               </children>
-            </HBox>
          </children>
       </AnchorPane>
    </children>

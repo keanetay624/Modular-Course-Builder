@@ -15,99 +15,6 @@
 
 <AnchorPane id="course_anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.mavenproject1.SectionViewerController">
    <children>
-      <VBox id="nav_bg" alignment="CENTER" prefHeight="720.0" prefWidth="177.0" spacing="20.0">
-         <children>
-            <Button fx:id="navBtnHome" mnemonicParsing="false" onAction="#switchToHome" prefHeight="70.0" prefWidth="130.0" text="Home">
-               <styleClass>
-                  <String fx:value="nav_btn" />
-                  <String fx:value="btn" />
-               </styleClass>
-               <graphic>
-                  <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
-                     <image>
-                        <Image url="@icons/002-home.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </Button>
-            <Button fx:id="navBtnCourses" mnemonicParsing="false" onAction="#switchToCourseViewer" prefHeight="70.0" prefWidth="130.0" text="Courses">
-               <graphic>
-                  <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
-                     <image>
-                        <Image url="@icons/003-online-course.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <styleClass>
-                  <String fx:value="nav_btn" />
-                  <String fx:value="btn" />
-               </styleClass>
-            </Button>
-            <Button fx:id="navBtnModules" mnemonicParsing="false" onAction="#switchToModuleViewer" prefHeight="70.0" prefWidth="130.0" text="Modules">
-               <graphic>
-                  <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
-                     <image>
-                        <Image url="@icons/001-cube.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <styleClass>
-                  <String fx:value="nav_btn" />
-                  <String fx:value="btn" />
-               </styleClass>
-            </Button>
-            <Button fx:id="navBtnSections" mnemonicParsing="false" onAction="#switchToSectionViewer" prefHeight="70.0" prefWidth="130.0" text="Sections">
-               <graphic>
-                  <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
-                     <image>
-                        <Image url="@icons/004-videos.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <styleClass>
-                  <String fx:value="nav_btn" />
-                  <String fx:value="btn" />
-               </styleClass>
-            </Button>
-            <Button fx:id="navBtnResources" mnemonicParsing="false" onAction="#switchToResourceViewer" prefHeight="70.0" prefWidth="130.0" text="Resources">
-               <graphic>
-                  <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
-                     <image>
-                        <Image url="@icons/005-provision.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <styleClass>
-                  <String fx:value="nav_btn" />
-                  <String fx:value="btn" />
-               </styleClass>
-            </Button>
-            <Button fx:id="navBtnSignOut" mnemonicParsing="false" onAction="#userDidClickSignOut" prefHeight="70.0" prefWidth="130.0" text="Sign Out">
-               <graphic>
-                  <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
-                     <image>
-                        <Image url="@icons/logout.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <styleClass>
-                  <String fx:value="nav_btn" />
-                  <String fx:value="btn" />
-               </styleClass>
-            </Button>
-            <ImageView fitHeight="56.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@unsw_0.png" />
-               </image>
-               <VBox.margin>
-                  <Insets top="25.0" />
-               </VBox.margin>
-            </ImageView>
-         </children>
-      </VBox>
       <AnchorPane layoutX="178.0" prefHeight="720.0" prefWidth="1103.0">
          <children>
             <HBox alignment="CENTER" layoutX="36.0" layoutY="34.0" prefHeight="70.0" prefWidth="1038.0" spacing="20.0" styleClass="header_bg">
@@ -185,5 +92,111 @@
             </TableView>
          </children>
       </AnchorPane>
+      <VBox id="nav_bg" alignment="CENTER" prefHeight="720.0" prefWidth="177.0" spacing="15.0">
+         <children>
+            <Button fx:id="navBtnHome" mnemonicParsing="false" onAction="#switchToHome" prefHeight="70.0" prefWidth="130.0" text="Home">
+               <styleClass>
+                  <String fx:value="nav_btn" />
+                  <String fx:value="btn" />
+               </styleClass>
+               <graphic>
+                  <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
+                     <image>
+                        <Image url="@icons/002-home.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="navBtnCourses" mnemonicParsing="false" onAction="#switchToCourseViewer" prefHeight="70.0" prefWidth="130.0" text="Courses">
+               <graphic>
+                  <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
+                     <image>
+                        <Image url="@icons/003-online-course.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <styleClass>
+                  <String fx:value="nav_btn" />
+                  <String fx:value="btn" />
+               </styleClass>
+            </Button>
+            <Button fx:id="navBtnModules" mnemonicParsing="false" onAction="#switchToModuleViewer" prefHeight="70.0" prefWidth="130.0" text="Modules">
+               <graphic>
+                  <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
+                     <image>
+                        <Image url="@icons/001-cube.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <styleClass>
+                  <String fx:value="nav_btn" />
+                  <String fx:value="btn" />
+               </styleClass>
+            </Button>
+            <Button fx:id="navBtnSections" mnemonicParsing="false" onAction="#switchToSectionViewer" prefHeight="70.0" prefWidth="130.0" text="Sections">
+               <graphic>
+                  <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
+                     <image>
+                        <Image url="@icons/004-videos.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <styleClass>
+                  <String fx:value="nav_btn" />
+                  <String fx:value="btn" />
+               </styleClass>
+            </Button>
+            <Button fx:id="navBtnResources" mnemonicParsing="false" onAction="#switchToResourceViewer" prefHeight="70.0" prefWidth="130.0" text="Resources">
+               <graphic>
+                  <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
+                     <image>
+                        <Image url="@icons/005-provision.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <styleClass>
+                  <String fx:value="nav_btn" />
+                  <String fx:value="btn" />
+               </styleClass>
+            </Button>
+            <Button fx:id="navBtnOutcomes" mnemonicParsing="false" onAction="#switchToOutcomeViewer" prefHeight="70.0" prefWidth="130.0" text="Outcomes">
+               <graphic>
+                  <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
+                     <image>
+                        <Image url="@icons/mortarboard.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <styleClass>
+                  <String fx:value="nav_btn" />
+                  <String fx:value="btn" />
+               </styleClass>
+            </Button>
+            <Button fx:id="navBtnSignOut" mnemonicParsing="false" onAction="#userDidClickSignOut" prefHeight="70.0" prefWidth="130.0" text="Sign Out">
+               <graphic>
+                  <ImageView fitHeight="80.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0">
+                     <image>
+                        <Image url="@icons/logout.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <styleClass>
+                  <String fx:value="nav_btn" />
+                  <String fx:value="btn" />
+               </styleClass>
+            </Button>
+            <ImageView fitHeight="56.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@unsw_0.png" />
+               </image>
+               <VBox.margin>
+                  <Insets top="25.0" />
+               </VBox.margin>
+            </ImageView>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

@@ -24,17 +24,18 @@ public class ModuleViewerController {
     TableColumn<Module, String> trModuleDesc;
     
     @FXML
-    ListView listSections;
+    ListView listSections, listOutcomes;
     
     
     @FXML
     Button btnModuleNew, btnModuleEdit, btnModuleArchive, btnModuleUpload, 
             btnModuleDownload, btnRefreshModule,
-            btnShiftSectionUp, btnShiftSectionDown;
+            btnShiftSectionUp, btnShiftSectionDown,
+            btnShiftOutcomeUp, btnShiftOutcomeDown;
     
     @FXML 
-    Button navBtnHome,navBtnCourses, navBtnModules, navBtnSections, 
-            navBtnResources, navBtnSignOut;
+    Button navBtnHome ,navBtnCourses, navBtnModules, navBtnSections, 
+            navBtnResources, navBtnOutcomes, navBtnSignOut;
     
     @FXML
     private void initialize() throws SQLException {
@@ -42,6 +43,7 @@ public class ModuleViewerController {
         
         tblModule.getItems().clear();
         listSections.getItems().clear();
+        listOutcomes.getItems().clear();
         
         for (Module thisModule : newList) {
             tblModule.getItems().addAll(thisModule);
@@ -63,6 +65,7 @@ public class ModuleViewerController {
         Module selectedModule = tblModule.getSelectionModel().getSelectedItem();
         System.out.println(selectedModule.getName() + " clicked!");
         
+        // handle sections within the selected module
         listSections.getItems().clear();
         ObservableList<Section> sectionsList = FXCollections.observableArrayList();
         ObservableList<String> sSectionsList = FXCollections.observableArrayList();
@@ -73,7 +76,19 @@ public class ModuleViewerController {
             sSectionsList.add(thisSection.getName());
         }
         
+        // handle outcomes within the selected module
+        listOutcomes.getItems().clear();
+        ObservableList<Outcome> outcomesList = FXCollections.observableArrayList();
+        ObservableList<String> sOutcomesList = FXCollections.observableArrayList();
+        outcomesList = DatabaseHelper.getOutcomesWithinModule(selectedModule);
+        
+        DatabaseHelper.sortOutcomes(selectedModule.getName());
+        for (Outcome thisOutcome : outcomesList) {
+            sOutcomesList.add(thisOutcome.getName());
+        }
+        
         listSections.getItems().addAll(sSectionsList);
+        listOutcomes.getItems().addAll(sOutcomesList);
         btnModuleEdit.setVisible(true);
         btnModuleDownload.setVisible(true);
         btnModuleArchive.setVisible(true);
@@ -120,10 +135,38 @@ public class ModuleViewerController {
         refreshTable();
     }
     
-    /*
-    * Nav Functions
-    */
+    @FXML
+    private void userDidShiftOutcomeUp() throws IOException, SQLException {
+        String selectedOutcome = listOutcomes.getSelectionModel().getSelectedItem().toString();
+        String selectedModule = tblModule.getSelectionModel().getSelectedItem().getName();
+        System.out.println(selectedOutcome);
+        
+        // send this to the database helper class
+        // get the id of the previous section (if any) 
+        // if there is previous section, swap the order
+        // else do nothing
+        DatabaseHelper.shiftOutcomeUp(selectedOutcome, selectedModule);
+        refreshTable();
+    }
     
+    @FXML
+    private void userDidShiftOutcomeDown() throws IOException, SQLException {
+        String selectedOutcome = listOutcomes.getSelectionModel().getSelectedItem().toString();
+        String selectedModule = tblModule.getSelectionModel().getSelectedItem().getName();
+        System.out.println(selectedOutcome);
+        
+        // send this to the database helper class
+        // get the id of the previous section (if any) 
+        // if there is previous section, swap the order
+        // else do nothing
+        DatabaseHelper.shiftOutcomeDown(selectedOutcome, selectedModule);
+        refreshTable();
+    }
+    
+    /* 
+    * Navigation Functions
+    */
+
     @FXML 
     private void switchToHome() throws IOException {
         App.setRoot("home");
@@ -150,6 +193,11 @@ public class ModuleViewerController {
     }
     
     @FXML
+    private void switchToOutcomeViewer() throws IOException {
+        App.setRoot("OutcomeViewer");
+    }
+    
+    @FXML
     private void userDidClickSignOut() throws IOException {
         App.setRoot("login");
     }
@@ -169,6 +217,7 @@ public class ModuleViewerController {
         tblModule.setItems(newList);
         tblModule.getSelectionModel().select(null);
         listSections.getItems().clear();
+        listOutcomes.getItems().clear();
         tblModule.getSelectionModel().select(0);
         ObservableList<Section> sectionsList = FXCollections.observableArrayList();
         ObservableList<String> sSectionsList = FXCollections.observableArrayList();
@@ -179,6 +228,17 @@ public class ModuleViewerController {
             sSectionsList.add(thisSection.getName());
         }
         listSections.setItems(sSectionsList);
+        
+        ObservableList<Outcome> outcomesList = FXCollections.observableArrayList();
+        ObservableList<String> sOutcomesList = FXCollections.observableArrayList();
+        outcomesList = DatabaseHelper.getOutcomesWithinModule(tblModule.getSelectionModel().getSelectedItem());
+        
+        DatabaseHelper.sortOutcomes(tblModule.getSelectionModel().getSelectedItem().getName());
+        for (Outcome thisOutcome : outcomesList) {
+            sOutcomesList.add(thisOutcome.getName());
+        }
+        
+        listOutcomes.setItems(sOutcomesList);
     }
     
 }

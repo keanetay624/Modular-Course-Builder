@@ -18,8 +18,8 @@ public class HomeController {
     Label outputLabel;
     
     @FXML 
-    Button navBtnHome,navBtnCourses, navBtnModules, navBtnSections, 
-            navBtnResources, navBtnSignOut;
+    Button navBtnHome, navBtnCourses, navBtnModules, navBtnSections, 
+            navBtnResources, nvBtnOutcomes, navBtnSignOut;
     
     @FXML
     private void userDidHoverCourses() throws IOException {
@@ -80,8 +80,12 @@ public class HomeController {
     }
     
     @FXML
+    private void switchToOutcomeViewer() throws IOException {
+        App.setRoot("OutcomeViewer");
+    }
+    
+    @FXML
     private void userDidClickSignOut() throws IOException {
         App.setRoot("login");
     }
-    
 }

@@ -48,7 +48,7 @@ public class Database {
 
         // create Section table
         String createStatement2 = "CREATE TABLE Section"
-                + "(section_id INTEGER PRIMARY KEY NOT NULL,"
+                + "(section_id INTEGER PRIMARY KEY autoincrement,"
                 + "module_name TEXT NOT NULL,"
                 + "section_name TEXT NOT NULL,"
                 + "section_description TEXT NOT NULL,"
@@ -87,9 +87,9 @@ public class Database {
         //create ModuleLearningOutcomes
         String createStatement6 = "CREATE TABLE ModuleLearningOutcomes"
                 + "(mlo_id INTEGER PRIMARY KEY autoincrement,"
-                + "module_id INTEGER NOT NULL,"
-                + "mlo_name TEXT,"
-                + "mlo_description TEXT,"
+                + "module_name TEXT NOT NULL,"
+                + "mlo_name TEXT NOT NULL,"
+                + "mlo_description TEXT NOT NULL,"
                 + "sequence_no INTEGER NOT NULL,"
                 + "is_archived INTEGER NOT NULL check "
                 + "(is_archived between 0 and 1));";
@@ -183,10 +183,22 @@ public class Database {
         pst4.setInt(4, 1);
         pst4.setInt(5, 0);
         
+        //insert statement for outcome
+        PreparedStatement pst5 = Database.getSharedConnection().prepareStatement("INSERT INTO "
+                + "ModuleLearningOutcomes (module_name, mlo_name, "
+                + "mlo_description, sequence_no, is_archived) "
+                + "VALUES (?,?,?,?,?)");
+        pst5.setString(1, "Importance of Managing Information Systems");
+        pst5.setString(2, "Understand how to manage information systems");
+        pst5.setString(3, "Students must be able to effectively manage Information Systems");
+        pst5.setInt(4, 1);
+        pst5.setInt(5, 0);
+        
         pst.executeUpdate();
         pst2.executeUpdate();
         pst3.executeUpdate();
         pst4.executeUpdate();
+        pst5.executeUpdate();
         Database.closeConnection();
     }
     

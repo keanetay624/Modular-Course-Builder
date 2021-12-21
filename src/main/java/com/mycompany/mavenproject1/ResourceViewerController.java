@@ -31,8 +31,8 @@ public class ResourceViewerController {
             btnResourceDownload, btnRefreshResource;
     
     @FXML 
-    Button navBtnHome,navBtnCourses, navBtnModules, navBtnSections, 
-            navBtnResources, navBtnSignOut;
+    Button navBtnHome ,navBtnCourses, navBtnModules, navBtnSections, 
+            navBtnResources, navBtnOutcomes, navBtnSignOut;
     
 //    @FXML
 //    private void initialize() throws SQLException {
@@ -77,10 +77,10 @@ public class ResourceViewerController {
 //        btnModuleArchive.setVisible(false);
 //    }
     
-    /*
-    * Nav Functions
+    /* 
+    * Navigation Functions
     */
-    
+
     @FXML 
     private void switchToHome() throws IOException {
         App.setRoot("home");
@@ -104,6 +104,11 @@ public class ResourceViewerController {
     @FXML 
     private void switchToResourceViewer() throws IOException {
         App.setRoot("resourceViewer");
+    }
+    
+    @FXML
+    private void switchToOutcomeViewer() throws IOException {
+        App.setRoot("OutcomeViewer");
     }
     
     @FXML
