@@ -88,6 +88,7 @@ public class NewSectionController {
         Module tempModule = new Module(moduleName, "", 0);
         Section newSection = new Section(tempModule, name, desc, temp, 0);
         DatabaseHelper.insertIntoSection(newSection);
+        DatabaseHelper.sortSections(moduleName);
         
         // close the window
         Stage stage = (Stage) btnCancelNewSection.getScene().getWindow();

@@ -29,11 +29,8 @@ public class App extends Application {
         }
         
         // launch the login screen
-        
-//        scene = new Scene(loadFXML("courseViewer"), 1280, 720);
         scene = new Scene(loadFXML("login"), 1280, 720);
         stage.setScene(scene);
-//        stage.setFullScreen(true);
         stage.getIcons().add(new Image("file:src/main/resources/com/mycompany/mavenproject1/unsw_1.jpg"));
         stage.setTitle("Modular Course Builder v2.0");
         stage.show();

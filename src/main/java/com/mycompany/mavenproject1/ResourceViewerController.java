@@ -36,7 +36,7 @@ public class ResourceViewerController {
     
 //    @FXML
 //    private void initialize() throws SQLException {
-//        ObservableList<Module> newList = DatabaseHelper.getModules();
+//        ObservableList<Resource> newList = DatabaseHelper.getResources();
 //        
 //        tblModule.getItems().clear();
 //        

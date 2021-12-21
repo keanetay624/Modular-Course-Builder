@@ -179,7 +179,7 @@
             <VBox layoutX="676.0" layoutY="222.0" prefHeight="421.0" prefWidth="347.0">
                <children>
                   <Label text="Sections:" />
-                  <ListView prefHeight="200.0" prefWidth="371.0" />
+                  <ListView fx:id="listSections" prefHeight="200.0" prefWidth="371.0" />
                   <Label text="Learning Outcomes:" />
                   <ListView prefHeight="200.0" prefWidth="200.0" />
                </children>
@@ -190,6 +190,12 @@
                   <TableColumn fx:id="trModuleDesc" prefWidth="250.0" text="Module Description" />
               </columns>
             </TableView>
+            <HBox layoutX="882.0" layoutY="184.0" prefHeight="27.0" prefWidth="141.0">
+               <children>
+                  <Button fx:id="btnShiftSectionUp" mnemonicParsing="false" onAction="#userDidShiftSectionUp" text="Shift Up" />
+                  <Button fx:id="btnShiftSectionDown" mnemonicParsing="false" onAction="#userDidShiftSectionDown" text="Shift Down" />
+               </children>
+            </HBox>
          </children>
       </AnchorPane>
    </children>

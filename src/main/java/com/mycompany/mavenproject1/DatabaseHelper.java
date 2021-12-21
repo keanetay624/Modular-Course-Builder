@@ -134,6 +134,29 @@ public class DatabaseHelper {
         return newList;
     }
     
+    public static ObservableList<Section> getSectionsWithinModule(Module selectedModule) throws SQLException {
+
+        Database.openConnection();
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("Select * "
+                + "From section where is_archived = 0 and module_name = ? order by sequence_no");
+        
+        pst.setString(1, selectedModule.getName());
+
+        ResultSet rs = pst.executeQuery();
+
+        //create new list to write over original observable list
+        ObservableList<Section> newList = FXCollections.observableArrayList();
+
+        while (rs.next()) {
+            newList.add(new Section(new Module(rs.getString(2),"",0),  rs.getString(3), rs.getString(4), rs.getInt(5), rs.getInt(6)));
+        }
+        
+        pst.close();
+        Database.closeConnection();
+        
+        return newList;
+    }
+    
     /**
     * Helper functions for Section
     */
@@ -214,16 +237,206 @@ public class DatabaseHelper {
         return newList;
     }
     
+    // This function gets number of sections within the given module name
+    public static int getSectionCount(String moduleName) throws SQLException {
+        int sectionCount = 0;
+        
+        Database.openConnection();
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("SELECT * FROM "
+                + "section WHERE module_name = ? and is_archived = 0");
+        pst.setString(1, moduleName);
+        ResultSet rs = pst.executeQuery();
+        
+        while (rs.next()) {
+            sectionCount++;
+        }
+        
+        pst.close();
+        Database.closeConnection();
+        return sectionCount;
+    }
+    
+    // This function parses the sections within a module name, and resets 
+    // non-archived sections in ascending order, starting from 1.
+    public static void sortSections(String moduleName) throws SQLException {
+        System.out.println("Sorting the sections!");
+        int sectionCount = getSectionCount(moduleName);
+        System.out.println("Section count:" + sectionCount);
+        Database.openConnection();
+        
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("SELECT * FROM "
+                + "section WHERE module_name = ?  and is_archived = 0 order by sequence_no");
+        pst.setString(1, moduleName);
+        
+        ResultSet rs = pst.executeQuery();
+        
+        // initialize the minimum sequence number to the sequence_no attribute
+        // in first response in the ResultSet
+        
+        int numSorted = 1;
+        
+        while (rs.next()) {
+            while (numSorted <= sectionCount) {
+                
+                PreparedStatement pst2 = Database.getSharedConnection().prepareStatement("Update section "
+                    + "set sequence_no = ? WHERE is_archived = 0 and section_id = ?");
+                pst2.setInt(1, numSorted);
+                pst2.setInt(2, rs.getInt(1));
+                pst2.executeUpdate();
+                pst2.close();
+
+                System.out.println("sequence number to change to: " + numSorted);
+                System.out.println("section id targeted: " + rs.getInt(1));
+                numSorted++;
+                rs.next();
+            }
+        }
+        
+        pst.close();
+        Database.closeConnection();
+    }
+    
+    // this function returns the int position of a given section and module
+    public static int getSectionIntPos(String sectionName, String moduleName) throws SQLException {
+        
+        Database.openConnection();
+        
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("Select * FROM section "
+                    + " WHERE is_archived = 0 and section_name = ? and module_name = ?");
+        pst.setString(1, sectionName);
+        pst.setString(2, moduleName);
+        ResultSet rs = pst.executeQuery();
+        
+        int pos = rs.getInt(5);
+        
+        pst.close();
+        Database.closeConnection();
+        
+        return pos;
+    }
+    
+    // this function returns number of sections in a given module
+    public static int getNumSections(String moduleName) throws SQLException {
+        
+        Database.openConnection();
+        
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("Select * FROM section "
+                    + " WHERE is_archived = 0  and module_name = ?");
+        pst.setString(1, moduleName);
+        ResultSet rs = pst.executeQuery();
+        
+        int numSections = 0;
+        
+        while (rs.next()) {
+            numSections++;
+        }
+        
+        pst.close();
+        Database.closeConnection();
+        
+        return numSections;
+    }
+
+    public static void shiftSectionUp(String selectedSection, String moduleName) throws SQLException {
+        // get the integer position of the selected section
+        int pos = getSectionIntPos(selectedSection, moduleName);
+        // if position is 1, do nothing
+        
+        if (pos == 1) {
+            return;
+        } 
+        // else, get the preceding position and swap 
+        Database.openConnection();
+        
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("Select * FROM section "
+                    + " WHERE is_archived = 0 and module_name = ? and sequence_no = ?");
+        pst.setString(1, moduleName);
+        int preceding = pos-1;
+        pst.setInt(2, preceding);
+        
+        ResultSet rs = pst.executeQuery();
+        System.out.println("Debug");
+        System.out.println(rs.getInt(1)); // nothing here, perhaps cant do multiple ands?
+        int id = rs.getInt(1);
+        System.out.println("temp id storage:" + id);
+        
+        // set the current position to its preceding position
+        PreparedStatement pst2 = Database.getSharedConnection().prepareStatement("Update section "
+                    + " set sequence_no = ? where sequence_no = ? and module_name = ?");
+        pst2.setInt(1, pos-1);
+        pst2.setInt(2, pos);
+        pst2.setString(3, moduleName);
+        pst2.executeUpdate();
+        pst2.close();
+        
+        // set the preceding position to the currently selected position
+        PreparedStatement pst3 = Database.getSharedConnection().prepareStatement("Update section "
+                    + " set sequence_no = ? where section_id = ?");
+        pst3.setInt(1, pos);
+        pst3.setInt(2, id);
+        System.out.println("pos" + pos);
+        pst3.executeUpdate();
+        pst3.close();
+        
+        Database.closeConnection();
+    }
+    
+    public static void shiftSectionDown(String selectedSection, String moduleName) throws SQLException {
+        // get the integer position of the selected section
+        int pos = getSectionIntPos(selectedSection, moduleName);
+        int max = getNumSections( moduleName); 
+        // if position is max, do nothing
+        System.out.println("pos: " + pos);
+        System.out.println("Max: " + max);
+        if (pos == max) {
+            return;
+        } 
+        // else, get the succeeding position and swap 
+        Database.openConnection();
+        
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("Select * FROM section "
+                    + " WHERE is_archived = 0 and module_name = ? and sequence_no = ?");
+        pst.setString(1, moduleName);
+        int succeeding = pos+1;
+        pst.setInt(2, succeeding);
+        
+        ResultSet rs = pst.executeQuery();
+        System.out.println("Debug");
+        System.out.println(rs.getInt(1)); // nothing here, perhaps cant do multiple ands?
+        int id = rs.getInt(1);
+        System.out.println("temp id storage:" + id);
+        
+        // set the current position to its preceding position
+        PreparedStatement pst2 = Database.getSharedConnection().prepareStatement("Update section "
+                    + " set sequence_no = ? where sequence_no = ? and module_name = ?");
+        pst2.setInt(1, pos+1);
+        pst2.setInt(2, pos);
+        pst2.setString(3, moduleName);
+        pst2.executeUpdate();
+        pst2.close();
+        
+        // set the preceding position to the currently selected position
+        PreparedStatement pst3 = Database.getSharedConnection().prepareStatement("Update section "
+                    + " set sequence_no = ? where section_id = ?");
+        pst3.setInt(1, pos);
+        pst3.setInt(2, id);
+        System.out.println("pos" + pos);
+        pst3.executeUpdate();
+        pst3.close();
+        
+        Database.closeConnection();
+    }
+    
     /**
     * Helper functions for Resource
     */
 
-//    public static void archiveModule(Module selectedModule) throws SQLException {
+//    public static void archiveResource(Resource selectedResource) throws SQLException {
 //        Database.openConnection();
 //        
-//        PreparedStatement pst = Database.getSharedConnection().prepareStatement("UPDATE module "
-//                + "set is_archived = 1 where module_name = ?");
-//        pst.setString(1, selectedModule.getName());
+//        PreparedStatement pst = Database.getSharedConnection().prepareStatement("UPDATE attachment "
+//                + "set is_archived = 1 where attachment_id = ?");
+//        pst.setString(1, selectedResource.getId());
 //        
 //        pst.executeUpdate();
 //        pst.close();
