@@ -137,6 +137,21 @@ public class CourseViewerController {
         refreshTable();
     }
     
+    @FXML
+    private void userDidRemoveModule() throws IOException, SQLException {
+        System.out.println("Remove Clicked!");
+        String selectedCourse = tblCourse.getSelectionModel().getSelectedItem().getName();
+        String selectedModule = (String) listModules.getSelectionModel().getSelectedItem();
+        System.out.println(selectedModule);
+        
+        // send this to the database helper class
+        // get the id of the previous section (if any) 
+        // if there is previous section, swap the order
+        // else do nothing
+        DatabaseHelper.unlinkCourseModule(selectedModule, selectedCourse);
+        refreshTable();
+    }
+    
     /* 
     * Navigation Functions
     */
@@ -183,6 +198,19 @@ public class CourseViewerController {
     @FXML
     private void switchToNewCourse() throws IOException {
         NewCourseController.display("New Course");
+    }
+    
+    
+    
+    @FXML
+    private void userDidAddModule() throws IOException, SQLException {
+        System.out.println("Add Clicked!");
+        String selectedCourse = tblCourse.getSelectionModel().getSelectedItem().getName();
+        
+        LinkModuleController lmc = new LinkModuleController();
+        lmc.setCourse(selectedCourse);
+        lmc.display("New Course");
+        refreshTable();
     }
     
     @FXML

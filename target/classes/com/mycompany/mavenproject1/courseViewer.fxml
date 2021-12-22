@@ -237,8 +237,8 @@
                <children>
                   <HBox alignment="TOP_RIGHT" prefHeight="27.0" prefWidth="141.0" spacing="10.0">
                      <children>
-                        <Button fx:id="btnAddModule" mnemonicParsing="false" text="Add" />
-                        <Button fx:id="btnRemoveModule" mnemonicParsing="false" text="Remove" />
+                        <Button fx:id="btnAddModule" mnemonicParsing="false" onAction="#userDidAddModule" text="Add" />
+                        <Button fx:id="btnRemoveModule" mnemonicParsing="false" onAction="#userDidRemoveModule" text="Remove" />
                         <Button fx:id="btnShiftModuleUp" mnemonicParsing="false" onAction="#userDidShiftModuleUp" text="Shift Up" />
                         <Button fx:id="btnShiftModuleDown" mnemonicParsing="false" onAction="#userDidShiftModuleDown" text="Shift Down" />
                      </children>

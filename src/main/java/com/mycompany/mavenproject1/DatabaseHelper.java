@@ -293,6 +293,20 @@ public class DatabaseHelper {
         Database.closeConnection();
     }
     
+    // This function deletes the respective record from chm table 
+    public static void unlinkCourseModule(String selectedModule, String selectedCourse) throws SQLException {
+        Database.openConnection();
+        
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("DELETE FROM "
+                + "CoursesHaveModules WHERE course_name = ? and module_name = ?");
+        pst.setString(1, selectedCourse);
+        pst.setString(2, selectedModule);
+        pst.executeUpdate();
+        
+        pst.close();
+        Database.closeConnection();
+    }
+    
     /**
     * Helper functions for Module
     */
@@ -1025,6 +1039,28 @@ public class DatabaseHelper {
         pst3.executeUpdate();
         pst3.close();
         
+        Database.closeConnection();
+    }
+    
+    /*
+    * Helper methods for CoursesHaveModules
+    */
+    
+    public static void insertIntoCoursesHaveModules(String courseName, String moduleName) throws SQLException {
+        
+        // get the next sequence number needed to insert first
+        int seq = getModuleCount(courseName);
+        
+        Database.openConnection();
+        
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("Insert into CoursesHaveModules "
+                    + " (course_name, module_name, sequence_no) values (?,?,?)");
+        pst.setString(1, courseName);
+        pst.setString(2, moduleName);
+        pst.setInt(3, seq);
+        
+        pst.executeUpdate();
+        pst.close();
         Database.closeConnection();
     }
 
