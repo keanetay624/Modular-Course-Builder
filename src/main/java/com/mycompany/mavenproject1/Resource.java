@@ -10,12 +10,22 @@ package com.mycompany.mavenproject1;
  * @author Keane Local
  */
 public class Resource {
+    private Section rSection;
     private String name;
-    private String file;
+    private String ext;
 
-    public Resource(String name, String file) {
+    public Resource(Section rSection, String name, String ext) {
+        this.rSection = rSection;
         this.name = name;
-        this.file = file;
+        this.ext = ext;
+    }
+    
+    public Section getrSection() {
+        return rSection;
+    }
+    
+    public void setrSection(Section rSection) {
+        this.rSection = rSection;
     }
 
     public String getName() {
@@ -26,12 +36,12 @@ public class Resource {
         this.name = name;
     }
 
-    public String getFile() {
-        return file;
+    public String getExt() {
+        return ext;
     }
 
-    public void setFile(String file) {
-        this.file = file;
+    public void setExt(String ext) {
+        this.ext = ext;
     }
     
     

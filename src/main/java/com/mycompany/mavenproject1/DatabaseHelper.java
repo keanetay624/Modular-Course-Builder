@@ -79,6 +79,220 @@ public class DatabaseHelper {
         return newList;
     }
     
+    public static ObservableList<Module> getModulesWithinCourses(Course selectedCourse) throws SQLException {
+
+        Database.openConnection();
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("Select * "
+                + "From CoursesHaveModules where course_name = ? order by sequence_no");
+        
+        pst.setString(1, selectedCourse.getName());
+
+        ResultSet rs = pst.executeQuery();
+
+        //create new list to write over original observable list
+        ObservableList<Module> newList = FXCollections.observableArrayList();
+
+        while (rs.next()) {
+            newList.add(new Module(rs.getString(2),"",0));
+        }
+        
+        pst.close();
+        Database.closeConnection();
+        
+        return newList;
+    }
+    
+    // This function gets number of Modules within the given course name
+    public static int getModuleCount(String courseName) throws SQLException {
+        int moduleCount = 0;
+        
+        Database.openConnection();
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("SELECT * FROM "
+                + "CoursesHaveModules WHERE course_name = ?");
+        pst.setString(1, courseName);
+        ResultSet rs = pst.executeQuery();
+        
+        while (rs.next()) {
+            moduleCount++;
+        }
+        
+        pst.close();
+        Database.closeConnection();
+        return moduleCount;
+    }
+    
+    // This function parses the modules within a course name, and resets 
+    // available modules in ascending order, starting from 1.
+    public static void sortModules(String courseName) throws SQLException {
+        System.out.println("Sorting the Modules!");
+        int moduleCount = getModuleCount(courseName); //TODO: Write this function
+        System.out.println("Module count:" + moduleCount);
+        Database.openConnection();
+        
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("SELECT * FROM "
+                + "CoursesHaveModules WHERE course_name = ? order by sequence_no");
+        pst.setString(1, courseName);
+        
+        ResultSet rs = pst.executeQuery();
+        
+        // initialize the minimum sequence number to the sequence_no attribute
+        // in first response in the ResultSet
+        
+        int numSorted = 1;
+        
+        while (rs.next()) {
+            while (numSorted <= moduleCount) {
+                
+                PreparedStatement pst2 = Database.getSharedConnection().prepareStatement("Update CoursesHaveModules "
+                    + "set sequence_no = ? WHERE chm_id = ?");
+                pst2.setInt(1, numSorted);
+                pst2.setInt(2, rs.getInt(1));
+                pst2.executeUpdate();
+                pst2.close();
+
+                System.out.println("sequence number to change to: " + numSorted);
+                System.out.println("chm id targeted: " + rs.getInt(1));
+                numSorted++;
+                rs.next();
+            }
+        }
+        
+        pst.close();
+        Database.closeConnection();
+    }
+    
+    // this function returns the int position of a given module and course
+    public static int getModuleIntPos(String moduleName, String courseName) throws SQLException {
+        
+        Database.openConnection();
+        System.out.println("Module Name:" + moduleName);
+        System.out.println("Course Name:" + courseName);
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("Select * FROM CoursesHaveModules "
+                    + " WHERE module_name = ? and course_name = ?");
+        pst.setString(1, moduleName);
+        pst.setString(2, courseName);
+        ResultSet rs = pst.executeQuery();
+        
+        int pos = rs.getInt(4);
+        
+        pst.close();
+        Database.closeConnection();
+        
+        return pos;
+    }
+    
+    // this function returns number of Modules in a given Course
+    public static int getNumModules(String courseName) throws SQLException {
+        
+        Database.openConnection();
+        
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("Select * FROM CoursesHaveModules "
+                    + " WHERE course_name = ?");
+        pst.setString(1, courseName);
+        ResultSet rs = pst.executeQuery();
+        
+        int numModules = 0;
+        
+        while (rs.next()) {
+            numModules++;
+        }
+        
+        pst.close();
+        Database.closeConnection();
+        
+        return numModules;
+    }
+    
+    public static void shiftModuleUp(String selectedModule, String courseName) throws SQLException {
+        // get the integer position of the selected Module
+        int pos = getModuleIntPos(selectedModule, courseName);
+        // if position is 1, do nothing
+        
+        if (pos == 1) {
+            return;
+        } 
+        // else, get the preceding position and swap 
+        Database.openConnection();
+        
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("Select * FROM CoursesHaveModules "
+                    + " WHERE course_name = ? and sequence_no = ?");
+        pst.setString(1, courseName);
+        int preceding = pos-1;
+        pst.setInt(2, preceding);
+        
+        ResultSet rs = pst.executeQuery();
+        System.out.println("Debug");
+        System.out.println(rs.getInt(1)); // nothing here, perhaps cant do multiple ands?
+        int id = rs.getInt(1);
+        System.out.println("temp id storage:" + id);
+        
+        // set the current position to its preceding position
+        PreparedStatement pst2 = Database.getSharedConnection().prepareStatement("Update CoursesHaveModules "
+                    + " set sequence_no = ? where sequence_no = ? and course_name = ?");
+        pst2.setInt(1, pos-1);
+        pst2.setInt(2, pos);
+        pst2.setString(3, courseName);
+        pst2.executeUpdate();
+        pst2.close();
+        
+        // set the preceding position to the currently selected position
+        PreparedStatement pst3 = Database.getSharedConnection().prepareStatement("Update CoursesHaveModules "
+                    + " set sequence_no = ? where chm_id = ?");
+        pst3.setInt(1, pos);
+        pst3.setInt(2, id);
+        System.out.println("pos" + pos);
+        pst3.executeUpdate();
+        pst3.close();
+        
+        Database.closeConnection();
+    }
+    
+    public static void shiftModuleDown(String selectedModule, String courseName) throws SQLException {
+        // get the integer position of the selected Module
+        int pos = getModuleIntPos(selectedModule, courseName); 
+        int max = getNumModules(courseName); 
+        // if position is max, do nothing
+        System.out.println("pos: " + pos);
+        System.out.println("Max: " + max);
+        if (pos == max) {
+            return;
+        } 
+        // else, get the succeeding position and swap 
+        Database.openConnection();
+        
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("Select * FROM CoursesHaveModules "
+                    + " WHERE course_name = ? and sequence_no = ?");
+        pst.setString(1, courseName);
+        int succeeding = pos+1;
+        pst.setInt(2, succeeding);
+        
+        ResultSet rs = pst.executeQuery();
+        System.out.println("Debug");
+        System.out.println(rs.getInt(1)); // nothing here, perhaps cant do multiple ands?
+        int id = rs.getInt(1);
+        System.out.println("temp id storage:" + id);
+        
+        // set the current position to its preceding position
+        PreparedStatement pst2 = Database.getSharedConnection().prepareStatement("Update CoursesHaveModules "
+                    + " set sequence_no = ? where sequence_no = ? and course_name = ?");
+        pst2.setInt(1, pos+1);
+        pst2.setInt(2, pos);
+        pst2.setString(3, courseName);
+        pst2.executeUpdate();
+        pst2.close();
+        
+        // set the preceding position to the currently selected position
+        PreparedStatement pst3 = Database.getSharedConnection().prepareStatement("Update CoursesHaveModules "
+                    + " set sequence_no = ? where chm_id = ?");
+        pst3.setInt(1, pos);
+        pst3.setInt(2, id);
+        System.out.println("pos" + pos);
+        pst3.executeUpdate();
+        pst3.close();
+        
+        Database.closeConnection();
+    }
+    
     /**
     * Helper functions for Module
     */
@@ -279,6 +493,35 @@ public class DatabaseHelper {
         return sectionCount;
     }
     
+    public static ObservableList<Resource> getResourcesWithinSection(Section selectedSection) throws SQLException {
+
+        Database.openConnection();
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("Select * "
+                + "From Resource where is_archived = 0 and section_name = ?");
+        
+        pst.setString(1, selectedSection.getName());
+
+        ResultSet rs = pst.executeQuery();
+
+        //create new list to write over original observable list
+        ObservableList<Resource> newList = FXCollections.observableArrayList();
+
+        while (rs.next()) {
+            Module dummyModule = new Module("","",0);
+            Section dummySection = new Section(dummyModule, selectedSection.getName(), "", 1,0);
+        
+            //NOTE: I've set the extension to null for now. Decide later if
+            // we want to implement the extension here or under attachments. 
+            Resource newResource = new Resource(dummySection, rs.getString(3), "");
+            newList.add(newResource);
+        }
+        
+        pst.close();
+        Database.closeConnection();
+        
+        return newList;
+    }
+    
     // This function parses the sections within a module name, and resets 
     // non-archived sections in ascending order, starting from 1.
     public static void sortSections(String moduleName) throws SQLException {
@@ -453,57 +696,86 @@ public class DatabaseHelper {
     /**
     * Helper functions for Resource
     */
+    
+    public static void archiveResource(Resource selectedResource) throws SQLException {
+        Database.openConnection();
+        
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("UPDATE Resource "
+                + "set is_archived = 1 where resource_name = ? and section_name = ?");
+        pst.setString(1, selectedResource.getName());
+        pst.setString(2, selectedResource.getrSection().getName());
+        
+        pst.executeUpdate();
+        pst.close();
+        Database.closeConnection();
+    }
+    
+    public static int nextResourceNumber(String sectionName) throws SQLException {
+        int highest = 0;
+        Database.openConnection();
+        
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("SELECT * FROM "
+                + "Resource WHERE section_name = ? ");
+        pst.setString(1, sectionName);
+        
+        ResultSet rs = pst.executeQuery();
+        
+        while (rs.next()) {
+            if (rs.getInt(5) > highest) {
+                highest = rs.getInt(5);
+            }
+        }
+        highest++;
+        
+        pst.close();
+        Database.closeConnection();
+        return highest;
+    }
+    
+    public static void insertIntoResource(Resource selectedResource) throws SQLException {
+        Database.openConnection();
 
-//    public static void archiveResource(Resource selectedResource) throws SQLException {
-//        Database.openConnection();
-//        
-//        PreparedStatement pst = Database.getSharedConnection().prepareStatement("UPDATE attachment "
-//                + "set is_archived = 1 where attachment_id = ?");
-//        pst.setString(1, selectedResource.getId());
-//        
-//        pst.executeUpdate();
-//        pst.close();
-//        Database.closeConnection();
-//    }
-//    
-//    public static void insertIntoModule(Module selectedModule) throws SQLException {
-//        Database.openConnection();
-//
-//        //insert statement for new course
-//        PreparedStatement pst = Database.getSharedConnection().prepareStatement("INSERT INTO "
-//                + "module (module_name, module_description, is_archived) "
-//                + "VALUES (?,?,?)");
-//        pst.setString(1, selectedModule.getName());
-//        pst.setString(2, selectedModule.getDesc());
-//        pst.setInt(3, 0);
-//
-//        pst.executeUpdate();
-//        pst.close();
-//        Database.closeConnection();
-//    }
-//    
-//    public static ObservableList<Module> getModules() throws SQLException {
-//
-//        Database.openConnection();
-//        Statement st = Database.getSharedConnection().createStatement();
-//
-//        String query = "Select * from module where is_archived = '0'";
-//
-//        ResultSet rs = st.executeQuery(query);
-//
-//        //create new list to write over original observable list
-//        ObservableList<Module> newList = FXCollections.observableArrayList();
-//
-//        while (rs.next()) {
-//            newList.add(new Module(
-//                    rs.getString(1), rs.getString(2), rs.getInt(3)));
-//        }
-//        
-//        st.close();
-//        Database.closeConnection();
-//        
-//        return newList;
-//    }
+        //insert statement for new course
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("INSERT INTO "
+                + "Resource (section_name, resource_name, resource_ext, "
+                + "is_archived) "
+                + "VALUES (?,?,?,?)");
+        pst.setString(1, selectedResource.getrSection().getName());
+        pst.setString(2, selectedResource.getName());
+        pst.setString(3, selectedResource.getExt());
+        pst.setInt(4, 0);
+
+        pst.executeUpdate();
+        pst.close();
+        Database.closeConnection();
+    }
+    
+    public static ObservableList<Resource> getResources() throws SQLException {
+
+        Database.openConnection();
+        Statement st = Database.getSharedConnection().createStatement();
+
+        String query = "Select * from Resource where is_archived = '0'";
+
+        ResultSet rs = st.executeQuery(query);
+
+        //create new list to write over original observable list
+        ObservableList<Resource> newList = FXCollections.observableArrayList();
+
+        while (rs.next()) {
+            
+            Module dummyModule = new Module("","",0);
+            Section dummySection = new Section(dummyModule, rs.getString(2), "", 1, 0);
+            Resource newResource = new Resource(dummySection, rs.getString(3), rs.getString(4));
+            newList.add(newResource);
+        }
+        
+        st.close();
+        Database.closeConnection();
+        
+        return newList;
+    }
+
     
     /**
     * Helper functions for Outcome

@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -16,6 +17,9 @@ public class SectionViewerController {
     
     @FXML
     TableView<Section> tblSection;
+    
+    @FXML
+    ListView listResources;
     
     @FXML
     TableColumn<Section, String> trSectionName;
@@ -42,6 +46,7 @@ public class SectionViewerController {
         ObservableList<Section> newList = DatabaseHelper.getSections();
         
         tblSection.getItems().clear();
+        listResources.getItems().clear();
         
         for (Section thisSection : newList) {
             tblSection.getItems().addAll(thisSection);
@@ -66,6 +71,19 @@ public class SectionViewerController {
     private Section userDidSelectSection() throws IOException, SQLException {
         Section selectedSection = tblSection.getSelectionModel().getSelectedItem();
         System.out.println(selectedSection.getName() + " clicked!");
+        
+        // handle Resources within the selected section
+        listResources.getItems().clear();
+        ObservableList<Resource> resourcesList = FXCollections.observableArrayList();
+        ObservableList<String> sresourcesList = FXCollections.observableArrayList();
+        resourcesList = DatabaseHelper.getResourcesWithinSection(selectedSection); // TODO: Write this function
+        
+        for (Resource thisResource : resourcesList) {
+            sresourcesList.add(thisResource.getName());
+        }
+        
+        listResources.getItems().addAll(sresourcesList);
+        
         btnSectionEdit.setVisible(true);
         btnSectionDownload.setVisible(true);
         btnSectionArchive.setVisible(true);

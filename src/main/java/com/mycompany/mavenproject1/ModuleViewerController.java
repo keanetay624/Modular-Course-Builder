@@ -213,12 +213,19 @@ public class ModuleViewerController {
     
     @FXML
     public void refreshTable() throws SQLException {
-        ObservableList<Module> newList = DatabaseHelper.getModules();
-        tblModule.setItems(newList);
-        tblModule.getSelectionModel().select(null);
+
+        // clear all tables and lists
+        tblModule.getItems().clear();
         listSections.getItems().clear();
         listOutcomes.getItems().clear();
+        
+        // reset the tableview
+        ObservableList<Module> newList = DatabaseHelper.getModules();
+        tblModule.setItems(newList);
+        // select the first row of the new table by default.
         tblModule.getSelectionModel().select(0);
+        
+        // reset the sectionsList
         ObservableList<Section> sectionsList = FXCollections.observableArrayList();
         ObservableList<String> sSectionsList = FXCollections.observableArrayList();
         sectionsList = DatabaseHelper.getSectionsWithinModule(tblModule.getSelectionModel().getSelectedItem());
@@ -229,6 +236,7 @@ public class ModuleViewerController {
         }
         listSections.setItems(sSectionsList);
         
+        // reset the outcomes list
         ObservableList<Outcome> outcomesList = FXCollections.observableArrayList();
         ObservableList<String> sOutcomesList = FXCollections.observableArrayList();
         outcomesList = DatabaseHelper.getOutcomesWithinModule(tblModule.getSelectionModel().getSelectedItem());

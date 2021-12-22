@@ -2,6 +2,7 @@ package com.mycompany.mavenproject1;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,10 +19,13 @@ public class ResourceViewerController {
     TableView<Resource> tblResource;
     
     @FXML
+    TableColumn<Resource, String> trSection;
+    
+    @FXML
     TableColumn<Resource, String> trResourceName;
     
     @FXML
-    TableColumn<Resource, String> trResourceType;
+    TableColumn<Resource, String> trResourceExt;
     
     @FXML
     MediaView mvResource;
@@ -34,48 +38,49 @@ public class ResourceViewerController {
     Button navBtnHome ,navBtnCourses, navBtnModules, navBtnSections, 
             navBtnResources, navBtnOutcomes, navBtnSignOut;
     
-//    @FXML
-//    private void initialize() throws SQLException {
-//        ObservableList<Resource> newList = DatabaseHelper.getResources();
-//        
-//        tblModule.getItems().clear();
-//        
-//        for (Module thisModule : newList) {
-//            tblModule.getItems().addAll(thisModule);
-//        }
-//        
-//        trModuleName.setCellValueFactory(new PropertyValueFactory<>("name"));
-//        trModuleDesc.setCellValueFactory(new PropertyValueFactory<>("desc"));
-//        
-//        btnModuleEdit.setVisible(false);
-//        btnModuleDownload.setVisible(false);
-//        btnModuleArchive.setVisible(false);
-//    }
+    @FXML
+    private void initialize() throws SQLException {
+        ObservableList<Resource> newList = DatabaseHelper.getResources();
+        
+        tblResource.getItems().clear();
+        
+        for (Resource thisResource : newList) {
+            tblResource.getItems().addAll(thisResource);
+        }
+        
+        trSection.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getrSection().getName()));
+        trResourceName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        trResourceExt.setCellValueFactory(new PropertyValueFactory<>("ext"));
+        
+        btnResourceEdit.setVisible(false);
+        btnResourceDownload.setVisible(false);
+        btnResourceArchive.setVisible(false);
+    }
     
     /*
-    * This function is called when a course is clicked within the TableView
+    * This function is called when a Resource is clicked within the TableView
     */
-//    @FXML
-//    private Module userDidSelectModule() throws IOException, SQLException {
-//        Module selectedModule = tblModule.getSelectionModel().getSelectedItem();
-//        System.out.println(selectedModule.getName() + " clicked!");
-//        btnModuleEdit.setVisible(true);
-//        btnModuleDownload.setVisible(true);
-//        btnModuleArchive.setVisible(true);
-//        return selectedModule;
-//    }
-////    
-//    @FXML
-//    private void userDidArchiveModule() throws IOException, SQLException {
-//        Module selectedModule = tblModule.getSelectionModel().getSelectedItem();
-//        tblModule.getItems().removeAll(selectedModule);
-//        System.out.println(selectedModule.getName() + " removed!");
-//        DatabaseHelper.archiveModule(selectedModule);
-//        System.out.println(selectedModule.getName() + " removed from database!");
-//        btnModuleEdit.setVisible(false);
-//        btnModuleDownload.setVisible(false);
-//        btnModuleArchive.setVisible(false);
-//    }
+    @FXML
+    private Resource userDidSelectResource() throws IOException, SQLException {
+        Resource selectedResource = tblResource.getSelectionModel().getSelectedItem();
+        System.out.println(selectedResource.getName() + " clicked!");
+        btnResourceEdit.setVisible(true);
+        btnResourceDownload.setVisible(true);
+        btnResourceArchive.setVisible(true);
+        return selectedResource;
+    }
+//    
+    @FXML
+    private void userDidArchiveResource() throws IOException, SQLException {
+        Resource selectedResource = tblResource.getSelectionModel().getSelectedItem();
+        tblResource.getItems().removeAll(selectedResource);
+        System.out.println(selectedResource.getName() + " removed!");
+        DatabaseHelper.archiveResource(selectedResource);
+        System.out.println(selectedResource.getName() + " removed from database!");
+        btnResourceEdit.setVisible(false);
+        btnResourceDownload.setVisible(false);
+        btnResourceArchive.setVisible(false);
+    }
     
     /* 
     * Navigation Functions
@@ -121,14 +126,14 @@ public class ResourceViewerController {
     */
     
     @FXML
-    private void switchToNewModule() throws IOException {
-        NewModuleController.display("New Module");
+    private void switchToNewResource() throws IOException {
+        NewResourceController.display("New Resource");
     }
     
-//    @FXML
-//    public void refreshTable() throws SQLException {
-//        ObservableList<Module> newList = DatabaseHelper.getModules();
-//        tblModule.setItems(newList);
-//    }
+    @FXML
+    public void refreshTable() throws SQLException {
+        ObservableList<Resource> newList = DatabaseHelper.getResources();
+        tblResource.setItems(newList);
+    }
     
 }

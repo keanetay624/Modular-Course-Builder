@@ -235,8 +235,16 @@
             </VBox>
             <VBox layoutX="676.0" layoutY="222.0" prefHeight="421.0" prefWidth="347.0">
                <children>
+                  <HBox alignment="TOP_RIGHT" prefHeight="27.0" prefWidth="141.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="btnAddModule" mnemonicParsing="false" text="Add" />
+                        <Button fx:id="btnRemoveModule" mnemonicParsing="false" text="Remove" />
+                        <Button fx:id="btnShiftModuleUp" mnemonicParsing="false" onAction="#userDidShiftModuleUp" text="Shift Up" />
+                        <Button fx:id="btnShiftModuleDown" mnemonicParsing="false" onAction="#userDidShiftModuleDown" text="Shift Down" />
+                     </children>
+                  </HBox>
                   <Label text="Course Modules:" />
-                  <ListView prefHeight="200.0" prefWidth="371.0" />
+                  <ListView fx:id="listModules" prefHeight="200.0" prefWidth="371.0" />
                   <Label text="Prerequisite Courses:" />
                   <ListView prefHeight="200.0" prefWidth="200.0" />
                </children>

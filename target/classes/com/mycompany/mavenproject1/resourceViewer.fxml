@@ -132,7 +132,7 @@
                   <Button id="btn_search" alignment="TOP_LEFT" mnemonicParsing="false" text="Search" />
                   <ButtonBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="70.0" prefWidth="626.0">
                      <buttons>
-                        <Button fx:id="btnResourceNew" mnemonicParsing="false" text="New">
+                        <Button fx:id="btnResourceNew" mnemonicParsing="false" onAction="#switchToNewResource" text="New">
                            <graphic>
                               <ImageView fitHeight="18.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -150,7 +150,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="btnResourceArchive" mnemonicParsing="false" text="Archive">
+                        <Button fx:id="btnResourceArchive" mnemonicParsing="false" onAction="#userDidArchiveResource" text="Archive">
                            <graphic>
                               <ImageView fitHeight="18.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -177,7 +177,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="btnRefreshResource" mnemonicParsing="false" text="Refresh">
+                        <Button fx:id="btnRefreshResource" mnemonicParsing="false" onAction="#refreshTable" text="Refresh">
                            <graphic>
                               <ImageView fitHeight="18.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -198,10 +198,11 @@
                   <MediaView fx:id="mvResource" fitHeight="320.0" fitWidth="347.0" />
                </children>
             </VBox>
-            <TableView fx:id="tblResource" layoutX="36.0" layoutY="211.0" prefHeight="435.0" prefWidth="625.0">
+            <TableView fx:id="tblResource" layoutX="36.0" layoutY="211.0" onMouseClicked="#userDidSelectResource" prefHeight="435.0" prefWidth="625.0">
               <columns>
-                <TableColumn fx:id="trResourceName" prefWidth="306.0" text="Resource Name" />
-                  <TableColumn fx:id="trResourceType" prefWidth="99.2000732421875" text="Resource Type" />
+                  <TableColumn fx:id="trSection" prefWidth="253.0" text="Section Name" />
+                <TableColumn fx:id="trResourceName" prefWidth="257.0" text="Resource Name" />
+                  <TableColumn fx:id="trResourceExt" prefWidth="114.0" text="Resource Type" />
               </columns>
             </TableView>
          </children>

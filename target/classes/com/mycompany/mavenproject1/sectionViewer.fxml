@@ -4,6 +4,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -81,13 +83,17 @@
                   </ButtonBar>
                </children>
             </HBox>
-            <VBox layoutX="676.0" layoutY="222.0" prefHeight="421.0" prefWidth="347.0" />
-            <TableView fx:id="tblSection" layoutX="36.0" layoutY="211.0" onMouseClicked="#userDidSelectSection" prefHeight="435.0" prefWidth="1038.0">
+            <VBox layoutX="676.0" layoutY="222.0" prefHeight="421.0" prefWidth="347.0">
+               <children>
+                  <Label text="Available Resources:" />
+                  <ListView fx:id="listResources" prefHeight="405.0" prefWidth="347.0" />
+               </children></VBox>
+            <TableView fx:id="tblSection" layoutX="36.0" layoutY="211.0" onMouseClicked="#userDidSelectSection" prefHeight="435.0" prefWidth="625.0">
               <columns>
-                <TableColumn fx:id="trSectionName" prefWidth="306.0" text="Section Name" />
-                  <TableColumn fx:id="trSectionDesc" prefWidth="250.0" text="Section Description" />
-                  <TableColumn fx:id="trModule" prefWidth="250.0" text="Module Name" />
-                  <TableColumn fx:id="trSequence" prefWidth="250.0" text="Sequence" />
+                <TableColumn fx:id="trSectionName" prefWidth="159.0" text="Section Name" />
+                  <TableColumn fx:id="trSectionDesc" prefWidth="202.0" text="Section Description" />
+                  <TableColumn fx:id="trModule" prefWidth="181.0" text="Module Name" />
+                  <TableColumn fx:id="trSequence" prefWidth="82.0" text="Sequence" />
               </columns>
             </TableView>
          </children>

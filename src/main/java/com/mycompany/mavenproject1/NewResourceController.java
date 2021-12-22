@@ -7,10 +7,13 @@ package com.mycompany.mavenproject1;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
@@ -25,6 +28,9 @@ import javafx.stage.StageStyle;
 public class NewResourceController {
     
     @FXML
+    ComboBox inputSection;
+    
+    @FXML
     Button btnCancelNewResource;
     
     @FXML
@@ -35,6 +41,18 @@ public class NewResourceController {
     
     @FXML
     TextField inputName;
+    
+    public void initialize() throws SQLException {
+        // initialize the combobox with list of available modules
+        System.out.println("Test initialize method");
+        ObservableList<Section> sectionsList = DatabaseHelper.getSections();
+        ObservableList<String> ssectionsList = FXCollections.observableArrayList();
+        
+        for (Section thisSection : sectionsList) {
+            ssectionsList.add(thisSection.getName());
+        }
+        inputSection.getItems().addAll(ssectionsList);
+    }
     
     
     public static void display(String title) throws IOException {
@@ -64,10 +82,15 @@ public class NewResourceController {
         // save all fields into their respective formats
         // call a database helper method to insert into course. 
         
-        String courseCode = inputName.getText();
+        String resourceName = inputName.getText();
+        String sectionName = (String) inputSection.getValue();
+        Module dummyModule = new Module("","",0);
+        Section dummySection = new Section(dummyModule, sectionName, "", 1,0);
         
-//        Course newCourse = new Course(courseCode, name, faculty, school, level, campus, 0);
-//        DatabaseHelper.insertIntoResource(newCourse);
+        //NOTE: I've set the extension to null for now. Decide later if
+        // we want to implement the extension here or under attachments. 
+        Resource newResource = new Resource(dummySection, resourceName, "");
+        DatabaseHelper.insertIntoResource(newResource);
         
         // close the window
         Stage stage = (Stage) btnCancelNewResource.getScene().getWindow();

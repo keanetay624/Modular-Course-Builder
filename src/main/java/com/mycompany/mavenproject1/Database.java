@@ -60,9 +60,9 @@ public class Database {
         // trying new table structure
         String createStatement3 = "CREATE TABLE Resource"
                 + "(resource_id INTEGER PRIMARY KEY autoincrement, "
-                + "section_id INTEGER NOT NULL, "
-                + "resource_title TEXT, "
-                + "resource_description TEXT, "
+                + "section_name TEXT NOT NULL, "
+                + "resource_name TEXT NOT NULL, "
+                + "resource_ext TEXT NOT NULL, "
                 + "is_archived INTEGER NOT NULL check "
                 + "(is_archived between 0 and 1));";
 
@@ -80,8 +80,8 @@ public class Database {
         //create CoursesHaveModules
         String createStatement5 = "CREATE TABLE CoursesHaveModules"
                 + "(chm_id INTEGER PRIMARY KEY autoincrement,"
-                + "module_id INTEGER NOT NULL,"
-                + "course_id INTEGER NOT NULL,"
+                + "module_name TEXT NOT NULL,"
+                + "course_name TEXT NOT NULL,"
                 + "sequence_no INTEGER NOT NULL);";
 
         //create ModuleLearningOutcomes
@@ -194,11 +194,40 @@ public class Database {
         pst5.setInt(4, 1);
         pst5.setInt(5, 0);
         
+        //insert statement for resource
+        PreparedStatement pst6 = Database.getSharedConnection().prepareStatement("INSERT INTO "
+                + "Resource (section_name, resource_name, "
+                + "resource_ext, is_archived) "
+                + "VALUES (?,?,?,?)");
+        pst6.setString(1, "What are Information Systems?");
+        pst6.setString(2, "Section Readme");
+        pst6.setString(3, ".docx");
+        pst6.setInt(4, 0);
+        
+        //insert statement for chm
+        PreparedStatement pst7 = Database.getSharedConnection().prepareStatement("INSERT INTO "
+                + "CoursesHaveModules (module_name, course_name, sequence_no) "
+                + "VALUES (?,?,?)");
+        pst7.setString(1, "Importance of Managing Information Systems");
+        pst7.setString(2, "Industry Placement 1");
+        pst7.setInt(3, 1);
+        
+        //insert statement for second module
+        PreparedStatement pst8 = Database.getSharedConnection().prepareStatement("INSERT INTO "
+                + "module (module_name, module_description, is_archived) "
+                + "VALUES (?,?,?)");
+        pst8.setString(1, "Second Module for Testing");
+        pst8.setString(2, "Arbitrary Description");
+        pst8.setInt(3, 0);
+        
         pst.executeUpdate();
         pst2.executeUpdate();
         pst3.executeUpdate();
         pst4.executeUpdate();
         pst5.executeUpdate();
+        pst6.executeUpdate();
+        pst7.executeUpdate();
+        pst8.executeUpdate();
         Database.closeConnection();
     }
     
