@@ -144,7 +144,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="btnCourseEdit" mnemonicParsing="false" text="Edit">
+                        <Button fx:id="btnCourseEdit" mnemonicParsing="false" onAction="#userDidEditCourse" text="Edit">
                            <graphic>
                               <ImageView fitHeight="18.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

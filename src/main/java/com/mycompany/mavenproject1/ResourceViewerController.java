@@ -131,6 +131,17 @@ public class ResourceViewerController {
     }
     
     @FXML
+    private void userDidEditResource() throws IOException, SQLException {
+        System.out.println("Edit Clicked!");
+        Resource selectedResource = tblResource.getSelectionModel().getSelectedItem();
+        
+        EditResourceController erc = new EditResourceController();
+        erc.setSelectedResource(selectedResource);
+        erc.display("Edit Resource");
+        refreshTable();
+    }
+    
+    @FXML
     public void refreshTable() throws SQLException {
         ObservableList<Resource> newList = DatabaseHelper.getResources();
         tblResource.setItems(newList);

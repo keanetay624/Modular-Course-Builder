@@ -212,6 +212,31 @@ public class ModuleViewerController {
     }
     
     @FXML
+    private void userDidEditModule() throws IOException, SQLException {
+        System.out.println("Edit Clicked!");
+        Module selectedModule = tblModule.getSelectionModel().getSelectedItem();
+        
+        EditModuleController emc = new EditModuleController();
+        emc.setSelectedModule(selectedModule);
+        emc.display("Edit Module");
+        refreshTable();
+    }
+    
+    @FXML
+    private void userDidEditOutcome() throws IOException, SQLException {
+        System.out.println("Edit Outcome Clicked!");
+        String outcomeString = listOutcomes.getSelectionModel().getSelectedItem().toString();
+        Module selectedModule = tblModule.getSelectionModel().getSelectedItem();
+        
+        // write a database query to get the selected outcome from the database
+        Outcome selectedOutcome = DatabaseHelper.getSelectedOutcome(selectedModule, outcomeString);
+        EditOutcomeController emc = new EditOutcomeController();
+        emc.setSelectedOutcome(selectedOutcome);
+        emc.display("Edit Module");
+        refreshTable();
+    }
+    
+    @FXML
     public void refreshTable() throws SQLException {
 
         // clear all tables and lists

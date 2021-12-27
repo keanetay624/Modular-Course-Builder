@@ -56,6 +56,27 @@ public class DatabaseHelper {
         Database.closeConnection();
     }
     
+    public static void updateCourse(Course selectedCourse, Course updatedCourse) throws SQLException {
+        Database.openConnection();
+        Statement st = Database.getSharedConnection().createStatement();
+
+        // Updated selectedCourse to updatedcourse
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("UPDATE Course "
+                + "SET course_name = ?, faculty_name = ?, school_name = ?, "
+                + "level = ?, campus = ? WHERE course_code = ?");
+        pst.setString(1, updatedCourse.getName());
+        pst.setString(2, updatedCourse.getFaculty());
+        pst.setString(3, updatedCourse.getSchool());
+        pst.setInt(4,updatedCourse.getLevel());
+        pst.setString(5, updatedCourse.getCampus());
+        pst.setString(6, selectedCourse.getCourseCode());
+
+        pst.executeUpdate();
+        
+        st.close();
+        Database.closeConnection();
+    }
+    
     public static ObservableList<Course> getCourses() throws SQLException {
 
         Database.openConnection();
@@ -336,6 +357,47 @@ public class DatabaseHelper {
 
         pst.executeUpdate();
         pst.close();
+        Database.closeConnection();
+    }
+    
+    public static void updateModule(Module selectedModule, Module updatedModule) throws SQLException {
+        Database.openConnection();
+        Statement st = Database.getSharedConnection().createStatement();
+
+        // Updated selectedModule to updated Module
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("UPDATE Module "
+                + "SET module_name = ?, module_description = ? "
+                + "WHERE module_name = ?");
+        pst.setString(1, updatedModule.getName());
+        pst.setString(2, updatedModule.getDesc());
+        pst.setString(3, selectedModule.getName());
+        pst.executeUpdate();
+        
+        // Updated chm table to updated Module
+        PreparedStatement pst2 = Database.getSharedConnection().prepareStatement("UPDATE CoursesHaveModules "
+                + "SET module_name = ? "
+                + "WHERE module_name = ?");
+        pst2.setString(1, updatedModule.getName());
+        pst2.setString(2, selectedModule.getName());
+        pst2.executeUpdate();
+        
+        // Updated outcomes table to updated Module
+        PreparedStatement pst3 = Database.getSharedConnection().prepareStatement("UPDATE ModuleLearningOutcomes "
+                + "SET module_name = ?"
+                + "WHERE module_name = ?");
+        pst3.setString(1, updatedModule.getName());
+        pst3.setString(2, selectedModule.getName());
+        pst3.executeUpdate();
+        
+        // Updated sections table to updated Module
+        PreparedStatement pst4 = Database.getSharedConnection().prepareStatement("UPDATE Section "
+                + "SET module_name = ?"
+                + "WHERE module_name = ?");
+        pst4.setString(1, updatedModule.getName());
+        pst4.setString(2, selectedModule.getName());
+        pst4.executeUpdate();
+        
+        st.close();
         Database.closeConnection();
     }
     
@@ -707,6 +769,25 @@ public class DatabaseHelper {
         Database.closeConnection();
     }
     
+    public static void updateSection(Section selectedSection, Section updatedSection) throws SQLException {
+        Database.openConnection();
+        Statement st = Database.getSharedConnection().createStatement();
+
+        // Updated selectedCourse to updatedcourse
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("UPDATE Section "
+                + "SET module_name = ?, section_name = ?, section_description = ?"
+                + "WHERE (section_name = ? and module_name = ?)");
+        pst.setString(1, updatedSection.getsModule().getName());
+        pst.setString(2, updatedSection.getName());
+        pst.setString(3, updatedSection.getDesc());
+        pst.setString(4, selectedSection.getName());
+        pst.setString(5, selectedSection.getsModule().getName());
+        pst.executeUpdate();
+        
+        st.close();
+        Database.closeConnection();
+    }
+    
     /**
     * Helper functions for Resource
     */
@@ -789,6 +870,24 @@ public class DatabaseHelper {
         
         return newList;
     }
+    
+    public static void updateResource(Resource selectedResource, Resource updatedResource) throws SQLException {
+        Database.openConnection();
+
+        // Updated selectedResource to updatedResource
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("UPDATE Resource "
+                + "SET section_name = ?, resource_name = ?, resource_ext = ?"
+                + "WHERE (section_name = ? and resource_name = ?)");
+        pst.setString(1, updatedResource.getrSection().getName());
+        pst.setString(2, updatedResource.getName());
+        pst.setString(3, updatedResource.getExt());
+        pst.setString(4, selectedResource.getrSection().getName());
+        pst.setString(5, selectedResource.getName());
+        pst.executeUpdate();
+        
+        pst.close();
+        Database.closeConnection();
+    }
 
     
     /**
@@ -828,6 +927,44 @@ public class DatabaseHelper {
         pst.close();
         Database.closeConnection();
         return highest;
+    }
+    
+    // returns the selected outcome to the user
+    public static Outcome getSelectedOutcome(Module selectedModule, String outcomeString) throws SQLException {
+        Database.openConnection();
+        
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("SELECT * From  "
+                + "ModuleLearningOutcomes WHERE module_name = ? and mlo_name = ?");
+        pst.setString(1, selectedModule.getName());
+        pst.setString(2, outcomeString);
+        
+        ResultSet rs = pst.executeQuery();
+        Module dummy = new Module(rs.getString(2),"",0);
+        Outcome selectedOutcome = new Outcome(dummy, rs.getString(3), rs.getString(4), rs.getInt(5), rs.getInt(6));
+                
+        pst.close();
+        Database.closeConnection();
+        
+        return selectedOutcome;
+    }
+    
+    public static void updateOutcome(Outcome selectedOutcome, Outcome updatedOutcome) throws SQLException {
+        Database.openConnection();
+        Statement st = Database.getSharedConnection().createStatement();
+
+        // Updated selectedCourse to updatedcourse
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("UPDATE ModuleLearningOutcomes "
+                + "SET module_name = ?, mlo_name = ?, mlo_description = ?"
+                + "WHERE (module_name = ? and mlo_name = ?)");
+        pst.setString(1, updatedOutcome.getoModule().getName());
+        pst.setString(2, updatedOutcome.getName());
+        pst.setString(3, updatedOutcome.getDesc());
+        pst.setString(4, selectedOutcome.getoModule().getName());
+        pst.setString(5, selectedOutcome.getName());
+        pst.executeUpdate();
+        
+        st.close();
+        Database.closeConnection();
     }
     
     public static void insertIntoOutcome(Outcome selectedOutcome) throws SQLException {

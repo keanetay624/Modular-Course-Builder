@@ -153,6 +153,17 @@ public class SectionViewerController {
     }
     
     @FXML
+    private void userDidEditSection() throws IOException, SQLException {
+        System.out.println("Edit Clicked!");
+        Section selectedSection = tblSection.getSelectionModel().getSelectedItem();
+        
+        EditSectionController esc = new EditSectionController();
+        esc.setSelectedSection(selectedSection);
+        esc.display("Edit Section");
+        refreshTable();
+    }
+    
+    @FXML
     public void refreshTable() throws SQLException {
         ObservableList<Section> newList = DatabaseHelper.getSections();
         tblSection.setItems(newList);

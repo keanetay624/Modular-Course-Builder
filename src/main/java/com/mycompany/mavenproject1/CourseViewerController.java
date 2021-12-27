@@ -200,8 +200,6 @@ public class CourseViewerController {
         NewCourseController.display("New Course");
     }
     
-    
-    
     @FXML
     private void userDidAddModule() throws IOException, SQLException {
         System.out.println("Add Clicked!");
@@ -210,6 +208,17 @@ public class CourseViewerController {
         LinkModuleController lmc = new LinkModuleController();
         lmc.setCourse(selectedCourse);
         lmc.display("New Course");
+        refreshTable();
+    }
+    
+    @FXML
+    private void userDidEditCourse() throws IOException, SQLException {
+        System.out.println("Edit Clicked!");
+        Course selectedCourse = tblCourse.getSelectionModel().getSelectedItem();
+        
+        EditCourseController ecc = new EditCourseController();
+        ecc.setSelectedCourse(selectedCourse);
+        ecc.display("Edit Course");
         refreshTable();
     }
     

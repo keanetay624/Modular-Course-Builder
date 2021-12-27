@@ -140,7 +140,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="btnModuleEdit" mnemonicParsing="false" text="Edit">
+                        <Button fx:id="btnModuleEdit" mnemonicParsing="false" onAction="#userDidEditModule" text="Edit">
                            <graphic>
                               <ImageView fitHeight="18.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -201,6 +201,7 @@
                   <ListView fx:id="listSections" prefHeight="200.0" prefWidth="371.0" />
                   <HBox alignment="TOP_RIGHT" prefHeight="27.0" prefWidth="141.0" spacing="10.0">
                      <children>
+                        <Button fx:id="btnEditOutcome" mnemonicParsing="false" onAction="#userDidEditOutcome" text="Edit" />
                         <Button fx:id="btnShiftOutcomeUP" mnemonicParsing="false" onAction="#userDidShiftOutcomeUp" text="Shift Up" />
                         <Button fx:id="btnShiftOutcomeDown" mnemonicParsing="false" onAction="#userDidShiftOutcomeDown" text="Shift Down" />
                      </children>

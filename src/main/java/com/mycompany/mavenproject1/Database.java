@@ -38,24 +38,27 @@ public class Database {
 
         Database.openConnection();
         Statement st = sharedConnection.createStatement();
-
+        
         //create Module table
         String createStatement1 = "CREATE TABLE Module"
                 + "(module_name TEXT PRIMARY KEY NOT NULL,"
                 + "module_description TEXT NOT NULL,"
                 + "is_archived INTEGER NOT NULL check "
                 + "(is_archived between 0 and 1));";
-
+        
+        
         // create Section table
         String createStatement2 = "CREATE TABLE Section"
-                + "(section_id INTEGER PRIMARY KEY autoincrement,"
-                + "module_name TEXT NOT NULL,"
+                + "(section_id INTEGER PRIMARY KEY autoincrement, "
+                + "module_name TEXT NOT NULL, "
                 + "section_name TEXT NOT NULL,"
                 + "section_description TEXT NOT NULL,"
                 + "sequence_no INTEGER NOT NULL,"
                 + "is_archived INTEGER NOT NULL check "
-                + "(is_archived between 0 and 1));";
-
+                + "(is_archived between 0 and 1),"
+                + "FOREIGN KEY(module_name) REFERENCES Module(module_name)"
+                + ");";
+        
         //create Resource Table
         // trying new table structure
         String createStatement3 = "CREATE TABLE Resource"
@@ -64,7 +67,9 @@ public class Database {
                 + "resource_name TEXT NOT NULL, "
                 + "resource_ext TEXT NOT NULL, "
                 + "is_archived INTEGER NOT NULL check "
-                + "(is_archived between 0 and 1));";
+                + "(is_archived between 0 and 1), "
+                + "FOREIGN KEY(section_name) REFERENCES Section(section_name) "
+                + ");";
 
         //create Course Table
         String createStatement4 = "CREATE TABLE Course"
@@ -80,19 +85,25 @@ public class Database {
         //create CoursesHaveModules
         String createStatement5 = "CREATE TABLE CoursesHaveModules"
                 + "(chm_id INTEGER PRIMARY KEY autoincrement,"
-                + "module_name TEXT NOT NULL,"
-                + "course_name TEXT NOT NULL,"
-                + "sequence_no INTEGER NOT NULL);";
+                + "module_name TEXT NOT NULL, "
+                + "course_name TEXT NOT NULL, "
+                + "sequence_no INTEGER NOT NULL, "
+                + "FOREIGN KEY(module_name) REFERENCES Module(module_name),"
+                + "FOREIGN KEY(course_name) REFERENCES Module(course_name)"
+                + ");";
+                
 
         //create ModuleLearningOutcomes
         String createStatement6 = "CREATE TABLE ModuleLearningOutcomes"
-                + "(mlo_id INTEGER PRIMARY KEY autoincrement,"
-                + "module_name TEXT NOT NULL,"
+                + "(mlo_id INTEGER PRIMARY KEY autoincrement, "
+                + "module_name TEXT NOT NULL, "
                 + "mlo_name TEXT NOT NULL,"
                 + "mlo_description TEXT NOT NULL,"
                 + "sequence_no INTEGER NOT NULL,"
                 + "is_archived INTEGER NOT NULL check "
-                + "(is_archived between 0 and 1));";
+                + "(is_archived between 0 and 1), "
+                + "FOREIGN KEY(module_name) REFERENCES Module(module_name)"
+                + ");";
 
         String createStatement7 = "CREATE TABLE Users "
                 + "("
@@ -120,8 +131,9 @@ public class Database {
                 + "Candidate_Course_ID INTEGER NOT NULL,"
                 + "Candidate2_Course_ID INTEGER);";
         
-        // Loop to insert via sanitised prepared statement
-
+        // enable foreign key support
+        st.execute("PRAGMA foreign_keys = ON;");
+        
         st.execute(createStatement1);
         st.execute(createStatement2);
         st.execute(createStatement3);
@@ -132,7 +144,7 @@ public class Database {
         st.execute(createStatement8);
         st.execute(createStatement9);
         
-        // TODO: insert some sample data       
+        // Insert sample data    
         insertSampleData();
         
         //close connections

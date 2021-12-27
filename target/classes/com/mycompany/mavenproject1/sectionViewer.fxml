@@ -34,7 +34,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="btnSectionEdit" mnemonicParsing="false" text="Edit">
+                        <Button fx:id="btnSectionEdit" mnemonicParsing="false" onAction="#userDidEditSection" text="Edit">
                            <graphic>
                               <ImageView fitHeight="18.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
