@@ -111,18 +111,17 @@ public class Database {
                 + "Username TEXT NOT NULL, "
                 + "Password TEXT NOT NULL "
                 + ");";
-
-//        String createStatement8 = "CREATE TABLE Attachment ("
-//                + "Attachment_ID INTEGER PRIMARY KEY autoincrement, "
-//                + "Course_ID INTEGER, Module_ID INTEGER, Section_ID INTEGER, "
-//                + "BLOB_Data BLOB);";
         
         String createStatement8 = "CREATE TABLE Attachment ("
                 + "Attachment_ID INTEGER PRIMARY KEY autoincrement, "
                 + "Attachment_name TEXT NOT NULL, "
-                + "Attachment_ext Text NOT NULL, "
-                + "Course_ID INTEGER, Module_ID INTEGER, Section_ID INTEGER, "
-                + "Resource_ID INTEGER, BLOB_Data BLOB);";
+//                + "Attachment_ext Text NOT NULL, "
+                + "Course_ID TEXT, Module_ID TEXT, Section_ID INTEGER, "
+                + "Resource_ID INTEGER, BLOB_Data BLOB,"
+                + "FOREIGN KEY(Course_ID) REFERENCES Course(course_code),"
+                + "FOREIGN KEY(Module_ID) REFERENCES Module(module_name),"
+                + "FOREIGN KEY(Section_ID) REFERENCES Section(section_id),"
+                + "FOREIGN KEY(Resource_ID) REFERENCES Resource(resource_id));";
         
         // create Prerequisite table
         String createStatement9 = "CREATE TABLE Prerequisite "

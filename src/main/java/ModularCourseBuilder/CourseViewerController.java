@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -49,6 +50,9 @@ public class CourseViewerController {
     Button navBtnHome, navBtnCourses, navBtnModules, navBtnSections, 
             navBtnResources, navBtnOutcomes, navBtnSignOut;
     
+    @FXML
+    Label lblFileName;
+    
     public Course currentlySelectedCourse;
     public String currentlySelectedModule;
     
@@ -57,6 +61,7 @@ public class CourseViewerController {
         ObservableList<Course> newList = DatabaseHelper.getCourses();
         tblCourse.getItems().clear();
         listModules.getItems().clear();
+        lblFileName.setVisible(false);
         
         for (Course thisCourse : newList) {
             tblCourse.getItems().addAll(thisCourse);
@@ -105,6 +110,20 @@ public class CourseViewerController {
             return;
         }
         
+        // check for an associated file with selected course
+        // if exists, notify the user that a file is available to download
+        // else hide download button
+        String fileName = DatabaseHelper.getFileName(1, selectedCourse.getName(), 0);
+        
+        if (!fileName.equals("")) {
+            lblFileName.setText("File available: " + fileName);
+            JavaFXHelper.setNodeHidden(btnCourseDownload, false);
+        } else {
+            lblFileName.setText("No file available.");
+            JavaFXHelper.setNodeHidden(btnCourseDownload, true);
+        }
+        lblFileName.setVisible(true);
+        
         // populate the modules associated with the course
         listModules.getItems().clear();
         ObservableList<Module> modulesList = FXCollections.observableArrayList();
@@ -117,7 +136,7 @@ public class CourseViewerController {
         }
         
         listModules.getItems().addAll(sModulesList);
-        JavaFXHelper.setNodesHidden(new Node[]{btnCourseEdit, btnCourseArchive, btnCourseUpload, btnCourseDownload}, false);
+        JavaFXHelper.setNodesHidden(new Node[]{btnCourseEdit, btnCourseArchive, btnCourseUpload}, false);
         JavaFXHelper.setNodesHidden(new Node[]{btnAddModule}, false);
         this.currentlySelectedCourse = selectedCourse;
     }
@@ -240,6 +259,13 @@ public class CourseViewerController {
         lmc.setCourse(selectedCourse);
         lmc.display("New Course");
         refreshTable();
+    }
+    
+    @FXML
+    private void userDidClickUpload() throws IOException, SQLException {
+        String selectedCourse = tblCourse.getSelectionModel().getSelectedItem().getName();
+        FileHelper fh = new FileHelper();
+        fh.getFile(1, selectedCourse, 0);
     }
     
     @FXML

@@ -1151,5 +1151,133 @@ public class DatabaseHelper {
         pst.close();
         Database.closeConnection();
     }
+    
+    /*
+    * Helper methods for Attachments 
+    */
+    
+    public static String getFileName(int modelType, String idString, int idInt) throws SQLException {
+       Database.openConnection();
+       
+       String name = "";
+       
+       if (modelType == 1) {
+           PreparedStatement pst = 
+                   Database.getSharedConnection().prepareStatement("Select * From "
+                           + "Attachment Where course_id = ?");
+           pst.setString(1, idString);
+           ResultSet rs = pst.executeQuery();
+           
+           if (rs.next()) {
+               name = rs.getString(2);
+           }
+           pst.close();
+       } else if (modelType == 2) {
+           PreparedStatement pst = 
+                   Database.getSharedConnection().prepareStatement("Select * From "
+                           + "Attachment Where module_id = ?");
+           pst.setString(1, idString);
+           ResultSet rs = pst.executeQuery();
+           
+           if (rs.next()) {
+               name = rs.getString(2);
+           }
+           pst.close();
+       } else if (modelType == 3) {
+           PreparedStatement pst = 
+                   Database.getSharedConnection().prepareStatement("Select * From "
+                           + "Attachment Where section_id = ?");
+           pst.setInt(1, idInt);
+           ResultSet rs = pst.executeQuery();
+           
+           if (rs.next()) {
+               name = rs.getString(2);
+           }
+           pst.close();
+       } else {
+            PreparedStatement pst = 
+                   Database.getSharedConnection().prepareStatement("Select * From "
+                           + "Attachment Where resource_id = ?");
+            pst.setInt(1, idInt);
+            ResultSet rs = pst.executeQuery();
+           
+           if (rs.next()) {
+               name = rs.getString(2);
+           }
+           pst.close();
+       }
+       
+       Database.closeConnection();
+       
+       return name;
+    }
+    
+    public static void insertCourseAttachment(byte[] convertedFile, String name, String course_code) throws SQLException {
+       Database.openConnection();
 
+       PreparedStatement pst = 
+                   Database.getSharedConnection().prepareStatement("INSERT INTO "
+                           + "Attachment (attachment_name, "
+                           + "course_id, blob_data)"
+                           + "VALUES (?,?,?)");
+       pst.setString(1, name);
+       pst.setString(2, course_code);
+       pst.setBytes(3, convertedFile);
+       pst.executeUpdate();
+
+       Database.closeConnection();
+       pst.close();
+    }
+     
+    public static void insertModuleAttachment(byte[] convertedFile, String name, String module_name) throws SQLException {
+        Database.openConnection();
+
+       PreparedStatement pst = 
+                   Database.getSharedConnection().prepareStatement("INSERT INTO "
+                           + "Attachment (attachment_name, "
+                           + "module_id, blob_data)"
+                           + "VALUES (?,?,?)");
+       pst.setString(1, name);
+       pst.setString(2, module_name);
+       pst.setBytes(3, convertedFile);
+       pst.executeUpdate();
+
+       Database.closeConnection();
+       pst.close();
+    }
+     
+     public static void insertSectionAttachment(byte[] convertedFile, String name, int section_id) throws SQLException {
+        Database.openConnection();
+        
+        PreparedStatement pst = 
+                    Database.getSharedConnection().prepareStatement("INSERT INTO "
+                            + "Attachment (attachment_name, "
+                            + "section_id, blob_data)"
+                            + "VALUES (?,?,?)");
+        pst.setString(1, name);
+        pst.setInt(2, section_id);
+        pst.setBytes(3, convertedFile);
+        pst.executeUpdate();
+
+        Database.closeConnection();
+        pst.close();
+    }
+    
+    public static void insertResourceAttachment(byte[] convertedFile, String name, int resource_id) throws SQLException {
+        Database.openConnection();
+        
+        PreparedStatement pst = 
+                    Database.getSharedConnection().prepareStatement("INSERT INTO "
+                            + "Attachment (attachment_name, "
+                            + "resource_id, blob_data)"
+                            + "VALUES (?,?,?)");
+        pst.setString(1, name);
+        pst.setInt(2, resource_id);
+        pst.setBytes(3, convertedFile);
+        pst.executeUpdate();
+
+        Database.closeConnection();
+        pst.close();
+    }
+    
 }

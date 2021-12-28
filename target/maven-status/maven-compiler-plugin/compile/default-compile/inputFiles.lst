@@ -4,6 +4,7 @@ E:\GitHub\Modular-Course-Builder\src\main\java\ModularCourseBuilder\Database.jav
 E:\GitHub\Modular-Course-Builder\src\main\java\ModularCourseBuilder\DatabaseHelper.java
 E:\GitHub\Modular-Course-Builder\src\main\java\ModularCourseBuilder\NewModuleController.java
 E:\GitHub\Modular-Course-Builder\src\main\java\ModularCourseBuilder\Module.java
+E:\GitHub\Modular-Course-Builder\src\main\java\ModularCourseBuilder\BlobHelper.java
 E:\GitHub\Modular-Course-Builder\src\main\java\ModularCourseBuilder\EditCourseController.java
 E:\GitHub\Modular-Course-Builder\src\main\java\ModularCourseBuilder\ModuleViewerController.java
 E:\GitHub\Modular-Course-Builder\src\main\java\ModularCourseBuilder\EditResourceController.java
@@ -23,6 +24,7 @@ E:\GitHub\Modular-Course-Builder\src\main\java\ModularCourseBuilder\Outcome.java
 E:\GitHub\Modular-Course-Builder\src\main\java\ModularCourseBuilder\OutcomeViewerController.java
 E:\GitHub\Modular-Course-Builder\src\main\java\ModularCourseBuilder\LinkModuleController.java
 E:\GitHub\Modular-Course-Builder\src\main\java\ModularCourseBuilder\App.java
+E:\GitHub\Modular-Course-Builder\src\main\java\ModularCourseBuilder\FileHelper.java
 E:\GitHub\Modular-Course-Builder\src\main\java\ModularCourseBuilder\NewResourceController.java
 E:\GitHub\Modular-Course-Builder\src\main\java\ModularCourseBuilder\SectionViewerController.java
 E:\GitHub\Modular-Course-Builder\src\main\java\ModularCourseBuilder\LoginController.java

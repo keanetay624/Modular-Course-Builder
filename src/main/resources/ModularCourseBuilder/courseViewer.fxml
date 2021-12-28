@@ -162,7 +162,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="btnCourseUpload" mnemonicParsing="false" text="Upload">
+                        <Button fx:id="btnCourseUpload" mnemonicParsing="false" onAction="#userDidClickUpload" text="Upload">
                            <graphic>
                               <ImageView fitHeight="18.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -259,6 +259,7 @@
                   <TableColumn id="trCampus" fx:id="trCampus" prefWidth="70.0" text="Campus" />
               </columns>
             </TableView>
+            <Label fx:id="lblFileName" layoutX="453.0" layoutY="661.0" text="Label" />
          </children>
       </AnchorPane>
    </children>
