@@ -202,7 +202,7 @@
                   <HBox alignment="TOP_RIGHT" prefHeight="27.0" prefWidth="141.0" spacing="10.0">
                      <children>
                         <Button fx:id="btnEditOutcome" mnemonicParsing="false" onAction="#userDidEditOutcome" text="Edit" />
-                        <Button fx:id="btnShiftOutcomeUP" mnemonicParsing="false" onAction="#userDidShiftOutcomeUp" text="Shift Up" />
+                        <Button fx:id="btnShiftOutcomeUp" mnemonicParsing="false" onAction="#userDidShiftOutcomeUp" text="Shift Up" />
                         <Button fx:id="btnShiftOutcomeDown" mnemonicParsing="false" onAction="#userDidShiftOutcomeDown" text="Shift Down" />
                      </children>
                      <VBox.margin>
@@ -213,7 +213,7 @@
                   <ListView fx:id="listOutcomes" prefHeight="200.0" prefWidth="200.0" />
                </children>
             </VBox>
-            <TableView fx:id="tblModule" layoutX="36.0" layoutY="211.0" onMouseClicked="#userDidSelectModule" prefHeight="435.0" prefWidth="625.0">
+            <TableView fx:id="tblModule" layoutX="36.0" layoutY="211.0" prefHeight="435.0" prefWidth="625.0">
               <columns>
                 <TableColumn fx:id="trModuleName" prefWidth="306.0" text="Module Name" />
                   <TableColumn fx:id="trModuleDesc" prefWidth="250.0" text="Module Description" />

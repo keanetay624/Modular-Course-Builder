@@ -2,15 +2,17 @@ package ModularCourseBuilder;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.TilePane;
 
 public class CourseViewerController {
     
@@ -41,11 +43,14 @@ public class CourseViewerController {
     @FXML
     Button btnCourseNew, btnCourseEdit, btnCourseArchive, btnCourseUpload, 
             btnCourseDownload, btnRefreshCourse, 
-            btnShiftModuleUp, btnShiftModuleDown;
+            btnShiftModuleUp, btnShiftModuleDown, btnAddModule, btnRemoveModule;
     
     @FXML 
     Button navBtnHome, navBtnCourses, navBtnModules, navBtnSections, 
             navBtnResources, navBtnOutcomes, navBtnSignOut;
+    
+    public Course currentlySelectedCourse;
+    public String currentlySelectedModule;
     
     @FXML
     private void initialize() throws SQLException {
@@ -64,18 +69,41 @@ public class CourseViewerController {
         trCampus.setCellValueFactory(new PropertyValueFactory<>("campus"));
         trLevel.setCellValueFactory(new PropertyValueFactory<>("level"));
         
-        btnCourseEdit.setVisible(false);
-        btnCourseDownload.setVisible(false);
-        btnCourseArchive.setVisible(false);
+        // Setting nodes to hidden.
+        JavaFXHelper.setNodesHidden(new Node[]{btnCourseEdit, btnCourseArchive, btnCourseUpload, btnCourseDownload}, true);
+        JavaFXHelper.setNodesHidden(new Node[]{btnShiftModuleUp, btnShiftModuleDown, btnAddModule, btnRemoveModule}, true);
+        
+        // Click Listener for course table.
+        tblCourse.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                userDidSelectCourse(newValue);
+            } catch (IOException ex) {
+                Logger.getLogger(CourseViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        
+        listModules.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                userDidSelectModule((String)newValue);
+            } catch (IOException ex) {
+                Logger.getLogger(CourseViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
     
     /*
     * This function is called when a course is clicked within the TableView
     */
     @FXML
-    private Course userDidSelectCourse() throws IOException, SQLException {
-        Course selectedCourse = tblCourse.getSelectionModel().getSelectedItem();
-        System.out.println(selectedCourse.getName() + " clicked!");
+    private void userDidSelectCourse(Course selectedCourse) throws IOException, SQLException {
+        // handle null in the event of an edit window being closed.
+        if (selectedCourse == null) {
+            return;
+        }
         
         // populate the modules associated with the course
         listModules.getItems().clear();
@@ -89,19 +117,27 @@ public class CourseViewerController {
         }
         
         listModules.getItems().addAll(sModulesList);
-        btnCourseEdit.setVisible(true);
-        btnCourseDownload.setVisible(true);
-        btnCourseArchive.setVisible(true);
-        return selectedCourse;
+        JavaFXHelper.setNodesHidden(new Node[]{btnCourseEdit, btnCourseArchive, btnCourseUpload, btnCourseDownload}, false);
+        JavaFXHelper.setNodesHidden(new Node[]{btnAddModule}, false);
+        this.currentlySelectedCourse = selectedCourse;
+    }
+    
+    @FXML
+    private void userDidSelectModule(String selectedModule) throws IOException, SQLException {
+        // handle null in the event of an edit window being closed.
+        if (selectedModule == null) {
+            return;
+        }
+        
+        JavaFXHelper.setNodesHidden(new Node[]{btnShiftModuleUp, btnShiftModuleDown, btnRemoveModule}, false);
+        this.currentlySelectedModule = selectedModule;
     }
     
     @FXML
     private void userDidArchiveCourse() throws IOException, SQLException {
         Course selectedCourse = tblCourse.getSelectionModel().getSelectedItem();
         tblCourse.getItems().removeAll(selectedCourse);
-        System.out.println(selectedCourse.getName() + " removed!");
         DatabaseHelper.archiveCourse(selectedCourse);
-        System.out.println(selectedCourse.getName() + " removed from database!");
         
         listModules.getItems().clear();
         btnCourseEdit.setVisible(false);
@@ -113,7 +149,6 @@ public class CourseViewerController {
     private void userDidShiftModuleUp() throws IOException, SQLException {
         String selectedCourse = tblCourse.getSelectionModel().getSelectedItem().getName();
         String selectedModule = (String) listModules.getSelectionModel().getSelectedItem();
-        System.out.println(selectedModule);
         
         // send this to the database helper class
         // get the id of the previous section (if any) 
@@ -127,7 +162,6 @@ public class CourseViewerController {
     private void userDidShiftModuleDown() throws IOException, SQLException {
         String selectedCourse = tblCourse.getSelectionModel().getSelectedItem().getName();
         String selectedModule = (String) listModules.getSelectionModel().getSelectedItem();
-        System.out.println(selectedModule);
         
         // send this to the database helper class
         // get the id of the previous section (if any) 
@@ -139,10 +173,8 @@ public class CourseViewerController {
     
     @FXML
     private void userDidRemoveModule() throws IOException, SQLException {
-        System.out.println("Remove Clicked!");
         String selectedCourse = tblCourse.getSelectionModel().getSelectedItem().getName();
         String selectedModule = (String) listModules.getSelectionModel().getSelectedItem();
-        System.out.println(selectedModule);
         
         // send this to the database helper class
         // get the id of the previous section (if any) 
@@ -202,7 +234,6 @@ public class CourseViewerController {
     
     @FXML
     private void userDidAddModule() throws IOException, SQLException {
-        System.out.println("Add Clicked!");
         String selectedCourse = tblCourse.getSelectionModel().getSelectedItem().getName();
         
         LinkModuleController lmc = new LinkModuleController();
@@ -213,7 +244,6 @@ public class CourseViewerController {
     
     @FXML
     private void userDidEditCourse() throws IOException, SQLException {
-        System.out.println("Edit Clicked!");
         Course selectedCourse = tblCourse.getSelectionModel().getSelectedItem();
         
         EditCourseController ecc = new EditCourseController();

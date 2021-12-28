@@ -2,9 +2,12 @@ package ModularCourseBuilder;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
@@ -31,7 +34,7 @@ public class ModuleViewerController {
     Button btnModuleNew, btnModuleEdit, btnModuleArchive, btnModuleUpload, 
             btnModuleDownload, btnRefreshModule,
             btnShiftSectionUp, btnShiftSectionDown,
-            btnShiftOutcomeUp, btnShiftOutcomeDown;
+            btnShiftOutcomeUp, btnShiftOutcomeDown, btnEditOutcome;
     
     @FXML 
     Button navBtnHome ,navBtnCourses, navBtnModules, navBtnSections, 
@@ -55,16 +58,54 @@ public class ModuleViewerController {
         btnModuleEdit.setVisible(false);
         btnModuleDownload.setVisible(false);
         btnModuleArchive.setVisible(false);
+        
+        // Setting nodes to hidden.
+        JavaFXHelper.setNodesHidden(new Node[]{btnModuleEdit, btnModuleArchive, btnModuleUpload, btnModuleDownload}, true);
+        JavaFXHelper.setNodesHidden(new Node[]{btnShiftSectionUp, btnShiftSectionDown}, true);
+        JavaFXHelper.setNodesHidden(new Node[]{btnShiftOutcomeUp, btnShiftOutcomeDown, btnEditOutcome}, true);
+        
+        // Click Listener for course table.
+        tblModule.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                userDidSelectModule(newValue);
+            } catch (IOException ex) {
+                Logger.getLogger(CourseViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        
+        // Click Listener for sections listview.
+        listSections.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                userDidSelectSection((String) newValue);
+            } catch (IOException ex) {
+                Logger.getLogger(CourseViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        
+        // Click Listener for outcomes listview.
+        listOutcomes.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                userDidSelectOutcome((String) newValue);
+            } catch (IOException ex) {
+                Logger.getLogger(CourseViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
     
     /*
     * This function is called when a course is clicked within the TableView
     */
     @FXML
-    private Module userDidSelectModule() throws IOException, SQLException {
-        Module selectedModule = tblModule.getSelectionModel().getSelectedItem();
-        System.out.println(selectedModule.getName() + " clicked!");
-        
+    private void userDidSelectModule(Module selectedModule) throws IOException, SQLException {
+        if (selectedModule == null) {
+            return;
+        }
         // handle sections within the selected module
         listSections.getItems().clear();
         ObservableList<Section> sectionsList = FXCollections.observableArrayList();
@@ -89,11 +130,33 @@ public class ModuleViewerController {
         
         listSections.getItems().addAll(sSectionsList);
         listOutcomes.getItems().addAll(sOutcomesList);
-        btnModuleEdit.setVisible(true);
-        btnModuleDownload.setVisible(true);
-        btnModuleArchive.setVisible(true);
-        return selectedModule;
+        
+        JavaFXHelper.setNodesHidden(new Node[]{btnModuleEdit, btnModuleArchive, btnModuleUpload, btnModuleDownload}, false);
+        JavaFXHelper.setNodesHidden(new Node[]{btnShiftSectionUp, btnShiftSectionDown}, true);
+        JavaFXHelper.setNodesHidden(new Node[]{btnEditOutcome, btnShiftOutcomeUp, btnShiftOutcomeDown}, true);
     }
+    
+    @FXML
+    private void userDidSelectSection(String selectedSection) throws IOException, SQLException {
+        // handle null in the event of an edit window being closed.
+        if (selectedSection == null) {
+            return;
+        }
+        
+        JavaFXHelper.setNodesHidden(new Node[]{btnShiftSectionUp, btnShiftSectionDown}, false);
+    }
+    
+    //todo finish this method
+    @FXML
+    private void userDidSelectOutcome(String selectedOutcome) throws IOException, SQLException {
+        // handle null in the event of an edit window being closed.
+        if (selectedOutcome == null) {
+            return;
+        }
+        
+        JavaFXHelper.setNodesHidden(new Node[]{btnEditOutcome, btnShiftOutcomeUp, btnShiftOutcomeDown}, false);
+    }
+    
 
     @FXML
     private void userDidArchiveModule() throws IOException, SQLException {

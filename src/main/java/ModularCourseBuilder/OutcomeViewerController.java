@@ -2,10 +2,13 @@ package ModularCourseBuilder;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -51,34 +54,38 @@ public class OutcomeViewerController {
         trModule.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getoModule().getName()));
         trSequence.setCellValueFactory(new PropertyValueFactory<>("sequence"));
         
-        btnOutcomeEdit.setVisible(false);
-        btnOutcomeDownload.setVisible(false);
-        btnOutcomeArchive.setVisible(false);
+        // Setting nodes to hidden.
+        JavaFXHelper.setNodesHidden(new Node[]{btnOutcomeEdit, btnOutcomeArchive, btnOutcomeUpload, btnOutcomeDownload}, true);
+        
+        // Click Listener for course table.
+        tblOutcome.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                userDidSelectOutcome(newValue);
+            } catch (IOException ex) {
+                Logger.getLogger(CourseViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
     
     /*
     * This function is called when a course is clicked within the TableView
     */
     @FXML
-    private Outcome userDidSelectOutcome() throws IOException, SQLException {
-        Outcome selectedOutcome = tblOutcome.getSelectionModel().getSelectedItem();
-        System.out.println(selectedOutcome.getName() + " clicked!");
-        btnOutcomeEdit.setVisible(true);
-        btnOutcomeDownload.setVisible(true);
-        btnOutcomeArchive.setVisible(true);
-        return selectedOutcome;
+    private void userDidSelectOutcome(Outcome selectedOutcome) throws IOException, SQLException {
+        if (selectedOutcome == null) {
+            return;
+        }
+        
+        JavaFXHelper.setNodesHidden(new Node[]{btnOutcomeEdit, btnOutcomeArchive, btnOutcomeUpload, btnOutcomeDownload}, false);
     }
     
     @FXML
     private void userDidArchiveOutcome() throws IOException, SQLException {
         Outcome selectedOutcome = tblOutcome.getSelectionModel().getSelectedItem();
         tblOutcome.getItems().removeAll(selectedOutcome);
-        System.out.println(selectedOutcome.getName() + " removed!");
         DatabaseHelper.archiveOutcome(selectedOutcome);
-        System.out.println(selectedOutcome.getName() + " removed from database!");
-        btnOutcomeEdit.setVisible(false);
-        btnOutcomeDownload.setVisible(false);
-        btnOutcomeArchive.setVisible(false);
     }
     
     /* 

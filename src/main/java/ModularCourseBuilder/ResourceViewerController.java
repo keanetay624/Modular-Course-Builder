@@ -2,10 +2,13 @@ package ModularCourseBuilder;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -52,22 +55,31 @@ public class ResourceViewerController {
         trResourceName.setCellValueFactory(new PropertyValueFactory<>("name"));
         trResourceExt.setCellValueFactory(new PropertyValueFactory<>("ext"));
         
-        btnResourceEdit.setVisible(false);
-        btnResourceDownload.setVisible(false);
-        btnResourceArchive.setVisible(false);
+        // Setting nodes to hidden.
+        JavaFXHelper.setNodesHidden(new Node[]{btnResourceEdit, btnResourceArchive, btnResourceUpload, btnResourceDownload}, true);
+        
+        // Click Listener for course table.
+        tblResource.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                userDidSelectResource(newValue);
+            } catch (IOException ex) {
+                Logger.getLogger(CourseViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
     
     /*
     * This function is called when a Resource is clicked within the TableView
     */
     @FXML
-    private Resource userDidSelectResource() throws IOException, SQLException {
-        Resource selectedResource = tblResource.getSelectionModel().getSelectedItem();
-        System.out.println(selectedResource.getName() + " clicked!");
-        btnResourceEdit.setVisible(true);
-        btnResourceDownload.setVisible(true);
-        btnResourceArchive.setVisible(true);
-        return selectedResource;
+    private void userDidSelectResource(Resource selectedResource) throws IOException, SQLException {
+        if (selectedResource == null) {
+            return;
+        }
+        
+        JavaFXHelper.setNodesHidden(new Node[]{btnResourceEdit, btnResourceArchive, btnResourceUpload, btnResourceDownload}, false);
     }
 //    
     @FXML

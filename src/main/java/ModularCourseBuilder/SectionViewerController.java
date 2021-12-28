@@ -2,10 +2,13 @@ package ModularCourseBuilder;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
@@ -59,18 +62,31 @@ public class SectionViewerController {
         trModule.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getsModule().getName()));
         trSequence.setCellValueFactory(new PropertyValueFactory<>("sequence"));
         
-        btnSectionEdit.setVisible(false);
-        btnSectionDownload.setVisible(false);
-        btnSectionArchive.setVisible(false);
+        // Setting nodes to hidden.
+        JavaFXHelper.setNodesHidden(new Node[]{btnSectionEdit, btnSectionArchive, btnSectionUpload, btnSectionDownload}, true);
+        
+        // Click Listener for course table.
+        tblSection.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                userDidSelectSection(newValue);
+            } catch (IOException ex) {
+                Logger.getLogger(CourseViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        
     }
     
     /*
     * This function is called when a course is clicked within the TableView
     */
     @FXML
-    private Section userDidSelectSection() throws IOException, SQLException {
-        Section selectedSection = tblSection.getSelectionModel().getSelectedItem();
-        System.out.println(selectedSection.getName() + " clicked!");
+    private void userDidSelectSection(Section selectedSection) throws IOException, SQLException {
+        
+        if (selectedSection == null) {
+            return;
+        }
         
         // handle Resources within the selected section
         listResources.getItems().clear();
@@ -83,11 +99,7 @@ public class SectionViewerController {
         }
         
         listResources.getItems().addAll(sresourcesList);
-        
-        btnSectionEdit.setVisible(true);
-        btnSectionDownload.setVisible(true);
-        btnSectionArchive.setVisible(true);
-        return selectedSection;
+        JavaFXHelper.setNodesHidden(new Node[]{btnSectionEdit, btnSectionArchive, btnSectionUpload, btnSectionDownload}, false);
     }
 //    
     @FXML
@@ -97,9 +109,6 @@ public class SectionViewerController {
         System.out.println(selectedSection.getName() + " removed!");
         DatabaseHelper.archiveSection(selectedSection);
         System.out.println(selectedSection.getName() + " removed from database!");
-        btnSectionEdit.setVisible(false);
-        btnSectionDownload.setVisible(false);
-        btnSectionArchive.setVisible(false);
     }
     
     /* 

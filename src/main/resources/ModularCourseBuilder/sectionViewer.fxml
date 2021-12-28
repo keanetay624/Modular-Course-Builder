@@ -88,7 +88,7 @@
                   <Label text="Available Resources:" />
                   <ListView fx:id="listResources" prefHeight="405.0" prefWidth="347.0" />
                </children></VBox>
-            <TableView fx:id="tblSection" layoutX="36.0" layoutY="211.0" onMouseClicked="#userDidSelectSection" prefHeight="435.0" prefWidth="625.0">
+            <TableView fx:id="tblSection" layoutX="36.0" layoutY="211.0" prefHeight="435.0" prefWidth="625.0">
               <columns>
                 <TableColumn fx:id="trSectionName" prefWidth="159.0" text="Section Name" />
                   <TableColumn fx:id="trSectionDesc" prefWidth="202.0" text="Section Description" />

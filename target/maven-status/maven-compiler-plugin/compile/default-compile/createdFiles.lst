@@ -9,6 +9,7 @@ ModularCourseBuilder\NewSectionController.class
 ModularCourseBuilder\DatabaseHelper.class
 ModularCourseBuilder\Section.class
 ModularCourseBuilder\ModuleViewerController.class
+ModularCourseBuilder\JavaFXHelper.class
 ModularCourseBuilder\NewOutcomeController.class
 ModularCourseBuilder\EditCourseController.class
 ModularCourseBuilder\HomeController.class

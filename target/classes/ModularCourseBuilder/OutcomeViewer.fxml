@@ -187,7 +187,7 @@
                   </ButtonBar>
                </children>
             </HBox>
-            <TableView fx:id="tblOutcome" layoutX="36.0" layoutY="211.0" onMouseClicked="#userDidSelectOutcome" prefHeight="435.0" prefWidth="1038.0">
+            <TableView fx:id="tblOutcome" layoutX="36.0" layoutY="211.0" prefHeight="435.0" prefWidth="1038.0">
               <columns>
                 <TableColumn fx:id="trOutcomeName" prefWidth="292.0" text="Learning Outcome Name" />
                   <TableColumn fx:id="trOutcomeDesc" prefWidth="349.0" text="Learning Outcome Description" />
