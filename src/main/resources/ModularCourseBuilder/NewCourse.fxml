@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="course_anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="450.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ModularCourseBuilder.NewCourseController">
+   <children>
+      <HBox prefHeight="53.0" prefWidth="450.0" styleClass="bg_yellow">
+         <children>
+            <Label text="Create a New Course">
+               <font>
+                  <Font size="26.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="10.0" top="10.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="261.0" layoutY="54.0" prefHeight="38.0" prefWidth="174.0" spacing="10.0">
+         <children>
+            <Button fx:id="btnCancelNewCourse" cancelButton="true" mnemonicParsing="false" onAction="#userDidClickCancel" text="Cancel">
+               <graphic>
+                  <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@icons/prohibition.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="btnSaveNewCourse" defaultButton="true" mnemonicParsing="false" onAction="#userDidClickSave" text="Save">
+               <graphic>
+                  <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@icons/floppy-disk.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </HBox>
+      <VBox alignment="CENTER" layoutX="10.0" layoutY="80.0" prefHeight="290.0" prefWidth="429.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label prefHeight="18.0" prefWidth="100.0" text="Course Code:">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="inputCourseCode" prefHeight="25.0" prefWidth="90.0" promptText="e.g. ACCT2101" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="250.0">
+                     <children>
+                        <Label prefWidth="100.0" text="Course Name:">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="inputCourseName" prefHeight="26.0" prefWidth="156.0" promptText="e.g. Industry Placement" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+               <children>
+                  <VBox prefHeight="50.0" prefWidth="379.0">
+                     <children>
+                        <Label prefHeight="18.0" prefWidth="100.0" text="Faculty:">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="inputFaculty" prefHeight="26.0" prefWidth="333.0" promptText="e.g. UNSW Business School" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+               <children>
+                  <VBox prefHeight="50.0" prefWidth="379.0">
+                     <children>
+                        <Label prefHeight="18.0" prefWidth="100.0" text="School:">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="inputSchool" prefHeight="26.0" prefWidth="333.0" promptText="e.g. School of Accounting" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+               <children>
+                  <VBox prefHeight="71.0" prefWidth="153.0">
+                     <children>
+                        <Label prefHeight="18.0" prefWidth="100.0" text="Level:">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="inputLevel" prefHeight="24.0" prefWidth="114.0" promptText="e.g. 0" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="73.0" prefWidth="198.0">
+                     <children>
+                        <Label prefWidth="100.0" text="Campus:">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="inputCampus" prefHeight="26.0" prefWidth="193.0" promptText="e.g. Sydney" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
