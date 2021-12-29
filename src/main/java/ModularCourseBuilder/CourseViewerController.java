@@ -1,5 +1,6 @@
 package ModularCourseBuilder;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -14,6 +15,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 
 public class CourseViewerController {
     
@@ -52,6 +56,9 @@ public class CourseViewerController {
     
     @FXML
     Label lblFileName;
+    
+    @FXML
+    AnchorPane anchorPaneID;
     
     public Course currentlySelectedCourse;
     public String currentlySelectedModule;
@@ -266,6 +273,27 @@ public class CourseViewerController {
         String selectedCourse = tblCourse.getSelectionModel().getSelectedItem().getName();
         FileHelper fh = new FileHelper();
         fh.getFile(1, selectedCourse, 0);
+    }
+    
+    @FXML
+    private void userDidClickDownload() throws IOException, SQLException {
+        //prompt the user to select a download location using a directorychooser
+        String selectedCourse = tblCourse.getSelectionModel().getSelectedItem().getName();
+        final DirectoryChooser dc = new DirectoryChooser();
+        String filepath = "";
+        dc.setTitle("Select download location");
+
+        Stage stage = (Stage) anchorPaneID.getScene().getWindow();
+
+        File file = dc.showDialog(stage);
+
+        if (file != null) {
+            filepath = file.getAbsolutePath();
+            System.out.println("Directory: " + filepath);
+        }
+        
+        FileHelper fh = new FileHelper();
+        fh.getCourseBlob(selectedCourse, filepath);
     }
     
     @FXML

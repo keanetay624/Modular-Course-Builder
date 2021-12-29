@@ -1,5 +1,6 @@
 package ModularCourseBuilder;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -9,11 +10,15 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 
 public class ModuleViewerController {
     
@@ -41,12 +46,19 @@ public class ModuleViewerController {
             navBtnResources, navBtnOutcomes, navBtnSignOut;
     
     @FXML
+    Label lblFileName;
+    
+    @FXML
+    AnchorPane anchorPaneID;
+    
+    @FXML
     private void initialize() throws SQLException {
         ObservableList<Module> newList = DatabaseHelper.getModules();
         
         tblModule.getItems().clear();
         listSections.getItems().clear();
         listOutcomes.getItems().clear();
+        lblFileName.setVisible(false);
         
         for (Module thisModule : newList) {
             tblModule.getItems().addAll(thisModule);
@@ -106,6 +118,18 @@ public class ModuleViewerController {
         if (selectedModule == null) {
             return;
         }
+        
+        String fileName = DatabaseHelper.getFileName(2, selectedModule.getName(), 0);
+        
+        if (!fileName.equals("")) {
+            lblFileName.setText("File available: " + fileName);
+            JavaFXHelper.setNodeHidden(btnModuleDownload, false);
+        } else {
+            lblFileName.setText("No file available.");
+            JavaFXHelper.setNodeHidden(btnModuleDownload, true);
+        }
+        lblFileName.setVisible(true);
+        
         // handle sections within the selected module
         listSections.getItems().clear();
         ObservableList<Section> sectionsList = FXCollections.observableArrayList();
@@ -131,7 +155,7 @@ public class ModuleViewerController {
         listSections.getItems().addAll(sSectionsList);
         listOutcomes.getItems().addAll(sOutcomesList);
         
-        JavaFXHelper.setNodesHidden(new Node[]{btnModuleEdit, btnModuleArchive, btnModuleUpload, btnModuleDownload}, false);
+        JavaFXHelper.setNodesHidden(new Node[]{btnModuleEdit, btnModuleArchive, btnModuleUpload}, false);
         JavaFXHelper.setNodesHidden(new Node[]{btnShiftSectionUp, btnShiftSectionDown}, true);
         JavaFXHelper.setNodesHidden(new Node[]{btnEditOutcome, btnShiftOutcomeUp, btnShiftOutcomeDown}, true);
     }
@@ -297,6 +321,34 @@ public class ModuleViewerController {
         emc.setSelectedOutcome(selectedOutcome);
         emc.display("Edit Module");
         refreshTable();
+    }
+    
+    @FXML
+    private void userDidClickUpload() throws IOException, SQLException {
+        String selectedModule = tblModule.getSelectionModel().getSelectedItem().getName();
+        FileHelper fh = new FileHelper();
+        fh.getFile(2, selectedModule, 0);
+    }
+    
+    @FXML
+    private void userDidClickDownload() throws IOException, SQLException {
+        //prompt the user to select a download location using a directorychooser
+        String selectedModule = tblModule.getSelectionModel().getSelectedItem().getName();
+        final DirectoryChooser dc = new DirectoryChooser();
+        String filepath = "";
+        dc.setTitle("Select download location");
+
+        Stage stage = (Stage) anchorPaneID.getScene().getWindow();
+
+        File file = dc.showDialog(stage);
+
+        if (file != null) {
+            filepath = file.getAbsolutePath();
+            System.out.println("Directory: " + filepath);
+        }
+        
+        FileHelper fh = new FileHelper();
+        fh.getModuleBlob(selectedModule, filepath);
     }
     
     @FXML

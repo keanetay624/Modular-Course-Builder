@@ -7,7 +7,12 @@ package ModularCourseBuilder;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import javafx.stage.FileChooser;
 
@@ -91,5 +96,89 @@ public class FileHelper {
             }
         }
         return fileContent;
+    }
+    
+    public static void getCourseBlob(String selectedCourse, String filepath) throws SQLException, FileNotFoundException, IOException {
+        Database.openConnection();
+        
+        PreparedStatement pst = 
+                   Database.getSharedConnection().prepareStatement("Select * From "
+                           + "Attachment Where course_id = ?");
+        pst.setString(1, selectedCourse);
+        ResultSet rs = pst.executeQuery();
+
+        //set file outputstream
+        String downloadFileName = rs.getString(2);
+        File theFile = new File(filepath, downloadFileName);
+        FileOutputStream output = new FileOutputStream(theFile);
+
+        //read the input and store in output
+        if (rs.next()) {
+            InputStream input = rs.getBinaryStream(7);
+
+            byte[] buffer = new byte[4096];
+
+            int len = 0;
+
+            while ((len = input.read(buffer)) != - 1) {
+                output.write(buffer,0,len);
+            }
+
+            System.out.println("File downloaded succcesfully!");
+
+            if (input != null) {
+                input.close();
+            }
+
+            if (output != null) {
+                output.close();
+            }
+
+            Database.getSharedConnection().close();
+            Database.closeConnection();
+
+        }
+    }
+    
+    public static void getModuleBlob(String selectedModule, String filepath) throws SQLException, FileNotFoundException, IOException {
+        Database.openConnection();
+        
+        PreparedStatement pst = 
+                   Database.getSharedConnection().prepareStatement("Select * From "
+                           + "Attachment Where module_id = ?");
+        pst.setString(1, selectedModule);
+        ResultSet rs = pst.executeQuery();
+
+        //set file outputstream
+        String downloadFileName = rs.getString(2);
+        File theFile = new File(filepath, downloadFileName);
+        FileOutputStream output = new FileOutputStream(theFile);
+
+        //read the input and store in output
+        if (rs.next()) {
+            InputStream input = rs.getBinaryStream(7);
+
+            byte[] buffer = new byte[4096];
+
+            int len = 0;
+
+            while ((len = input.read(buffer)) != - 1) {
+                output.write(buffer,0,len);
+            }
+
+            System.out.println("File downloaded succcesfully!");
+
+            if (input != null) {
+                input.close();
+            }
+
+            if (output != null) {
+                output.close();
+            }
+
+            Database.getSharedConnection().close();
+            Database.closeConnection();
+
+        }
     }
 }
