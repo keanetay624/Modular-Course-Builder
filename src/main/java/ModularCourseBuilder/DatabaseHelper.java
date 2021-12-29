@@ -68,9 +68,24 @@ public class DatabaseHelper {
         pst.setInt(4,updatedCourse.getLevel());
         pst.setString(5, updatedCourse.getCampus());
         pst.setString(6, selectedCourse.getCourseCode());
-
         pst.executeUpdate();
         
+        // Updated chm table to updated Course
+        PreparedStatement pst2 = Database.getSharedConnection().prepareStatement("UPDATE CoursesHaveModules "
+                + "SET course_name = ? "
+                + "WHERE course_name = ?");
+        pst2.setString(1, updatedCourse.getName());
+        pst2.setString(2, selectedCourse.getName());
+        pst2.executeUpdate();
+        
+        // Updated Attachment table
+        PreparedStatement pst3 = Database.getSharedConnection().prepareStatement("UPDATE Attachment "
+                + "SET course_id = ? "
+                + "WHERE course_id = ?");
+        pst3.setString(1, updatedCourse.getName());
+        pst3.setString(2, selectedCourse.getName());
+        pst3.executeUpdate();
+
         pst.close();
         Database.closeConnection();
     }
@@ -378,6 +393,14 @@ public class DatabaseHelper {
         pst4.setString(1, updatedModule.getName());
         pst4.setString(2, selectedModule.getName());
         pst4.executeUpdate();
+        
+        // Updated Attachment table
+        PreparedStatement pst5 = Database.getSharedConnection().prepareStatement("UPDATE Attachment "
+                + "SET module_id = ? "
+                + "WHERE module_id = ?");
+        pst5.setString(1, updatedModule.getName());
+        pst5.setString(2, selectedModule.getName());
+        pst5.executeUpdate();
         
         st.close();
         Database.closeConnection();
