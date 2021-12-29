@@ -120,7 +120,7 @@ public class CourseViewerController {
         // check for an associated file with selected course
         // if exists, notify the user that a file is available to download
         // else hide download button
-        String fileName = DatabaseHelper.getFileName(1, selectedCourse.getName(), 0);
+        String fileName = DatabaseHelper.getFileName(1, selectedCourse.getName(),"");
         
         if (!fileName.equals("")) {
             lblFileName.setText("File available: " + fileName);
@@ -272,7 +272,7 @@ public class CourseViewerController {
     private void userDidClickUpload() throws IOException, SQLException {
         String selectedCourse = tblCourse.getSelectionModel().getSelectedItem().getName();
         FileHelper fh = new FileHelper();
-        fh.getFile(1, selectedCourse, 0);
+        fh.getFile(1, selectedCourse, "");
     }
     
     @FXML

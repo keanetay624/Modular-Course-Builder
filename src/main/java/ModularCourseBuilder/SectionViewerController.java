@@ -1,5 +1,6 @@
 package ModularCourseBuilder;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -10,11 +11,15 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 
 public class SectionViewerController {
     
@@ -45,11 +50,18 @@ public class SectionViewerController {
             navBtnResources, navBtnOutcomes, navBtnSignOut;
     
     @FXML
+    Label lblFileName;
+    
+    @FXML
+    AnchorPane anchorPaneID;
+    
+    @FXML
     private void initialize() throws SQLException {
         ObservableList<Section> newList = DatabaseHelper.getSections();
         
         tblSection.getItems().clear();
         listResources.getItems().clear();
+        lblFileName.setVisible(false);
         
         for (Section thisSection : newList) {
             tblSection.getItems().addAll(thisSection);
@@ -87,6 +99,17 @@ public class SectionViewerController {
         if (selectedSection == null) {
             return;
         }
+        
+        String fileName = DatabaseHelper.getFileName(3, selectedSection.getName(), selectedSection.getsModule().getName());
+        
+        if (!fileName.equals("")) {
+            lblFileName.setText("File available: " + fileName);
+            JavaFXHelper.setNodeHidden(btnSectionDownload, false);
+        } else {
+            lblFileName.setText("No file available.");
+            JavaFXHelper.setNodeHidden(btnSectionDownload, true);
+        }
+        lblFileName.setVisible(true);
         
         // handle Resources within the selected section
         listResources.getItems().clear();
@@ -153,7 +176,33 @@ public class SectionViewerController {
     /*
     * Auxilary Functions
     */
+    @FXML
+    private void userDidClickUpload() throws IOException, SQLException {
+        Section selectedSection = tblSection.getSelectionModel().getSelectedItem();
+        FileHelper fh = new FileHelper();
+        fh.getFile(3, selectedSection.getName(), selectedSection.getsModule().getName());
+    }
     
+    @FXML
+    private void userDidClickDownload() throws IOException, SQLException {
+        //prompt the user to select a download location using a directorychooser
+        Section selectedSection = tblSection.getSelectionModel().getSelectedItem();
+        final DirectoryChooser dc = new DirectoryChooser();
+        String filepath = "";
+        dc.setTitle("Select download location");
+
+        Stage stage = (Stage) anchorPaneID.getScene().getWindow();
+
+        File file = dc.showDialog(stage);
+
+        if (file != null) {
+            filepath = file.getAbsolutePath();
+            System.out.println("Directory: " + filepath);
+        }
+        
+        FileHelper fh = new FileHelper();
+        fh.getSectionBlob(selectedSection.getName(), selectedSection.getsModule().getName(), filepath);
+    }
 
     @FXML
     private void switchToNewSection() throws IOException, SQLException {

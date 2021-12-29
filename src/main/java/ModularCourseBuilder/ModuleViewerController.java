@@ -119,7 +119,7 @@ public class ModuleViewerController {
             return;
         }
         
-        String fileName = DatabaseHelper.getFileName(2, selectedModule.getName(), 0);
+        String fileName = DatabaseHelper.getFileName(2, selectedModule.getName(),"");
         
         if (!fileName.equals("")) {
             lblFileName.setText("File available: " + fileName);
@@ -327,7 +327,7 @@ public class ModuleViewerController {
     private void userDidClickUpload() throws IOException, SQLException {
         String selectedModule = tblModule.getSelectionModel().getSelectedItem().getName();
         FileHelper fh = new FileHelper();
-        fh.getFile(2, selectedModule, 0);
+        fh.getFile(2, selectedModule, "");
     }
     
     @FXML

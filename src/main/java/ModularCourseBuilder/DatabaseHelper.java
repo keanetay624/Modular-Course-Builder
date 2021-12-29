@@ -1156,7 +1156,7 @@ public class DatabaseHelper {
     * Helper methods for Attachments 
     */
     
-    public static String getFileName(int modelType, String idString, int idInt) throws SQLException {
+    public static String getFileName(int modelType, String idString, String idString2) throws SQLException {
        Database.openConnection();
        
        String name = "";
@@ -1184,25 +1184,45 @@ public class DatabaseHelper {
            }
            pst.close();
        } else if (modelType == 3) {
+           PreparedStatement pst0 = 
+                   Database.getSharedConnection().prepareStatement("Select section_id From "
+                           + "Section Where section_name = ? and module_name = ?");
+           pst0.setString(1, idString);
+           pst0.setString(2, idString2);
+           
+           ResultSet rs = pst0.executeQuery();
+           
+           int id = rs.getInt(1);
+           
            PreparedStatement pst = 
                    Database.getSharedConnection().prepareStatement("Select * From "
                            + "Attachment Where section_id = ?");
-           pst.setInt(1, idInt);
-           ResultSet rs = pst.executeQuery();
+           pst.setInt(1, id);
+           ResultSet rs2 = pst.executeQuery();
            
-           if (rs.next()) {
-               name = rs.getString(2);
+           if (rs2.next()) {
+               name = rs2.getString(2);
            }
            pst.close();
        } else {
+           PreparedStatement pst0 = 
+                   Database.getSharedConnection().prepareStatement("Select resource_id From "
+                           + "Resource Where resource_name = ? and section_name = ?");
+           pst0.setString(1, idString);
+           pst0.setString(2, idString2);
+           
+           ResultSet rs = pst0.executeQuery();
+           
+           int id = rs.getInt(1);
+           
             PreparedStatement pst = 
                    Database.getSharedConnection().prepareStatement("Select * From "
                            + "Attachment Where resource_id = ?");
-            pst.setInt(1, idInt);
-            ResultSet rs = pst.executeQuery();
+            pst.setInt(1, id);
+            ResultSet rs2 = pst.executeQuery();
            
-           if (rs.next()) {
-               name = rs.getString(2);
+           if (rs2.next()) {
+               name = rs2.getString(2);
            }
            pst.close();
        }
