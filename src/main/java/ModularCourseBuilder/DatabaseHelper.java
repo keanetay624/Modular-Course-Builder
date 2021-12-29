@@ -1210,6 +1210,8 @@ public class DatabaseHelper {
                            + "Resource Where resource_name = ? and section_name = ?");
            pst0.setString(1, idString);
            pst0.setString(2, idString2);
+           System.out.println("resource_name: " + idString);
+           System.out.println("section_name: " + idString2);
            
            ResultSet rs = pst0.executeQuery();
            

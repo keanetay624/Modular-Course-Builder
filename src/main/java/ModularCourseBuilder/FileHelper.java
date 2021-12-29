@@ -255,4 +255,55 @@ public class FileHelper {
         pst.close();
         Database.closeConnection();
     }
+    
+    public static void getResourceBlob(String resourceName, String sectionName, String filepath) throws SQLException, FileNotFoundException, IOException {
+        Database.openConnection();
+        
+        PreparedStatement pst0 = 
+                   Database.getSharedConnection().prepareStatement("Select resource_id From "
+                           + "Resource Where resource_name = ? and section_name = ?");
+        pst0.setString(1, resourceName);
+        pst0.setString(2, sectionName);
+
+        ResultSet rs = pst0.executeQuery();
+
+        int id = rs.getInt(1);
+           
+        PreparedStatement pst = 
+                   Database.getSharedConnection().prepareStatement("Select * From "
+                           + "Attachment Where resource_id = ?");
+        pst.setInt(1, id);
+        ResultSet rs2 = pst.executeQuery();
+
+        //set file outputstream
+        String downloadFileName = rs2.getString(2);
+        File theFile = new File(filepath, downloadFileName);
+        FileOutputStream output = new FileOutputStream(theFile);
+
+        //read the input and store in output
+        if (rs2.next()) {
+            InputStream input = rs2.getBinaryStream(7);
+
+            byte[] buffer = new byte[4096];
+
+            int len = 0;
+
+            while ((len = input.read(buffer)) != - 1) {
+                output.write(buffer,0,len);
+            }
+
+            System.out.println("File downloaded succcesfully!");
+
+            if (input != null) {
+                input.close();
+            }
+
+            if (output != null) {
+                output.close();
+            }
+        }
+        pst0.close();
+        pst.close();
+        Database.closeConnection();
+    }
 }

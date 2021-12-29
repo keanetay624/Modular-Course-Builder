@@ -122,7 +122,7 @@ public class SectionViewerController {
         }
         
         listResources.getItems().addAll(sresourcesList);
-        JavaFXHelper.setNodesHidden(new Node[]{btnSectionEdit, btnSectionArchive, btnSectionUpload, btnSectionDownload}, false);
+        JavaFXHelper.setNodesHidden(new Node[]{btnSectionEdit, btnSectionArchive, btnSectionUpload}, false);
     }
 //    
     @FXML

@@ -1,5 +1,6 @@
 package ModularCourseBuilder;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -10,11 +11,15 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.media.MediaView;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 
 public class ResourceViewerController {
     
@@ -42,10 +47,17 @@ public class ResourceViewerController {
             navBtnResources, navBtnOutcomes, navBtnSignOut;
     
     @FXML
+    Label lblFileName;
+    
+    @FXML
+    AnchorPane anchorPaneID;
+    
+    @FXML
     private void initialize() throws SQLException {
         ObservableList<Resource> newList = DatabaseHelper.getResources();
         
         tblResource.getItems().clear();
+        lblFileName.setVisible(false);
         
         for (Resource thisResource : newList) {
             tblResource.getItems().addAll(thisResource);
@@ -79,7 +91,18 @@ public class ResourceViewerController {
             return;
         }
         
-        JavaFXHelper.setNodesHidden(new Node[]{btnResourceEdit, btnResourceArchive, btnResourceUpload, btnResourceDownload}, false);
+        String fileName = DatabaseHelper.getFileName(4, selectedResource.getName(), selectedResource.getrSection().getName());
+        
+        if (!fileName.equals("")) {
+            lblFileName.setText("File available: " + fileName);
+            JavaFXHelper.setNodeHidden(btnResourceDownload, false);
+        } else {
+            lblFileName.setText("No file available.");
+            JavaFXHelper.setNodeHidden(btnResourceDownload, true);
+        }
+        lblFileName.setVisible(true);
+        
+        JavaFXHelper.setNodesHidden(new Node[]{btnResourceEdit, btnResourceArchive, btnResourceUpload}, false);
     }
 //    
     @FXML
@@ -136,6 +159,34 @@ public class ResourceViewerController {
     /*
     * Auxilary Functions
     */
+    
+    @FXML
+    private void userDidClickUpload() throws IOException, SQLException {
+        Resource selectedresource = tblResource.getSelectionModel().getSelectedItem();
+        FileHelper fh = new FileHelper();
+        fh.getFile(4, selectedresource.getName(), selectedresource.getrSection().getName());
+    }
+    
+    @FXML
+    private void userDidClickDownload() throws IOException, SQLException {
+        //prompt the user to select a download location using a directorychooser
+        Resource selectedresource = tblResource.getSelectionModel().getSelectedItem();
+        final DirectoryChooser dc = new DirectoryChooser();
+        String filepath = "";
+        dc.setTitle("Select download location");
+
+        Stage stage = (Stage) anchorPaneID.getScene().getWindow();
+
+        File file = dc.showDialog(stage);
+
+        if (file != null) {
+            filepath = file.getAbsolutePath();
+            System.out.println("Directory: " + filepath);
+        }
+        
+        FileHelper fh = new FileHelper();
+        fh.getResourceBlob(selectedresource.getName(), selectedresource.getrSection().getName(), filepath);
+    }
     
     @FXML
     private void switchToNewResource() throws IOException {
