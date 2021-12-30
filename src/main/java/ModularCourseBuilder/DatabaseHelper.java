@@ -1325,4 +1325,39 @@ public class DatabaseHelper {
         pst.close();
     }
     
+    /**
+    * Helper functions for User 
+    */
+    public static boolean userExists(String username) throws SQLException {
+        boolean userExists = false;
+        
+        Database.openConnection();
+        PreparedStatement pst = 
+                    Database.getSharedConnection().prepareStatement("Select * From "
+                            + "Users WHERE username = ?");
+        pst.setString(1, username);
+        ResultSet rs = pst.executeQuery();
+        
+        if (rs.next()) {
+            userExists = true;
+        } 
+        Database.closeConnection();
+        pst.close();
+        
+        return userExists;
+    }
+    
+    public static void insertIntoUser(String username, String password) throws SQLException {
+        Database.openConnection();
+        PreparedStatement pst = 
+                    Database.getSharedConnection().prepareStatement("Insert into users "
+                            + "(username, password) values (?,?)");
+        pst.setString(1, username);
+        pst.setString(2, password);
+        pst.executeUpdate();
+        
+        Database.closeConnection();
+        pst.close();
+    }
+    
 }

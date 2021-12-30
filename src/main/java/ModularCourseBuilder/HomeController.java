@@ -19,7 +19,7 @@ public class HomeController {
     
     @FXML 
     Button navBtnHome, navBtnCourses, navBtnModules, navBtnSections, 
-            navBtnResources, nvBtnOutcomes, navBtnSignOut;
+            navBtnResources, nvBtnOutcomes, navBtnSignOut, navBtnNewUser;
     
     private static final String COURSE_PROMPT = "Add, remove, or edit a course. View modules associated with a course";
     private static final String MODULE_PROMPT = "Add, remove, or edit a module. View sections within a module";
@@ -99,5 +99,11 @@ public class HomeController {
     @FXML
     private void userDidClickSignOut() throws IOException {
         App.setRoot("login");
+    }
+    
+    @FXML
+    private void userDidClickNewUser() throws IOException, SQLException {
+        NewUserController nuc = new NewUserController();
+        nuc.display("New User");
     }
 }

@@ -60,15 +60,4 @@ public class LoginController {
         return true;
     }
     
-//    private int countSpecialCharacters(String s) {
-//        String specialCharacters = "!#$%&'()*+,./:;<=>?@[]^_`{|}~";
-//        String ss[] = s.split("");
-//        int count = 0;
-//        for (int i = 0; i < ss.length; i++) {
-//            if (specialCharacters.contains(ss[i])) {
-//                count++;
-//            }
-//        }
-//        return count;
-//    }
 }
