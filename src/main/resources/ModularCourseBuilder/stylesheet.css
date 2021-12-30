@@ -32,5 +32,27 @@
 }
 
 .bg_yellow {
-    -fx-background-color: #ffdd00;
+    -fx-background-color: #e9a52d;
+}
+
+.bg_dark-blue {
+    -fx-background-color: #0c4aad;
+}
+
+.bg_light-blue {
+    -fx-background-color: #79d3fa;
+}
+
+.button-round {
+    -fx-background-radius: 5em;
+    -fx-min-width: 300px;
+    -fx-min-height: 30px;
+    -fx-max-width: 30px;
+    -fx-max-height: 30px;
+}
+
+.clear-bg {
+    -fx-background-color: null;
+    -fx-border-color: white;
+    -fx-text-fill: white
 }

@@ -43,8 +43,8 @@ public class LoginController {
         }
         
         else {
-           if (Database.validateUser(username, password)) {
-            App.setRoot("home");
+            if (Database.validateUser(username, password)) {
+                App.setRoot("home");
             } else {
                 outputLabel.setVisible(true);
                 outputLabel.setText("Login failed: Incorrect Username or Password");
