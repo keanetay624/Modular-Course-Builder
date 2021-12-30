@@ -16,6 +16,7 @@ import javafx.scene.image.Image;
 public class App extends Application {
 
     private static Scene scene;
+    public static final String ICON_PATH = "file:src/main/resources/ModularCourseBuilder/icons/modular.png";
 
     @Override
     public void start(Stage stage) throws IOException, SQLException {
@@ -31,7 +32,7 @@ public class App extends Application {
         // launch the login screen
         scene = new Scene(loadFXML("login"), 1280, 720);
         stage.setScene(scene);
-        stage.getIcons().add(new Image("file:src/main/resources/ModularCourseBuilder/unsw_1.jpg"));
+        stage.getIcons().add(new Image(ICON_PATH));
         stage.setTitle("Modular Course Builder v2.0");
         stage.show();
     }

@@ -53,7 +53,7 @@ public class NewSectionController {
     
     public void display(String title) throws IOException, SQLException {
         Stage window = new Stage();
-        window.getIcons().add(new Image("file:src/main/resources/ModularCourseBuilder/unsw_1.jpg"));
+        window.getIcons().add(new Image(App.ICON_PATH));
         Scene scene = new Scene(App.loadFXML("NewSection"), 450, 400);
         window.setScene(scene);
         

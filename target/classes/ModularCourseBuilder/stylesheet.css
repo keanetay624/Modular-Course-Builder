@@ -17,6 +17,10 @@
     -fx-background-color: white;
 }
 
+.nav_bg {
+    -fx-background-color: #3570ce;
+}
+
 #nav_bg {
     -fx-background-color: #ffdd00;
 }
