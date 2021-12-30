@@ -2,6 +2,7 @@ ModularCourseBuilder\Database.class
 ModularCourseBuilder\OutcomeViewerController.class
 ModularCourseBuilder\SectionViewerController.class
 ModularCourseBuilder\Outcome.class
+ModularCourseBuilder\FileHelper.class
 ModularCourseBuilder\EditSectionController.class
 ModularCourseBuilder\LinkModuleController.class
 ModularCourseBuilder\EditResourceController.class
@@ -19,6 +20,7 @@ ModularCourseBuilder\NewResourceController.class
 ModularCourseBuilder\EditOutcomeController.class
 ModularCourseBuilder\LoginController.class
 ModularCourseBuilder\Module.class
+ModularCourseBuilder\BlobHelper.class
 ModularCourseBuilder\ResourceViewerController.class
 ModularCourseBuilder\NewCourseController.class
 ModularCourseBuilder\EditModuleController.class

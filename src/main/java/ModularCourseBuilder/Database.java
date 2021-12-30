@@ -181,7 +181,7 @@ public class Database {
                 + "users (username, password) "
                 + "VALUES (?,?)");
         pst3.setString(1, "keane");
-        pst3.setString(2, "iyashi");
+        pst3.setString(2, "iyashi12");
         
         //insert statement for section
         PreparedStatement pst4 = Database.getSharedConnection().prepareStatement("INSERT INTO "

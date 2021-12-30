@@ -23,17 +23,52 @@ public class LoginController {
         outputLabel.setVisible(false);
     }
     
+    private static String message;
+    
     @FXML
     private void userDidClickLogin() throws IOException, SQLException {
         String username = txtUsername.getText();
         String password = txtPassword.getText();
         
-        if (Database.validateUser(username, password)) {
-            App.setRoot("home");
-        } else {
+        // handle empty fields
+        if (username.equals("")) {
+            outputLabel.setText("Login failed: Username cannot be empty");
             outputLabel.setVisible(true);
-            outputLabel.setText("Login failed: Incorrect Username or Password");
+        } else if (password.equals("")) {
+            outputLabel.setText("Login failed: Password cannot be empty");
+            outputLabel.setVisible(true);
+        } else if (!passwordIsValid(password)) {
+            outputLabel.setText(message);
+            outputLabel.setVisible(true);
         }
         
+        else {
+           if (Database.validateUser(username, password)) {
+            App.setRoot("home");
+            } else {
+                outputLabel.setVisible(true);
+                outputLabel.setText("Login failed: Incorrect Username or Password");
+            } 
+        }
     }
+    
+    private boolean passwordIsValid(String password) {
+        if (password.length() < 8) {
+           message = "Password must be at least 8 characters.";
+           return false;
+        } 
+        return true;
+    }
+    
+//    private int countSpecialCharacters(String s) {
+//        String specialCharacters = "!#$%&'()*+,./:;<=>?@[]^_`{|}~";
+//        String ss[] = s.split("");
+//        int count = 0;
+//        for (int i = 0; i < ss.length; i++) {
+//            if (specialCharacters.contains(ss[i])) {
+//                count++;
+//            }
+//        }
+//        return count;
+//    }
 }
