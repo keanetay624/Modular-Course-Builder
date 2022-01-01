@@ -195,8 +195,9 @@ public class ResourceViewerController {
     }
     
     @FXML
-    private void switchToNewResource() throws IOException {
+    private void switchToNewResource() throws IOException, SQLException {
         NewResourceController.display("New Resource");
+        refreshTable();
     }
     
     @FXML

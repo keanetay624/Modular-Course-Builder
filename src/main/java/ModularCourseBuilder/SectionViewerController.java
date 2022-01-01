@@ -214,6 +214,7 @@ public class SectionViewerController {
     private void switchToNewSection() throws IOException, SQLException {
         NewSectionController newController = new NewSectionController();
         newController.display("New Module");
+        refreshTable();
     }
     
     @FXML

@@ -152,6 +152,7 @@ public class OutcomeViewerController {
     @FXML
     private void switchToNewOutcome() throws IOException, SQLException {
         NewOutcomeController.display("New Outcome");
+        refreshTable();
     }
     
     @FXML

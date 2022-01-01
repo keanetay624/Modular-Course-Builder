@@ -291,8 +291,9 @@ public class CourseViewerController {
     */
     
     @FXML
-    private void switchToNewCourse() throws IOException {
+    private void switchToNewCourse() throws IOException, SQLException {
         NewCourseController.display("New Course");
+        refreshTable();
     }
     
     @FXML

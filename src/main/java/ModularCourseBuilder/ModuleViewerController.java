@@ -340,8 +340,9 @@ public class ModuleViewerController {
     */
     
     @FXML
-    private void switchToNewModule() throws IOException {
+    private void switchToNewModule() throws IOException, SQLException {
         NewModuleController.display("New Module");
+        refreshTable();
     }
     
     @FXML
