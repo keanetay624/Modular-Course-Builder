@@ -1,3 +1,33 @@
+/* 
+* Base colour: #3570ce
+* Dark hsl(217, 50%, 30%)
+* Light
+*/
+.test-swatch {
+    -fx-background-color: #2865c8;
+}
+
+.color-light {
+    -fx-background-color: #b3c6e6;
+}
+
+.color-light2 {
+    -fx-background-color: #d9e3f2;
+}
+
+.color-dark {
+    -fx-background-color: #264473;
+}
+
+.color-dark2 {
+    -fx-background-color: #08162b;
+}
+
+.color-base {
+    -fx-text-fill: white;
+    -fx-background-color: #2865c8;
+}
+
 #btn_search {
     -fx-text-fill: white;
     -fx-background-color: black;
@@ -30,8 +60,13 @@
     -fx-text-fill: black;
 }
 
+.nav_btn.active {
+    -fx-background-color: #b3c6e6;
+    -fx-text-fill: black;
+}
+
 .btn:hover {
-    -fx-background-color: #e2e7f6;
+    -fx-background-color: #79d3fa;
     -fx-scale-y: 1.1;
 }
 

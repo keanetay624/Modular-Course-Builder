@@ -63,6 +63,12 @@ public class SectionViewerController {
         listResources.getItems().clear();
         lblFileName.setVisible(false);
         
+        // Applying styling to selected nav button
+        JavaFXHelper.setButtonsActive(new Button[]{navBtnHome, navBtnCourses, 
+            navBtnModules, navBtnSections, 
+            navBtnResources, navBtnOutcomes}, false);
+        JavaFXHelper.setButtonActive(navBtnSections, true);
+        
         for (Section thisSection : newList) {
             tblSection.getItems().addAll(thisSection);
         }

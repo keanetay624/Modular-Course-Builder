@@ -6,6 +6,7 @@
 package ModularCourseBuilder;
 
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 
 /**
  *
@@ -23,4 +24,18 @@ public class JavaFXHelper {
             setNodeHidden(node, isHidden);
         }
     }
+    public static void setButtonActive(Button button, boolean isActive) {
+        if (isActive) {
+            button.getStyleClass().add("active");
+        } else {
+            button.getStyleClass().removeAll("active");
+        }
+        
+    }
+    public static void setButtonsActive(Button[] buttons, boolean isActive) {
+        for (Button button : buttons) {
+            setButtonActive(button, isActive);
+        }
+    }
+    
 }

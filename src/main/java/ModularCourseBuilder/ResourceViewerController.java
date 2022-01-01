@@ -59,6 +59,12 @@ public class ResourceViewerController {
         tblResource.getItems().clear();
         lblFileName.setVisible(false);
         
+        // Applying styling to selected nav button
+        JavaFXHelper.setButtonsActive(new Button[]{navBtnHome, navBtnCourses, 
+            navBtnModules, navBtnSections, 
+            navBtnResources, navBtnOutcomes}, false);
+        JavaFXHelper.setButtonActive(navBtnResources, true);
+        
         for (Resource thisResource : newList) {
             tblResource.getItems().addAll(thisResource);
         }

@@ -39,7 +39,7 @@ public class ModuleViewerController {
     Button btnModuleNew, btnModuleEdit, btnModuleArchive, btnModuleUpload, 
             btnModuleDownload, btnRefreshModule,
             btnShiftSectionUp, btnShiftSectionDown,
-            btnShiftOutcomeUp, btnShiftOutcomeDown, btnEditOutcome;
+            btnShiftOutcomeUp, btnShiftOutcomeDown;
     
     @FXML 
     Button navBtnHome ,navBtnCourses, navBtnModules, navBtnSections, 
@@ -60,9 +60,21 @@ public class ModuleViewerController {
         listOutcomes.getItems().clear();
         lblFileName.setVisible(false);
         
+        // Applying styling to selected nav button
+        JavaFXHelper.setButtonsActive(new Button[]{navBtnHome, navBtnCourses, 
+            navBtnModules, navBtnSections, 
+            navBtnResources, navBtnOutcomes}, false);
+        JavaFXHelper.setButtonActive(navBtnModules, true);
+        
         for (Module thisModule : newList) {
             tblModule.getItems().addAll(thisModule);
         }
+        
+        // Disable respective buttons
+        btnShiftSectionUp.setDisable(true); 
+        btnShiftSectionDown.setDisable(true); 
+        btnShiftOutcomeUp.setDisable(true); 
+        btnShiftOutcomeDown.setDisable(true); 
         
         trModuleName.setCellValueFactory(new PropertyValueFactory<>("name"));
         trModuleDesc.setCellValueFactory(new PropertyValueFactory<>("desc"));
@@ -73,8 +85,6 @@ public class ModuleViewerController {
         
         // Setting nodes to hidden.
         JavaFXHelper.setNodesHidden(new Node[]{btnModuleEdit, btnModuleArchive, btnModuleUpload, btnModuleDownload}, true);
-        JavaFXHelper.setNodesHidden(new Node[]{btnShiftSectionUp, btnShiftSectionDown}, true);
-        JavaFXHelper.setNodesHidden(new Node[]{btnShiftOutcomeUp, btnShiftOutcomeDown, btnEditOutcome}, true);
         
         // Click Listener for course table.
         tblModule.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -155,9 +165,16 @@ public class ModuleViewerController {
         listSections.getItems().addAll(sSectionsList);
         listOutcomes.getItems().addAll(sOutcomesList);
         
+        // Enable add module button
+//        btnAddSection.setDisable(false); // add this button later
+
+        // Disable respective buttons
+        btnShiftSectionUp.setDisable(true); 
+        btnShiftSectionDown.setDisable(true);
+        btnShiftOutcomeUp.setDisable(true); 
+        btnShiftOutcomeDown.setDisable(true); 
+        
         JavaFXHelper.setNodesHidden(new Node[]{btnModuleEdit, btnModuleArchive, btnModuleUpload}, false);
-        JavaFXHelper.setNodesHidden(new Node[]{btnShiftSectionUp, btnShiftSectionDown}, true);
-        JavaFXHelper.setNodesHidden(new Node[]{btnEditOutcome, btnShiftOutcomeUp, btnShiftOutcomeDown}, true);
     }
     
     @FXML
@@ -167,7 +184,9 @@ public class ModuleViewerController {
             return;
         }
         
-        JavaFXHelper.setNodesHidden(new Node[]{btnShiftSectionUp, btnShiftSectionDown}, false);
+        // Enable respective buttons
+        btnShiftSectionUp.setDisable(false); 
+        btnShiftSectionDown.setDisable(false); 
     }
     
     //todo finish this method
@@ -177,8 +196,9 @@ public class ModuleViewerController {
         if (selectedOutcome == null) {
             return;
         }
-        
-        JavaFXHelper.setNodesHidden(new Node[]{btnEditOutcome, btnShiftOutcomeUp, btnShiftOutcomeDown}, false);
+        // Enable respective buttons
+        btnShiftOutcomeUp.setDisable(false); 
+        btnShiftOutcomeDown.setDisable(false); 
     }
     
 
@@ -192,6 +212,12 @@ public class ModuleViewerController {
         btnModuleEdit.setVisible(false);
         btnModuleDownload.setVisible(false);
         btnModuleArchive.setVisible(false);
+        
+        // Disable respective buttons
+        btnShiftSectionUp.setDisable(true); 
+        btnShiftSectionDown.setDisable(true); 
+        btnShiftOutcomeUp.setDisable(true); 
+        btnShiftOutcomeDown.setDisable(true); 
     }
     
     @FXML
@@ -205,6 +231,11 @@ public class ModuleViewerController {
         // if there is previous section, swap the order
         // else do nothing
         DatabaseHelper.shiftSectionUp(selectedSection, selectedModule);
+        // Disable respective buttons
+        btnShiftSectionUp.setDisable(true); 
+        btnShiftSectionDown.setDisable(true); 
+        btnShiftOutcomeUp.setDisable(true); 
+        btnShiftOutcomeDown.setDisable(true); 
         refreshTable();
     }
     
@@ -219,6 +250,11 @@ public class ModuleViewerController {
         // if there is previous section, swap the order
         // else do nothing
         DatabaseHelper.shiftSectionDown(selectedSection, selectedModule);
+        // Disable respective buttons
+        btnShiftSectionUp.setDisable(true); 
+        btnShiftSectionDown.setDisable(true); 
+        btnShiftOutcomeUp.setDisable(true); 
+        btnShiftOutcomeDown.setDisable(true); 
         refreshTable();
     }
     
@@ -233,6 +269,11 @@ public class ModuleViewerController {
         // if there is previous section, swap the order
         // else do nothing
         DatabaseHelper.shiftOutcomeUp(selectedOutcome, selectedModule);
+        // Disable respective buttons
+        btnShiftSectionUp.setDisable(true); 
+        btnShiftSectionDown.setDisable(true); 
+        btnShiftOutcomeUp.setDisable(true); 
+        btnShiftOutcomeDown.setDisable(true); 
         refreshTable();
     }
     
@@ -247,6 +288,11 @@ public class ModuleViewerController {
         // if there is previous section, swap the order
         // else do nothing
         DatabaseHelper.shiftOutcomeDown(selectedOutcome, selectedModule);
+        // Disable respective buttons
+        btnShiftSectionUp.setDisable(true); 
+        btnShiftSectionDown.setDisable(true); 
+        btnShiftOutcomeUp.setDisable(true); 
+        btnShiftOutcomeDown.setDisable(true); 
         refreshTable();
     }
     
@@ -305,20 +351,6 @@ public class ModuleViewerController {
         
         EditModuleController emc = new EditModuleController();
         emc.setSelectedModule(selectedModule);
-        emc.display("Edit Module");
-        refreshTable();
-    }
-    
-    @FXML
-    private void userDidEditOutcome() throws IOException, SQLException {
-        System.out.println("Edit Outcome Clicked!");
-        String outcomeString = listOutcomes.getSelectionModel().getSelectedItem().toString();
-        Module selectedModule = tblModule.getSelectionModel().getSelectedItem();
-        
-        // write a database query to get the selected outcome from the database
-        Outcome selectedOutcome = DatabaseHelper.getSelectedOutcome(selectedModule, outcomeString);
-        EditOutcomeController emc = new EditOutcomeController();
-        emc.setSelectedOutcome(selectedOutcome);
         emc.display("Edit Module");
         refreshTable();
     }

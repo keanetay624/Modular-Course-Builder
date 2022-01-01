@@ -45,6 +45,12 @@ public class OutcomeViewerController {
         ObservableList<Outcome> newList = DatabaseHelper.getOutcomes();
         tblOutcome.getItems().clear();
         
+        // Applying styling to selected nav button
+        JavaFXHelper.setButtonsActive(new Button[]{navBtnHome, navBtnCourses, 
+            navBtnModules, navBtnSections, 
+            navBtnResources, navBtnOutcomes}, false);
+        JavaFXHelper.setButtonActive(navBtnOutcomes, true);
+        
         for (Outcome thisOutcome : newList) {
             tblOutcome.getItems().addAll(thisOutcome);
         }
@@ -130,6 +136,18 @@ public class OutcomeViewerController {
     /*
     * Auxilary Functions
     */
+    
+    @FXML
+    private void userDidEditOutcome() throws IOException, SQLException {
+        System.out.println("Edit Outcome Clicked!");
+        
+        // write a database query to get the selected outcome from the database
+        Outcome selectedOutcome = tblOutcome.getSelectionModel().getSelectedItem();
+        EditOutcomeController emc = new EditOutcomeController();
+        emc.setSelectedOutcome(selectedOutcome);
+        emc.display("Edit Outcome");
+        refreshTable();
+    }
     
     @FXML
     private void switchToNewOutcome() throws IOException, SQLException {

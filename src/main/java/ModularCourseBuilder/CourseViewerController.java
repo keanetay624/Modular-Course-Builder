@@ -70,6 +70,12 @@ public class CourseViewerController {
         listModules.getItems().clear();
         lblFileName.setVisible(false);
         
+        // Applying styling to selected nav button
+        JavaFXHelper.setButtonsActive(new Button[]{navBtnHome, navBtnCourses, 
+            navBtnModules, navBtnSections, 
+            navBtnResources, navBtnOutcomes}, false);
+        JavaFXHelper.setButtonActive(navBtnCourses, true);
+        
         for (Course thisCourse : newList) {
             tblCourse.getItems().addAll(thisCourse);
         }
@@ -83,7 +89,12 @@ public class CourseViewerController {
         
         // Setting nodes to hidden.
         JavaFXHelper.setNodesHidden(new Node[]{btnCourseEdit, btnCourseArchive, btnCourseUpload, btnCourseDownload}, true);
-        JavaFXHelper.setNodesHidden(new Node[]{btnShiftModuleUp, btnShiftModuleDown, btnAddModule, btnRemoveModule}, true);
+        
+        // adding disable function
+        btnShiftModuleUp.setDisable(true);
+        btnShiftModuleDown.setDisable(true);
+        btnAddModule.setDisable(true);
+        btnRemoveModule.setDisable(true);
         
         // Click Listener for course table.
         tblCourse.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -117,6 +128,12 @@ public class CourseViewerController {
             return;
         }
         
+        // adding disable function
+        btnShiftModuleUp.setDisable(true);
+        btnShiftModuleDown.setDisable(true);
+        btnAddModule.setDisable(true);
+        btnRemoveModule.setDisable(true);
+        
         // check for an associated file with selected course
         // if exists, notify the user that a file is available to download
         // else hide download button
@@ -144,7 +161,10 @@ public class CourseViewerController {
         
         listModules.getItems().addAll(sModulesList);
         JavaFXHelper.setNodesHidden(new Node[]{btnCourseEdit, btnCourseArchive, btnCourseUpload}, false);
-        JavaFXHelper.setNodesHidden(new Node[]{btnAddModule}, false);
+        
+        // Enable add module button
+        btnAddModule.setDisable(false);
+        
         this.currentlySelectedCourse = selectedCourse;
     }
     
@@ -155,7 +175,12 @@ public class CourseViewerController {
             return;
         }
         
-        JavaFXHelper.setNodesHidden(new Node[]{btnShiftModuleUp, btnShiftModuleDown, btnRemoveModule}, false);
+        // Enable relevant buttons
+        btnRemoveModule.setDisable(false);
+        btnShiftModuleUp.setDisable(false);
+        btnShiftModuleDown.setDisable(false);
+        
+//        JavaFXHelper.setNodesHidden(new Node[]{btnShiftModuleUp, btnShiftModuleDown, btnRemoveModule}, false); // don't need this anymore
         this.currentlySelectedModule = selectedModule;
     }
     
@@ -181,6 +206,10 @@ public class CourseViewerController {
         // if there is previous section, swap the order
         // else do nothing
         DatabaseHelper.shiftModuleUp(selectedModule, selectedCourse);
+        btnShiftModuleUp.setDisable(true);
+        btnShiftModuleDown.setDisable(true);
+        btnAddModule.setDisable(true);
+        btnRemoveModule.setDisable(true);
         refreshTable();
     }
     
@@ -194,6 +223,10 @@ public class CourseViewerController {
         // if there is previous section, swap the order
         // else do nothing
         DatabaseHelper.shiftModuleDown(selectedModule, selectedCourse);
+        btnShiftModuleUp.setDisable(true);
+        btnShiftModuleDown.setDisable(true);
+        btnAddModule.setDisable(true);
+        btnRemoveModule.setDisable(true);
         refreshTable();
     }
     
@@ -207,6 +240,10 @@ public class CourseViewerController {
         // if there is previous section, swap the order
         // else do nothing
         DatabaseHelper.unlinkCourseModule(selectedModule, selectedCourse);
+        btnShiftModuleUp.setDisable(true);
+        btnShiftModuleDown.setDisable(true);
+        btnAddModule.setDisable(true);
+        btnRemoveModule.setDisable(true);
         refreshTable();
     }
     
@@ -264,7 +301,11 @@ public class CourseViewerController {
         
         LinkModuleController lmc = new LinkModuleController();
         lmc.setCourse(selectedCourse);
-        lmc.display("New Course");
+        lmc.display("Link a Module");
+        btnShiftModuleUp.setDisable(true);
+        btnShiftModuleDown.setDisable(true);
+        btnAddModule.setDisable(true);
+        btnRemoveModule.setDisable(true);
         refreshTable();
     }
     
