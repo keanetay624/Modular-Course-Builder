@@ -198,7 +198,7 @@ public class CourseViewerController {
     
     @FXML
     private void userDidShiftModuleUp() throws IOException, SQLException {
-        String selectedCourse = tblCourse.getSelectionModel().getSelectedItem().getName();
+        String selectedCourse = tblCourse.getSelectionModel().getSelectedItem().getCourseCode();
         String selectedModule = (String) listModules.getSelectionModel().getSelectedItem();
         
         // send this to the database helper class
@@ -215,7 +215,7 @@ public class CourseViewerController {
     
     @FXML
     private void userDidShiftModuleDown() throws IOException, SQLException {
-        String selectedCourse = tblCourse.getSelectionModel().getSelectedItem().getName();
+        String selectedCourse = tblCourse.getSelectionModel().getSelectedItem().getCourseCode();
         String selectedModule = (String) listModules.getSelectionModel().getSelectedItem();
         
         // send this to the database helper class
@@ -232,7 +232,7 @@ public class CourseViewerController {
     
     @FXML
     private void userDidRemoveModule() throws IOException, SQLException {
-        String selectedCourse = tblCourse.getSelectionModel().getSelectedItem().getName();
+        String selectedCourse = tblCourse.getSelectionModel().getSelectedItem().getCourseCode();
         String selectedModule = (String) listModules.getSelectionModel().getSelectedItem();
         
         // send this to the database helper class

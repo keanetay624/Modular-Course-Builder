@@ -60,30 +60,31 @@ public class DatabaseHelper {
 
         // Updated selectedCourse to updatedcourse
         PreparedStatement pst = Database.getSharedConnection().prepareStatement("UPDATE Course "
-                + "SET course_name = ?, faculty_name = ?, school_name = ?, "
+                + "SET course_code = ?, course_name = ?, faculty_name = ?, school_name = ?, "
                 + "level = ?, campus = ? WHERE course_code = ?");
-        pst.setString(1, updatedCourse.getName());
-        pst.setString(2, updatedCourse.getFaculty());
-        pst.setString(3, updatedCourse.getSchool());
-        pst.setInt(4,updatedCourse.getLevel());
-        pst.setString(5, updatedCourse.getCampus());
-        pst.setString(6, selectedCourse.getCourseCode());
+        pst.setString(1, updatedCourse.getCourseCode());
+        pst.setString(2, updatedCourse.getName());
+        pst.setString(3, updatedCourse.getFaculty());
+        pst.setString(4, updatedCourse.getSchool());
+        pst.setInt(5,updatedCourse.getLevel());
+        pst.setString(6, updatedCourse.getCampus());
+        pst.setString(7, selectedCourse.getCourseCode());
         pst.executeUpdate();
         
         // Updated chm table to updated Course
         PreparedStatement pst2 = Database.getSharedConnection().prepareStatement("UPDATE CoursesHaveModules "
-                + "SET course_name = ? "
-                + "WHERE course_name = ?");
-        pst2.setString(1, updatedCourse.getName());
-        pst2.setString(2, selectedCourse.getName());
+                + "SET course_code = ? "
+                + "WHERE course_code = ?");
+        pst2.setString(1, updatedCourse.getCourseCode());
+        pst2.setString(2, updatedCourse.getCourseCode());
         pst2.executeUpdate();
         
         // Updated Attachment table
         PreparedStatement pst3 = Database.getSharedConnection().prepareStatement("UPDATE Attachment "
                 + "SET course_id = ? "
                 + "WHERE course_id = ?");
-        pst3.setString(1, updatedCourse.getName());
-        pst3.setString(2, selectedCourse.getName());
+        pst3.setString(1, updatedCourse.getCourseCode());
+        pst3.setString(2, updatedCourse.getCourseCode());
         pst3.executeUpdate();
 
         pst.close();
@@ -117,9 +118,9 @@ public class DatabaseHelper {
 
         Database.openConnection();
         PreparedStatement pst = Database.getSharedConnection().prepareStatement("Select * "
-                + "From CoursesHaveModules where course_name = ? order by sequence_no");
+                + "From CoursesHaveModules where course_code = ? order by sequence_no");
         
-        pst.setString(1, selectedCourse.getName());
+        pst.setString(1, selectedCourse.getCourseCode());
 
         ResultSet rs = pst.executeQuery();
 
@@ -136,14 +137,14 @@ public class DatabaseHelper {
         return newList;
     }
     
-    // This function gets number of Modules within the given course name
-    public static int getModuleCount(String courseName) throws SQLException {
+    // This function gets number of Modules within the given course code
+    public static int getModuleCount(String courseCode) throws SQLException {
         int moduleCount = 0;
         
         Database.openConnection();
         PreparedStatement pst = Database.getSharedConnection().prepareStatement("SELECT * FROM "
-                + "CoursesHaveModules WHERE course_name = ?");
-        pst.setString(1, courseName);
+                + "CoursesHaveModules WHERE course_code = ?");
+        pst.setString(1, courseCode);
         ResultSet rs = pst.executeQuery();
         
         while (rs.next()) {
@@ -157,13 +158,13 @@ public class DatabaseHelper {
     
     // This function parses the modules within a course name, and resets 
     // available modules in ascending order, starting from 1.
-    public static void sortModules(String courseName) throws SQLException {
-        int moduleCount = getModuleCount(courseName);
+    public static void sortModules(String courseCode) throws SQLException {
+        int moduleCount = getModuleCount(courseCode);
         Database.openConnection();
         
         PreparedStatement pst = Database.getSharedConnection().prepareStatement("SELECT * FROM "
-                + "CoursesHaveModules WHERE course_name = ? order by sequence_no");
-        pst.setString(1, courseName);
+                + "CoursesHaveModules WHERE course_code = ? order by sequence_no");
+        pst.setString(1, courseCode);
         
         ResultSet rs = pst.executeQuery();
         
@@ -192,13 +193,13 @@ public class DatabaseHelper {
     }
     
     // this function returns the int position of a given module and course
-    public static int getModuleIntPos(String moduleName, String courseName) throws SQLException {
+    public static int getModuleIntPos(String moduleName, String courseCode) throws SQLException {
         
         Database.openConnection();
         PreparedStatement pst = Database.getSharedConnection().prepareStatement("Select * FROM CoursesHaveModules "
-                    + " WHERE module_name = ? and course_name = ?");
+                    + " WHERE module_name = ? and course_code = ?");
         pst.setString(1, moduleName);
-        pst.setString(2, courseName);
+        pst.setString(2, courseCode);
         ResultSet rs = pst.executeQuery();
         
         int pos = rs.getInt(4);
@@ -210,13 +211,13 @@ public class DatabaseHelper {
     }
     
     // this function returns number of Modules in a given Course
-    public static int getNumModules(String courseName) throws SQLException {
+    public static int getNumModules(String courseCode) throws SQLException {
         
         Database.openConnection();
         
         PreparedStatement pst = Database.getSharedConnection().prepareStatement("Select * FROM CoursesHaveModules "
-                    + " WHERE course_name = ?");
-        pst.setString(1, courseName);
+                    + " WHERE course_code = ?");
+        pst.setString(1, courseCode);
         ResultSet rs = pst.executeQuery();
         
         int numModules = 0;
@@ -231,9 +232,9 @@ public class DatabaseHelper {
         return numModules;
     }
     
-    public static void shiftModuleUp(String selectedModule, String courseName) throws SQLException {
+    public static void shiftModuleUp(String selectedModule, String courseCode) throws SQLException {
         // get the integer position of the selected Module
-        int pos = getModuleIntPos(selectedModule, courseName);
+        int pos = getModuleIntPos(selectedModule, courseCode);
         // if position is 1, do nothing
         
         if (pos == 1) {
@@ -243,8 +244,8 @@ public class DatabaseHelper {
         Database.openConnection();
         
         PreparedStatement pst = Database.getSharedConnection().prepareStatement("Select * FROM CoursesHaveModules "
-                    + " WHERE course_name = ? and sequence_no = ?");
-        pst.setString(1, courseName);
+                    + " WHERE course_code = ? and sequence_no = ?");
+        pst.setString(1, courseCode);
         int preceding = pos-1;
         pst.setInt(2, preceding);
         
@@ -253,10 +254,10 @@ public class DatabaseHelper {
         
         // set the current position to its preceding position
         PreparedStatement pst2 = Database.getSharedConnection().prepareStatement("Update CoursesHaveModules "
-                    + " set sequence_no = ? where sequence_no = ? and course_name = ?");
+                    + " set sequence_no = ? where sequence_no = ? and courseCode = ?");
         pst2.setInt(1, pos-1);
         pst2.setInt(2, pos);
-        pst2.setString(3, courseName);
+        pst2.setString(3, courseCode);
         pst2.executeUpdate();
         pst2.close();
         
@@ -271,10 +272,10 @@ public class DatabaseHelper {
         Database.closeConnection();
     }
     
-    public static void shiftModuleDown(String selectedModule, String courseName) throws SQLException {
+    public static void shiftModuleDown(String selectedModule, String courseCode) throws SQLException {
         // get the integer position of the selected Module
-        int pos = getModuleIntPos(selectedModule, courseName); 
-        int max = getNumModules(courseName); 
+        int pos = getModuleIntPos(selectedModule, courseCode); 
+        int max = getNumModules(courseCode); 
         // if position is max, do nothing
         if (pos == max) {
             return;
@@ -283,8 +284,8 @@ public class DatabaseHelper {
         Database.openConnection();
         
         PreparedStatement pst = Database.getSharedConnection().prepareStatement("Select * FROM CoursesHaveModules "
-                    + " WHERE course_name = ? and sequence_no = ?");
-        pst.setString(1, courseName);
+                    + " WHERE course_code = ? and sequence_no = ?");
+        pst.setString(1, courseCode);
         int succeeding = pos+1;
         pst.setInt(2, succeeding);
         
@@ -293,10 +294,10 @@ public class DatabaseHelper {
         
         // set the current position to its preceding position
         PreparedStatement pst2 = Database.getSharedConnection().prepareStatement("Update CoursesHaveModules "
-                    + " set sequence_no = ? where sequence_no = ? and course_name = ?");
+                    + " set sequence_no = ? where sequence_no = ? and course_code = ?");
         pst2.setInt(1, pos+1);
         pst2.setInt(2, pos);
-        pst2.setString(3, courseName);
+        pst2.setString(3, courseCode);
         pst2.executeUpdate();
         pst2.close();
         
@@ -316,7 +317,7 @@ public class DatabaseHelper {
         Database.openConnection();
         
         PreparedStatement pst = Database.getSharedConnection().prepareStatement("DELETE FROM "
-                + "CoursesHaveModules WHERE course_name = ? and module_name = ?");
+                + "CoursesHaveModules WHERE course_code = ? and module_name = ?");
         pst.setString(1, selectedCourse);
         pst.setString(2, selectedModule);
         pst.executeUpdate();
@@ -1157,16 +1158,16 @@ public class DatabaseHelper {
     * Helper methods for CoursesHaveModules
     */
     
-    public static void insertIntoCoursesHaveModules(String courseName, String moduleName) throws SQLException {
+    public static void insertIntoCoursesHaveModules(String courseCode, String moduleName) throws SQLException {
         
         // get the next sequence number needed to insert first
-        int seq = getModuleCount(courseName);
+        int seq = getModuleCount(courseCode);
         
         Database.openConnection();
         
         PreparedStatement pst = Database.getSharedConnection().prepareStatement("Insert into CoursesHaveModules "
-                    + " (course_name, module_name, sequence_no) values (?,?,?)");
-        pst.setString(1, courseName);
+                    + " (course_code, module_name, sequence_no) values (?,?,?)");
+        pst.setString(1, courseCode);
         pst.setString(2, moduleName);
         pst.setInt(3, seq);
         

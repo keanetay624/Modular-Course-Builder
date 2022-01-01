@@ -54,7 +54,7 @@ public class EditCourseController {
     
     public void initialize() {
         inputCourseCode.setText(selectedCourse.getCourseCode());
-        inputCourseCode.setDisable(true);
+//        inputCourseCode.setDisable(true);
         inputCourseName.setText(selectedCourse.getName());
         inputFaculty.setText(selectedCourse.getFaculty());
         inputSchool.setText(selectedCourse.getSchool());
@@ -92,7 +92,6 @@ public class EditCourseController {
         // if all valid:
         // save all fields into their respective formats
         // call a database helper method to insert into course. 
-        
         String courseCode = inputCourseCode.getText();
         String name = inputCourseName.getText();
         String faculty = inputFaculty.getText();
