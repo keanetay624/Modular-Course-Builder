@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
@@ -48,7 +49,8 @@ public class CourseViewerController {
     @FXML
     Button btnCourseNew, btnCourseEdit, btnCourseArchive, btnCourseUpload, 
             btnCourseDownload, btnRefreshCourse, 
-            btnShiftModuleUp, btnShiftModuleDown, btnAddModule, btnRemoveModule;
+            btnShiftModuleUp, btnShiftModuleDown, btnAddModule, btnRemoveModule,
+            btnSearch;
     
     @FXML 
     Button navBtnHome, navBtnCourses, navBtnModules, navBtnSections, 
@@ -56,6 +58,9 @@ public class CourseViewerController {
     
     @FXML
     Label lblFileName;
+    
+    @FXML
+    TextField searchbox;
     
     @FXML
     AnchorPane anchorPaneID;
@@ -219,8 +224,8 @@ public class CourseViewerController {
         String selectedModule = (String) listModules.getSelectionModel().getSelectedItem();
         
         // send this to the database helper class
-        // get the id of the previous section (if any) 
-        // if there is previous section, swap the order
+        // get the id of the succeeding section (if any) 
+        // if there is succeeding section, swap the order
         // else do nothing
         DatabaseHelper.shiftModuleDown(selectedModule, selectedCourse);
         btnShiftModuleUp.setDisable(true);
@@ -235,10 +240,6 @@ public class CourseViewerController {
         String selectedCourse = tblCourse.getSelectionModel().getSelectedItem().getCourseCode();
         String selectedModule = (String) listModules.getSelectionModel().getSelectedItem();
         
-        // send this to the database helper class
-        // get the id of the previous section (if any) 
-        // if there is previous section, swap the order
-        // else do nothing
         DatabaseHelper.unlinkCourseModule(selectedModule, selectedCourse);
         btnShiftModuleUp.setDisable(true);
         btnShiftModuleDown.setDisable(true);
@@ -291,6 +292,18 @@ public class CourseViewerController {
     */
     
     @FXML
+    private void userDidClickSearch() throws SQLException {
+        String query = searchbox.getText();
+        System.out.println(query);
+        
+        if (!query.equals("")) {
+            tblCourse.setItems(DatabaseHelper.searchCourse(query));
+        } else {
+            tblCourse.setItems(DatabaseHelper.getCourses());
+        }
+    }
+    
+    @FXML
     private void switchToNewCourse() throws IOException, SQLException {
         NewCourseController.display("New Course");
         refreshTable();
@@ -298,7 +311,7 @@ public class CourseViewerController {
     
     @FXML
     private void userDidAddModule() throws IOException, SQLException {
-        String selectedCourse = tblCourse.getSelectionModel().getSelectedItem().getName();
+        Course selectedCourse = tblCourse.getSelectionModel().getSelectedItem();
         
         LinkModuleController lmc = new LinkModuleController();
         lmc.setCourse(selectedCourse);

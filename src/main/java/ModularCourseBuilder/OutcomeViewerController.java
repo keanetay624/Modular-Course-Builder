@@ -159,6 +159,7 @@ public class OutcomeViewerController {
     public void refreshTable() throws SQLException {
         ObservableList<Outcome> newList = DatabaseHelper.getOutcomes();
         tblOutcome.setItems(newList);
+        tblOutcome.getSelectionModel().select(0);
     }
     
 }

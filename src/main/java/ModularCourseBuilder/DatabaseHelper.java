@@ -34,6 +34,36 @@ public class DatabaseHelper {
         Database.closeConnection();
     }
     
+    public static ObservableList<Course> searchCourse(String s) throws SQLException {
+        ObservableList<Course> courses = FXCollections.observableArrayList();
+        
+        Database.openConnection();
+
+        //insert statement for new course
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("SELECT * FROM "
+                + "Course WHERE "
+                + "course_code LIKE ? or course_code LIKE ? or course_code LIKE ?"
+                + "or course_name LIKE ? or course_name LIKE ? or course_name LIKE ?");
+        pst.setString(1, "%" + s);
+        pst.setString(2, s + "%");
+        pst.setString(3, "%" + s + "%");
+        pst.setString(4, "%" + s);
+        pst.setString(5, s + "%");
+        pst.setString(6, "%" + s + "%");
+
+        ResultSet rs = pst.executeQuery();
+        
+        while (rs.next()) {
+            Course queried = new Course(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getInt(7));
+            courses.add(queried);
+        }
+        
+        pst.close();
+        Database.closeConnection();
+        
+        return courses;
+    }
+    
     public static void insertIntoCourse(Course selectedCourse) throws SQLException {
         Database.openConnection();
 
@@ -76,7 +106,7 @@ public class DatabaseHelper {
                 + "SET course_code = ? "
                 + "WHERE course_code = ?");
         pst2.setString(1, updatedCourse.getCourseCode());
-        pst2.setString(2, updatedCourse.getCourseCode());
+        pst2.setString(2, selectedCourse.getCourseCode());
         pst2.executeUpdate();
         
         // Updated Attachment table
@@ -84,7 +114,7 @@ public class DatabaseHelper {
                 + "SET course_id = ? "
                 + "WHERE course_id = ?");
         pst3.setString(1, updatedCourse.getCourseCode());
-        pst3.setString(2, updatedCourse.getCourseCode());
+        pst3.setString(2, selectedCourse.getCourseCode());
         pst3.executeUpdate();
 
         pst.close();
@@ -240,21 +270,21 @@ public class DatabaseHelper {
         if (pos == 1) {
             return;
         } 
+        
         // else, get the preceding position and swap 
         Database.openConnection();
         
         PreparedStatement pst = Database.getSharedConnection().prepareStatement("Select * FROM CoursesHaveModules "
                     + " WHERE course_code = ? and sequence_no = ?");
         pst.setString(1, courseCode);
-        int preceding = pos-1;
-        pst.setInt(2, preceding);
+        pst.setInt(2, pos-1);
         
         ResultSet rs = pst.executeQuery();
         int id = rs.getInt(1);
         
         // set the current position to its preceding position
         PreparedStatement pst2 = Database.getSharedConnection().prepareStatement("Update CoursesHaveModules "
-                    + " set sequence_no = ? where sequence_no = ? and courseCode = ?");
+                    + " set sequence_no = ? where sequence_no = ? and course_code = ?");
         pst2.setInt(1, pos-1);
         pst2.setInt(2, pos);
         pst2.setString(3, courseCode);

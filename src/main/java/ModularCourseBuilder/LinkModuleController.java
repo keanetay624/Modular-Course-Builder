@@ -37,7 +37,7 @@ public class LinkModuleController {
     @FXML
     Label lblCourseName;
     
-    private static String courseName;
+    private static Course selectedCourse;
     
     public void initialize() throws SQLException {
         // initialize the combobox with list of available modules
@@ -49,11 +49,11 @@ public class LinkModuleController {
             sModulesList.add(thisModule.getName());
         }
         inputModule.getItems().addAll(sModulesList);
-        lblCourseName.setText(courseName);
+        lblCourseName.setText(selectedCourse.getName());
     }
     
-    public void setCourse(String courseName) {
-        this.courseName = courseName;
+    public void setCourse(Course selectedCourse) {
+        this.selectedCourse = selectedCourse;
     }
     
     public void display(String title) throws IOException, SQLException {
@@ -85,10 +85,10 @@ public class LinkModuleController {
         // call a database helper method to insert into course. 
         
         String moduleName = (String) inputModule.getValue();
-        String courseName = lblCourseName.getText();
+        String courseCode = selectedCourse.getCourseCode();
         
-        DatabaseHelper.insertIntoCoursesHaveModules(courseName, moduleName);
-        DatabaseHelper.sortModules(courseName);
+        DatabaseHelper.insertIntoCoursesHaveModules(courseCode, moduleName);
+        DatabaseHelper.sortModules(courseCode);
         
         // close the window
         Stage stage = (Stage) btnCancelLinkModule.getScene().getWindow();

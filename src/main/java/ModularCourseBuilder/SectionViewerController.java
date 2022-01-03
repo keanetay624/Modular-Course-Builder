@@ -232,6 +232,7 @@ public class SectionViewerController {
     public void refreshTable() throws SQLException {
         ObservableList<Section> newList = DatabaseHelper.getSections();
         tblSection.setItems(newList);
+        tblSection.getSelectionModel().select(0);
     }
     
 }

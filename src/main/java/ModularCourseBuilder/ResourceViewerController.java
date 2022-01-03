@@ -215,6 +215,7 @@ public class ResourceViewerController {
     public void refreshTable() throws SQLException {
         ObservableList<Resource> newList = DatabaseHelper.getResources();
         tblResource.setItems(newList);
+        tblResource.getSelectionModel().select(0);
     }
     
 }
