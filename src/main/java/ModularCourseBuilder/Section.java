@@ -13,9 +13,9 @@ import java.util.List;
  */
 public class Section {
     private Module sModule;
-    private int sequence;
     private String name;
     private String desc;
+    private int sequence;
     private int isArchived;
 
     public Section(Module sModule, String name, String desc, int sequence, int isArchived) {

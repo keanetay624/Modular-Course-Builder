@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
@@ -51,6 +52,9 @@ public class SectionViewerController {
     
     @FXML
     Label lblFileName;
+    
+    @FXML
+    TextField searchbox;
     
     @FXML
     AnchorPane anchorPaneID;
@@ -182,6 +186,18 @@ public class SectionViewerController {
     /*
     * Auxilary Functions
     */
+    
+    @FXML
+    private void userDidClickSearch() throws SQLException {
+        String query = searchbox.getText();
+        
+        if (!query.equals("")) {
+            tblSection.setItems(DatabaseHelper.searchSection(query));
+        } else {
+            tblSection.setItems(DatabaseHelper.getSections());
+        }
+    }
+    
     @FXML
     private void userDidClickUpload() throws IOException, SQLException {
         Section selectedSection = tblSection.getSelectionModel().getSelectedItem();

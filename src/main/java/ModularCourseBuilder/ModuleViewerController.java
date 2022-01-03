@@ -346,7 +346,6 @@ public class ModuleViewerController {
     @FXML
     private void userDidClickSearch() throws SQLException {
         String query = searchbox.getText();
-        System.out.println(query);
         
         if (!query.equals("")) {
             tblModule.setItems(DatabaseHelper.searchModule(query));

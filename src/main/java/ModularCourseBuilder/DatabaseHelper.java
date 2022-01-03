@@ -553,6 +553,41 @@ public class DatabaseHelper {
         Database.closeConnection();
     }
     
+    public static ObservableList<Section> searchSection(String s) throws SQLException {
+        ObservableList<Section> sections = FXCollections.observableArrayList();
+        
+        Database.openConnection();
+
+        //insert statement for new course
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("SELECT * FROM "
+                + "Section WHERE "
+                + "module_name LIKE ? or module_name LIKE ? or module_name LIKE ?"
+                + "or section_name LIKE ? or section_name LIKE ? or section_name LIKE ?"
+                + "or section_description LIKE ? or section_description LIKE ? or section_description LIKE ?");
+        pst.setString(1, "%" + s);
+        pst.setString(2, s + "%");
+        pst.setString(3, "%" + s + "%");
+        pst.setString(4, "%" + s);
+        pst.setString(5, s + "%");
+        pst.setString(6, "%" + s + "%");
+        pst.setString(7, "%" + s);
+        pst.setString(8, s + "%");
+        pst.setString(9, "%" + s + "%");
+
+        ResultSet rs = pst.executeQuery();
+        
+        while (rs.next()) {
+            Module dummyModule = new Module(rs.getString(2),"",0);
+            Section queried = new Section(dummyModule, rs.getString(3), rs.getString(4), rs.getInt(5), rs.getInt(6));
+            sections.add(queried);
+        }
+        
+        pst.close();
+        Database.closeConnection();
+        
+        return sections;
+    }
+    
     public static void insertIntoSection(Section selectedSection) throws SQLException {
         Database.openConnection();
 

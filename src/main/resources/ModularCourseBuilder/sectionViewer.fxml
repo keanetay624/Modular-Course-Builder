@@ -30,8 +30,8 @@
                   </Label>
                   <HBox alignment="CENTER" layoutX="37.0" layoutY="94.0" prefHeight="76.0" prefWidth="626.0" spacing="20.0">
                      <children>
-                        <TextField alignment="TOP_LEFT" prefHeight="26.0" prefWidth="458.0" promptText="Search by code, name or keyword" />
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="106.0" styleClass="color-base" text="Search" textAlignment="CENTER" />
+                        <TextField fx:id="searchbox" alignment="TOP_LEFT" prefHeight="26.0" prefWidth="458.0" promptText="Search by code, name or keyword" />
+                        <Button fx:id="btnSearch" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#userDidClickSearch" prefHeight="27.0" prefWidth="106.0" styleClass="color-base" text="Search" textAlignment="CENTER" />
                      </children>
                   </HBox>
                   <ButtonBar layoutX="437.0" layoutY="24.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="70.0" prefWidth="626.0">
