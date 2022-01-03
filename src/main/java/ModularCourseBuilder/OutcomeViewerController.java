@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.TilePane;
 
@@ -39,6 +40,9 @@ public class OutcomeViewerController {
     @FXML 
     Button navBtnHome, navBtnCourses, navBtnModules, navBtnSections, 
             navBtnResources, navBtnOutcomes, navBtnSignOut;
+    
+    @FXML
+    TextField searchbox;
     
     @FXML
     private void initialize() throws SQLException {
@@ -136,6 +140,17 @@ public class OutcomeViewerController {
     /*
     * Auxilary Functions
     */
+    
+    @FXML
+    private void userDidClickSearch() throws SQLException {
+        String query = searchbox.getText();
+        
+        if (!query.equals("")) {
+            tblOutcome.setItems(DatabaseHelper.searchOutcome(query));
+        } else {
+            tblOutcome.setItems(DatabaseHelper.getOutcomes());
+        }
+    }
     
     @FXML
     private void userDidEditOutcome() throws IOException, SQLException {

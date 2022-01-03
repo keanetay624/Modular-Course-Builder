@@ -993,6 +993,41 @@ public class DatabaseHelper {
         Database.closeConnection();
     }
     
+    public static ObservableList<Outcome> searchOutcome(String s) throws SQLException {
+        ObservableList<Outcome> outcomes = FXCollections.observableArrayList();
+        
+        Database.openConnection();
+
+        //insert statement for new course
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("SELECT * FROM "
+                + "ModuleLearningOutcomes WHERE "
+                + "module_name LIKE ? or module_name LIKE ? or module_name LIKE ?"
+                + "or mlo_name LIKE ? or mlo_name LIKE ? or mlo_name LIKE ?"
+                + "or mlo_description LIKE ? or mlo_description LIKE ? or mlo_description LIKE ?");
+        pst.setString(1, "%" + s);
+        pst.setString(2, s + "%");
+        pst.setString(3, "%" + s + "%");
+        pst.setString(4, "%" + s);
+        pst.setString(5, s + "%");
+        pst.setString(6, "%" + s + "%");
+        pst.setString(7, "%" + s);
+        pst.setString(8, s + "%");
+        pst.setString(9, "%" + s + "%");
+
+        ResultSet rs = pst.executeQuery();
+        
+        while (rs.next()) {
+            Module dummyModule = new Module(rs.getString(2), "", 0);
+            Outcome queried = new Outcome(dummyModule, rs.getString(3), rs.getString(4), rs.getInt(5), rs.getInt(6));
+            outcomes.add(queried);
+        }
+        
+        pst.close();
+        Database.closeConnection();
+        
+        return outcomes;
+    }
+    
     public static int nextOutcomeNumber(String moduleName) throws SQLException {
         int highest = 0;
         Database.openConnection();
