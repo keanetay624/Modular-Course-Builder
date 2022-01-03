@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
@@ -50,6 +51,9 @@ public class ModuleViewerController {
     
     @FXML
     AnchorPane anchorPaneID;
+    
+    @FXML
+    TextField searchbox;
     
     @FXML
     private void initialize() throws SQLException {
@@ -338,6 +342,18 @@ public class ModuleViewerController {
     /*
     * Auxilary Functions
     */
+    
+    @FXML
+    private void userDidClickSearch() throws SQLException {
+        String query = searchbox.getText();
+        System.out.println(query);
+        
+        if (!query.equals("")) {
+            tblModule.setItems(DatabaseHelper.searchModule(query));
+        } else {
+            tblModule.setItems(DatabaseHelper.getModules());
+        }
+    }
     
     @FXML
     private void switchToNewModule() throws IOException, SQLException {

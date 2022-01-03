@@ -372,6 +372,36 @@ public class DatabaseHelper {
         Database.closeConnection();
     }
     
+    public static ObservableList<Module> searchModule(String s) throws SQLException {
+        ObservableList<Module> modules = FXCollections.observableArrayList();
+        
+        Database.openConnection();
+
+        //insert statement for new course
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("SELECT * FROM "
+                + "Module WHERE "
+                + "module_name LIKE ? or module_name LIKE ? or module_name LIKE ?"
+                + "or module_description LIKE ? or module_description LIKE ? or module_description LIKE ?");
+        pst.setString(1, "%" + s);
+        pst.setString(2, s + "%");
+        pst.setString(3, "%" + s + "%");
+        pst.setString(4, "%" + s);
+        pst.setString(5, s + "%");
+        pst.setString(6, "%" + s + "%");
+
+        ResultSet rs = pst.executeQuery();
+        
+        while (rs.next()) {
+            Module queried = new Module(rs.getString(1), rs.getString(2), rs.getInt(3));
+            modules.add(queried);
+        }
+        
+        pst.close();
+        Database.closeConnection();
+        
+        return modules;
+    }
+    
     public static void insertIntoModule(Module selectedModule) throws SQLException {
         Database.openConnection();
 
