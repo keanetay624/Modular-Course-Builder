@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
@@ -48,6 +49,9 @@ public class ResourceViewerController {
     
     @FXML
     Label lblFileName;
+    
+    @FXML
+    TextField searchbox;
     
     @FXML
     AnchorPane anchorPaneID;
@@ -165,6 +169,17 @@ public class ResourceViewerController {
     /*
     * Auxilary Functions
     */
+    
+    @FXML
+    private void userDidClickSearch() throws SQLException {
+        String query = searchbox.getText();
+        
+        if (!query.equals("")) {
+            tblResource.setItems(DatabaseHelper.searchResource(query));
+        } else {
+            tblResource.setItems(DatabaseHelper.getResources());
+        }
+    }
     
     @FXML
     private void userDidClickUpload() throws IOException, SQLException {

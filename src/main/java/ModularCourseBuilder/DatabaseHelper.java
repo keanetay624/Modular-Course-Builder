@@ -891,6 +891,42 @@ public class DatabaseHelper {
         Database.closeConnection();
     }
     
+    public static ObservableList<Resource> searchResource(String s) throws SQLException {
+        ObservableList<Resource> resources = FXCollections.observableArrayList();
+        
+        Database.openConnection();
+
+        //insert statement for new course
+        PreparedStatement pst = Database.getSharedConnection().prepareStatement("SELECT * FROM "
+                + "Resource WHERE "
+                + "section_name LIKE ? or section_name LIKE ? or section_name LIKE ?"
+                + "or resource_name LIKE ? or resource_name LIKE ? or resource_name LIKE ?"
+                + "or resource_ext LIKE ? or resource_ext LIKE ? or resource_ext LIKE ?");
+        pst.setString(1, "%" + s);
+        pst.setString(2, s + "%");
+        pst.setString(3, "%" + s + "%");
+        pst.setString(4, "%" + s);
+        pst.setString(5, s + "%");
+        pst.setString(6, "%" + s + "%");
+        pst.setString(7, "%" + s);
+        pst.setString(8, s + "%");
+        pst.setString(9, "%" + s + "%");
+
+        ResultSet rs = pst.executeQuery();
+        
+        while (rs.next()) {
+            Module dummyModule = new Module("", "", 0);
+            Section dummySection = new Section(dummyModule,rs.getString(2), "", 1, 0);
+            Resource queried = new Resource(dummySection, rs.getString(3), rs.getString(4));
+            resources.add(queried);
+        }
+        
+        pst.close();
+        Database.closeConnection();
+        
+        return resources;
+    }
+    
     public static int nextResourceNumber(String sectionName) throws SQLException {
         int highest = 0;
         Database.openConnection();
