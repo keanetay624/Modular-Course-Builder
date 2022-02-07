@@ -5,7 +5,7 @@ The purpose of the app is to allow the course admin to navigate between
 Courses, Modules, Sections, Resources and files available across the entire University.
 
 ## Using MCB
-**JDK 11 is required for running this program.**
+**JDK 11 is required for running this program.** <br>
 After cloning the repository, navigate to the "target" directory.
 You will find an executable .jar file called "ModularCourseBuilder-2.0-shaded".
 
@@ -35,9 +35,27 @@ The models used in the app are the following Java classes:
     Outcomes have a name, associated module name, description, sequence number and archival status.
 - Attachments
     Attachments have a name, associated course code, associated module name, associated seciton name, associated resource name, and its data in BLOB format.
-## View
-Each model has its own view to display object properties. 
-![Login Screen](/src/main/resources/ModularCourseBuilder/readme-ss/login.JPG)
+## Views
+Each model has its own view to display object properties.
+### Login Window
+!(/src/main/resources/ModularCourseBuilder/readme-ss/login.JPG)
+### Home Window
+!(/src/main/resources/ModularCourseBuilder/readme-ss/home.JPG)
+### Course Window
+!(/src/main/resources/ModularCourseBuilder/readme-ss/course.JPG)
+### Edit Window
+!(/src/main/resources/ModularCourseBuilder/readme-ss/course-edit.JPG)
+### New Object Window
+!(/src/main/resources/ModularCourseBuilder/readme-ss/course-new.JPG)
+### Module Window
+!(/src/main/resources/ModularCourseBuilder/readme-ss/module.JPG)
+### Outcome Window
+!(/src/main/resources/ModularCourseBuilder/readme-ss/outcome.JPG)
+### Section Window
+!(/src/main/resources/ModularCourseBuilder/readme-ss/section.JPG)
+### Resource Window
+!(/src/main/resources/ModularCourseBuilder/readme-ss/resource.JPG)
+
 ## Controller
 Each view has its own controller that contains the logic and behaviour for UI elements. 
 
