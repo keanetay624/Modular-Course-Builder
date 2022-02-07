@@ -9,6 +9,7 @@ ModularCourseBuilder\EditResourceController.class
 ModularCourseBuilder\NewSectionController.class
 ModularCourseBuilder\DatabaseHelper.class
 ModularCourseBuilder\Section.class
+ModularCourseBuilder\SampleDataHelper.class
 ModularCourseBuilder\ModuleViewerController.class
 ModularCourseBuilder\JavaFXHelper.class
 ModularCourseBuilder\NewOutcomeController.class
@@ -25,6 +26,8 @@ ModularCourseBuilder\ResourceViewerController.class
 ModularCourseBuilder\NewCourseController.class
 ModularCourseBuilder\EditModuleController.class
 module-info.class
+ModularCourseBuilder\NewUserController.class
 ModularCourseBuilder\App.class
 ModularCourseBuilder\CourseViewerController.class
 ModularCourseBuilder\Course.class
+ModularCourseBuilder\Main.class

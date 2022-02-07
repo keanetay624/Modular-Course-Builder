@@ -1,1 +1,3 @@
 CourseDatabase.db
+*.class
+/target/

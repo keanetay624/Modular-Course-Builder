@@ -1,14 +1,15 @@
-# Modular Course Builder
-This proof-of-concept Java applet is a desktop app for University Course Administrators.
-The purpose of the app is to allow the course admin to navigate between various
+# Modular Course Builder (MCB) - CRUD app
+This program is a basic CRUD application for University Course Administrators.
+Made with JavaFX, Scenebuilder and SQLite.
+The purpose of the app is to allow the course admin to navigate between 
 Courses, Modules, Sections, Resources and files available across the entire University.
 
-The app features a GUI as well as a SQLite database to store user data.
+## Using MCB
+After cloning the repository, navigate to the "target" directory.
+You will find an executable .jar file called "ModularCourseBuilder-2.0-shaded".
 
-## First Time Setup
-On the first run, the app will automatically create a new Database file. This is a one-time setup,
-subsequent uses of the app will be writing and reading from this database file.
-Should you need to reset the database back to its original state, you can delete this database file.
+Running this executable for the first time will create a database file "CourseDatabase.db".
+This SQLite database manages user data, initialising by adding some sample data for the user. 
 
 The app has one account made by default. You can access this account by providing 'admin' for username
 and 'passWord!' for the password fields. 

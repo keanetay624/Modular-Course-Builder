@@ -21,6 +21,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.media.MediaView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import javax.swing.*;
 
 public class ResourceViewerController {
     
@@ -169,6 +170,15 @@ public class ResourceViewerController {
     /*
     * Auxilary Functions
     */
+    
+    // testing pdf preview
+    @FXML
+    private void userDidClickPreview() {
+       String filePath = "somefilepath/myfile.pdf";
+
+        // build a controller
+        
+    }
     
     @FXML
     private void userDidClickSearch() throws SQLException {
