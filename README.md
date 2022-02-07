@@ -37,7 +37,7 @@ The models used in the app are the following Java classes:
     Attachments have a name, associated course code, associated module name, associated seciton name, associated resource name, and its data in BLOB format.
 ## View
 Each model has its own view to display object properties. 
-![Login Screen](/src/main/resources/ModularCourseBuilder/readme-ss/login.jpg)
+![Login Screen](src/main/resources/ModularCourseBuilder/readme-ss/login.jpg)
 ## Controller
 Each view has its own controller that contains the logic and behaviour for UI elements. 
 
