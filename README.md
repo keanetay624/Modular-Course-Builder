@@ -38,23 +38,23 @@ The models used in the app are the following Java classes:
 ## Views
 Each model has its own view to display object properties.
 ### Login Window
-!(/src/main/resources/ModularCourseBuilder/readme-ss/login.JPG)
+![](/src/main/resources/ModularCourseBuilder/readme-ss/login.JPG)
 ### Home Window
-!(/src/main/resources/ModularCourseBuilder/readme-ss/home.JPG)
+![](/src/main/resources/ModularCourseBuilder/readme-ss/home.JPG)
 ### Course Window
-!(/src/main/resources/ModularCourseBuilder/readme-ss/course.JPG)
+![](/src/main/resources/ModularCourseBuilder/readme-ss/course.JPG)
 ### Edit Window
-!(/src/main/resources/ModularCourseBuilder/readme-ss/course-edit.JPG)
+![](/src/main/resources/ModularCourseBuilder/readme-ss/course-edit.JPG)
 ### New Object Window
-!(/src/main/resources/ModularCourseBuilder/readme-ss/course-new.JPG)
+![](/src/main/resources/ModularCourseBuilder/readme-ss/course-new.JPG)
 ### Module Window
-!(/src/main/resources/ModularCourseBuilder/readme-ss/module.JPG)
+![](/src/main/resources/ModularCourseBuilder/readme-ss/module.JPG)
 ### Outcome Window
-!(/src/main/resources/ModularCourseBuilder/readme-ss/outcome.JPG)
+![](/src/main/resources/ModularCourseBuilder/readme-ss/outcome.JPG)
 ### Section Window
-!(/src/main/resources/ModularCourseBuilder/readme-ss/section.JPG)
+![](/src/main/resources/ModularCourseBuilder/readme-ss/section.JPG)
 ### Resource Window
-!(/src/main/resources/ModularCourseBuilder/readme-ss/resource.JPG)
+![](/src/main/resources/ModularCourseBuilder/readme-ss/resource.JPG)
 
 ## Controller
 Each view has its own controller that contains the logic and behaviour for UI elements. 
